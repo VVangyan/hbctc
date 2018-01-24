@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>首页</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+    <link rel="stylesheet" href="../../../plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="../../../css/main.css">
+    <script src="../../../libs/jquery.min.js"></script>
+    <script src="../../../plugins/layer/layer.js"></script>
+    <script src="../../../libs/bootstrap.min.js"></script>
+    <script src="../../../libs/vue.min.js"></script>
+    <script src="../../../plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="../../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="../../../plugins/ztree/jquery.ztree.all.min.js"></script>
+    <script src="../../../js/common.js"></script>
+</head>
+<body>
+<div class="maindiv">
+    <div class="base_div"><!-- base  div-->
+        <div class="top_div"><!--top div-->
+            <button type="button" class="btn btn-default btn-xs" id="btn_add_zxjh">新增</button>
+        </div>
+        <div class="down_div"><!--down div-->
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Username</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="add_zxjh_modal_div">
+        <!--ths 修改模态框（Modal） -->
+        <div class="modal fade" id="add_zxjh_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog  modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            新增执行计划
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <!--表单 -->
+
+                        <table class="table table-bordered">
+
+                            <tr>
+                                <td  colspan="2" width="20%">项目申报部门</td>
+                                <td colspan="8">2</td>
+                            </tr>
+                            <tr>
+                                <td  colspan="2" width="20%">项目申报部门负责人</td>
+                                <td width="20%">2</td>
+                                <td >联系方式</td>
+                                <td colspan="6" width="50%">2</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">1</td>
+                                <td>项目名称</td>
+                                <td colspan="7"></td>
+                            </tr>
+                            <tr>
+                                <td>项目联系人</td>
+                                <td></td>
+                                <td>联系方式</td>
+                                <td colspan="6"></td>
+                            </tr>
+
+
+                        </table>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary" id="modify_ths">新增</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+</div>
+<link rel="stylesheet" href="../../../css/hbctc/jxsq/jxsq.css">
+<script src="../../../js/hbctc/jxsq/jxsq.js"></script>
+</body>
+</html>

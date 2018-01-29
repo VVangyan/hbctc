@@ -30,9 +30,11 @@ $(function() {
 				// debugger
 				row.rowSpan=parseInt(row.rowSpan)-1
 			    console.log(row)
-			    
-			    //每行的编号减一
-			    itemId-=1;
+			    //tr的个数，如果值为15,说明删除的是最后一个元素，此时需要将itemId的值初始化为0
+			    var num=$("table tr").length
+			    if(num==15){
+			    	itemId=0
+			    }
 		}
 		
 		//新增item

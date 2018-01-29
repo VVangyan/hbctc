@@ -63,109 +63,172 @@
                     <div class="modal-body">
                         <!--表单 -->
                         <h3>自主采购项目预算执行计划</h3>
-                        <h4>鄂交自采计[      ]-    号</h4>
+                        <h4>鄂交自采计[<input type="text" id="bh1" style="width: 100px">]-<input type="text" id="bh2" style="width: 100px">   号</h4>
                         <table class="table table-bordered">
                             <tr>
-                                <td  colspan="2" width="20%">项目申报部门</td>
-                                <td colspan="8">2</td>
+                                <td  colspan="2" width="20%"><b>项目申报部门</b> </td>
+                                <td colspan="8"><input type="text" id="xmsbbm" style="width: 716px"></td>
                             </tr>
                             <tr>
-                                <td  colspan="2" width="20%">项目申报部门负责人</td>
-                                <td width="20%">2</td>
-                                <td >联系方式</td>
-                                <td colspan="6" width="50%">2</td>
+                                <td  colspan="2" width="20%"><b>项目申报部门<br>负责人</b></td>
+                                <td width="20%"><input type="text" id="xmsbbmfzr" style="width: 150px"></td>
+                                <td ><b>联系方式</b></td>
+                                <td colspan="6" width="50%"><input type="text" id="xmsbbmfzr_lxfs" style="width: 450px"></td>
                             </tr>
                             <tr>
-                                <td rowspan="2" style="text-align: center;line-height: 74px">一</td>
-                                <td>项目名称</td>
-                                <td colspan="8"></td>
+                                <td rowspan="2" style="text-align: center;line-height: 74px"><b>一</b></td>
+                                <td><b>项目名称</b></td>
+                                <td colspan="8"><input type="text" id="sbxmmc" style="width: 716px"></td>
                             </tr>
                             <tr>
-                                <td>项目联系人</td>
-                                <td></td>
-                                <td>联系方式</td>
-                                <td colspan="6"></td>
+                                <td><b>项目联系人</b></td>
+                                <td><input type="text" id="xmlxr" style="width: 150px"></td>
+                                <td><b>联系方式</b></td>
+                                <td colspan="6"><input type="text" id="er_lxfs" style="width: 450px"></td>
                             </tr>
                             <tr>
-                                <td style="text-align: center">二</td>
-                                <td  colspan="2">采购方式</td>
+                                <td style="text-align: center"><b>二</b></td>
+                                <td  colspan="2"><b>采购方式</b></td>
                                 <td colspan="7">
-                                    □竞争性谈判  □询价
-                                    □竞争性磋商  □单一来源
+                                    <label><input type="radio" name="cgfs" id="jzxtp">竞争性谈判</label>
+									<label><input type="radio" name="cgfs" id="xj">询价</label>
+									<label><input type="radio" name="cgfs" id="jzxqc">竞争性磋商</label>
+									<label><input type="radio" name="cgfs" id="dyly">单一来源</label>
                                 </td>
                             </tr>
 
                             <tr>
-                                <td rowspan="3" style="line-height: 111px;text-align: center">三</td>
-                                <td colspan="9">自主采购资金来源</td>
+                                <td rowspan="3" style="line-height: 111px;text-align: center"><b>三</b></td>
+                                <td colspan="9"><b>自主采购资金来源</b></td>
                             </tr>
                             <tr>
-                                <td colspan="5">资金来源</td>
-                                <td colspan="2">预算项目金额（元）</td>
-                                <td colspan="2">申请项目金额（元）</td>
+                                <td colspan="5" ><b>资金来源</b></td>
+                                <td colspan="2"><b>预算项目金额（元）</b></td>
+                                <td colspan="2"><b>申请项目金额（元）</b></td>
                             </tr>
                             <tr>
-                                <td colspan="5">0</td>
-                                <td colspan="2">0</td>
-                                <td colspan="2">0</td>
+                                <td colspan="5"><input type="text" id="zjly" style="width: 500px"></td>
+                                <td colspan="2"><input type="text" id="ysxmje" style="width: 170px"></td>
+                                <td colspan="2"><input type="text" id="sqxmje" style="width: 100px"></td>
                             </tr>
                             <tr>
-                                <td rowspan="4" style="text-align: center">
-                                    四
+                                <td id="rowspan_change" rowspan="3" style="text-align: center">
+                                  	<b>四</b>
                                 </td>
                                 <td colspan="9">
-                                    采购项目需求
+                                  	  <b>采购项目需求</b>
                                 </td>
                             </tr>
-                            <tr>
-                                <td >序号</td>
-                                <td width="20%">品目名称</td>
-                                <td>采购类别</td>
-                                <td>数量</td>
-                                <td>计量单位	</td>
-                                <td>预算金额(元)</td>
-                                <td>是否进口	</td>
-                                <td>节能</td>
-                                <td>环保</td>
-                            </tr>
-                            <tr>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                                <td>8</td>
-                                <td>9</td>
-                            </tr>
-                            <tr>
-                                <td colspan="6">合计金额（元）</td>
-                                <td colspan="3"></td>
-                            </tr>
-                            <tr>
+							<tr>
                                 <td>
-                                    其他<br>
-                                    说明
+                                <div class="id_div_add">
+	                                 <div class="add_img" title="点击新增栏目"></div>
+	                                 <div class="id_title"><b>序号</b></div>
+                                </div>
                                 </td>
-                                <td colspan="9"></td>
+                                <td width="20%"><b>品目名称</b></td>
+                                <td width="90px"><b>采购类别</b></td>
+                                <td><b>数量</b></td>
+                                <td width="90px"><b>计量单位</b></td>
+                                <td width="115px"><b>预算金额(元)</b></td>
+                                <td width="90px"><b>是否进口</b></td>
+                                <td><b>节能</b></td>
+                                <td><b>环保</b></td>
                             </tr>
-                            <tr>
+ <!--                           <tr  id="cgxmxq_tr">
                                 <td>
-                                    资产<br>
-                                    办管<br>
-                                    理办<br>
-                                    公室<br>
-                                    审批<br>
-                                    意见
+                                	<div class="id_div_sub">
+                                		<div class="sub_img" title="点击删除栏目"></div>
+                                		<div class="id_value">1</div>
+                                	</div>
                                 </td>
-                                <td colspan="9"></td>
+                                <td><input type="text" id="projectName" style="width: 150px"></td>
+                                <td>
+									<select id="cglb">
+										<option>货物</option>
+										<option>服务</option>
+										<option>工程</option>
+									</select>
+								</td>
+                                <td><input type="text" id="qta"></td>
+                                <td><input type="text" id="jldw"></td>
+                                <td><input type="text" id="ysje"></td>
+                                <td>
+									<select id="isImport">
+										<option>是</option>
+										<option>否</option>
+									</select>
+								</td>
+                                <td>
+									<select id="isEnergy">
+										<option>是</option>
+										<option>否</option>
+									</select>
+                                </td>
+                                <td>
+									<select id="isEnvironment">
+										<option>是</option>
+										<option>否</option>
+									</select>
+                                </td>
+                            </tr>  -->
+                            <tr>
+                                <td colspan="6"><b>合计金额（元）</b></td>
+                                <td colspan="3"><input type="text" id="hjje" style="width: 170px"></td>
                             </tr>
+                           <tr>
+                                <td>
+						            <b> 其他<br>
+						                                    说明</b>
+                                </td>
+                                <td colspan="9">
+                                	<textarea rows="4" style="width: 800px;" id="qtsm"></textarea>
+                                </td>
+                            </tr>
+                <!--              <tr>
+                                <td>
+						            <b> 资产<br>
+						                                    办管<br>
+						                                    理办<br>
+						                                    公室<br>
+						                                    审批<br>
+						                                    意见</b>
+                                </td>
+                                <td colspan="9">
+                                	<textarea rows="9" style="width: 800px;" id="zcbspyj"></textarea>
+                                	 <div class="jeinpbox" style="text-align: right;">
+                                		日期:<input type="text" class="jeinput" id="ymd01" placeholder="YYYY年MM月DD日"  style="width: 200px;text-align: center;">
+                                	 </div>
+                                </td>
+                            </tr> -->
                         </table>
+	                    <div  class="div_sh" style="display: none">
+	                    	<div class="div_bmsh">
+	                    		<div style="width: 30px;height: 100px;border-right: 1px #DDDDDD solid;">
+	                    			<b>部门审核意见</b>
+	                    		</div>
+	                    		<div></div>
+	                    	</div>
+	                    	<div class="div_zcbsh">
+	                    		<div style="width: 30px;height: 100px;border-right: 1px #DDDDDD solid">
+	                    			<b>资产办管理办公室审批意见</b>
+	                    		</div>
+	                    		<div></div>
+	                    	</div>
+	                    </div>
                     </div>
-                    <div class="modal-footer">
+                    <div class="down_text">
+                    	<b>抄送：</b>监察室、计划财务处。<br>
+                    	<b>备注:</b>
+                    	<ol>
+                    		<li>进口设备需在“一上”阶段向省财政厅报备，否则不得购置；</li>
+                    		<li>如项目采购金额与预算文本一致，由部门负责人在平台审核即可；</li>
+                    		<li>如项目采购金额与预算文本不一致，请说明理由，并请分管校长审批。</li>
+                    	</ol>
+                    </div>
+                    <div class="modal-footer" style="text-align: center;">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="modify_ths">新增</button>
+                        <button type="button" class="btn btn-primary" id="modify_ths">申请</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
@@ -174,5 +237,8 @@
 </div>
 <link rel="stylesheet" href="../../../css/hbctc/jxsq/jxsq.css">
 <script src="../../../js/hbctc/jxsq/jxsq.js"></script>
+<!-- jdate -->
+<link type="text/css" rel="stylesheet" href="../../../libs/jedate-6.0.2/skin/jedate.css">
+<script type="text/javascript" src="../../../libs/jedate-6.0.2/jquery.jedate.js"></script>
 </body>
 </html>

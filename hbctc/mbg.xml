@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+
+	  	<property name="javaFileEncoding" value="UTF-8"/>
+		
+        <!-- 为生成的Java模型创建一个toString方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin"></plugin>
+
+        <!-- 为生成的Java模型类添加序列化接口，并生成serialVersionUID字段 -->
+        <plugin type="io.renren.modules.hbctc.plugin.SerializablePlugin">
+            <property name="suppressJavaInterface" value="false"/>
+        </plugin>
+		
+		<!-- Java模型生成equals和hashcode方法 -->
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin"></plugin>
+		
+		<!--去除生成代码的时候的注释  -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		
+		<!--配置数据库连接 -->
+		<jdbcConnection 
+			driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/fastkaifa" 
+			userId="root"
+			password="123456">
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 指定java bean生成的位置,即java实体的位置 -->
+		<javaModelGenerator 
+			targetPackage="io.renren.modules.hbctc.entity"
+			targetProject=".\src\main\java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!-- 指定 sql映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="mapper.hbctc" 
+			targetProject=".\src\main\resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 指定dao接口生成的位置 ，mapper接口 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="io.renren.modules.hbctc.dao" 
+			targetProject=".\src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+		<!-- table 指定每个表的生成策略 -->
+		<table tableName="hbctc_buyiteminfo" domainObjectName="BuyItemInfo"></table>
+		<table tableName="hbctc_projectRequestForm" domainObjectName="ProjectRequestForm"></table>
+
+	</context>
+</generatorConfiguration>

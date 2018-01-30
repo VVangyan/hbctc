@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.renren.modules.hbctc.dao.BuyItemInfoMapper">
+  <resultMap id="BaseResultMap" type="io.renren.modules.hbctc.entity.BuyItemInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="byIntemId" jdbcType="INTEGER" property="byintemid" />
+    <result column="buyItemName" jdbcType="VARCHAR" property="buyitemname" />
+    <result column="buyItemQty" jdbcType="INTEGER" property="buyitemqty" />
+    <result column="buyItemUnit" jdbcType="VARCHAR" property="buyitemunit" />
+    <result column="buyItemSum" jdbcType="DOUBLE" property="buyitemsum" />
+    <result column="buyItemType" jdbcType="CHAR" property="buyitemtype" />
+    <result column="isImport" jdbcType="CHAR" property="isimport" />
+    <result column="isEnergy" jdbcType="CHAR" property="isenergy" />
+    <result column="isEnvironment" jdbcType="CHAR" property="isenvironment" />
+    <result column="preId" jdbcType="INTEGER" property="preid" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, byIntemId, buyItemName, buyItemQty, buyItemUnit, buyItemSum, buyItemType, isImport, 
+    isEnergy, isEnvironment, preId
+  </sql>
+  <select id="selectByExample" parameterType="io.renren.modules.hbctc.entity.BuyItemInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from hbctc_buyiteminfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hbctc_buyiteminfo
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hbctc_buyiteminfo
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="io.renren.modules.hbctc.entity.BuyItemInfoExample">
+    delete from hbctc_buyiteminfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="io.renren.modules.hbctc.entity.BuyItemInfo">
+    insert into hbctc_buyiteminfo (id, byIntemId, buyItemName, 
+      buyItemQty, buyItemUnit, buyItemSum, 
+      buyItemType, isImport, isEnergy, 
+      isEnvironment, preId)
+    values (#{id,jdbcType=INTEGER}, #{byintemid,jdbcType=INTEGER}, #{buyitemname,jdbcType=VARCHAR}, 
+      #{buyitemqty,jdbcType=INTEGER}, #{buyitemunit,jdbcType=VARCHAR}, #{buyitemsum,jdbcType=DOUBLE}, 
+      #{buyitemtype,jdbcType=CHAR}, #{isimport,jdbcType=CHAR}, #{isenergy,jdbcType=CHAR}, 
+      #{isenvironment,jdbcType=CHAR}, #{preid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="io.renren.modules.hbctc.entity.BuyItemInfo">
+    insert into hbctc_buyiteminfo
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="byintemid != null">
+        byIntemId,
+      </if>
+      <if test="buyitemname != null">
+        buyItemName,
+      </if>
+      <if test="buyitemqty != null">
+        buyItemQty,
+      </if>
+      <if test="buyitemunit != null">
+        buyItemUnit,
+      </if>
+      <if test="buyitemsum != null">
+        buyItemSum,
+      </if>
+      <if test="buyitemtype != null">
+        buyItemType,
+      </if>
+      <if test="isimport != null">
+        isImport,
+      </if>
+      <if test="isenergy != null">
+        isEnergy,
+      </if>
+      <if test="isenvironment != null">
+        isEnvironment,
+      </if>
+      <if test="preid != null">
+        preId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="byintemid != null">
+        #{byintemid,jdbcType=INTEGER},
+      </if>
+      <if test="buyitemname != null">
+        #{buyitemname,jdbcType=VARCHAR},
+      </if>
+      <if test="buyitemqty != null">
+        #{buyitemqty,jdbcType=INTEGER},
+      </if>
+      <if test="buyitemunit != null">
+        #{buyitemunit,jdbcType=VARCHAR},
+      </if>
+      <if test="buyitemsum != null">
+        #{buyitemsum,jdbcType=DOUBLE},
+      </if>
+      <if test="buyitemtype != null">
+        #{buyitemtype,jdbcType=CHAR},
+      </if>
+      <if test="isimport != null">
+        #{isimport,jdbcType=CHAR},
+      </if>
+      <if test="isenergy != null">
+        #{isenergy,jdbcType=CHAR},
+      </if>
+      <if test="isenvironment != null">
+        #{isenvironment,jdbcType=CHAR},
+      </if>
+      <if test="preid != null">
+        #{preid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="io.renren.modules.hbctc.entity.BuyItemInfoExample" resultType="java.lang.Long">
+    select count(*) from hbctc_buyiteminfo
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update hbctc_buyiteminfo
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.byintemid != null">
+        byIntemId = #{record.byintemid,jdbcType=INTEGER},
+      </if>
+      <if test="record.buyitemname != null">
+        buyItemName = #{record.buyitemname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyitemqty != null">
+        buyItemQty = #{record.buyitemqty,jdbcType=INTEGER},
+      </if>
+      <if test="record.buyitemunit != null">
+        buyItemUnit = #{record.buyitemunit,jdbcType=VARCHAR},
+      </if>
+      <if test="record.buyitemsum != null">
+        buyItemSum = #{record.buyitemsum,jdbcType=DOUBLE},
+      </if>
+      <if test="record.buyitemtype != null">
+        buyItemType = #{record.buyitemtype,jdbcType=CHAR},
+      </if>
+      <if test="record.isimport != null">
+        isImport = #{record.isimport,jdbcType=CHAR},
+      </if>
+      <if test="record.isenergy != null">
+        isEnergy = #{record.isenergy,jdbcType=CHAR},
+      </if>
+      <if test="record.isenvironment != null">
+        isEnvironment = #{record.isenvironment,jdbcType=CHAR},
+      </if>
+      <if test="record.preid != null">
+        preId = #{record.preid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update hbctc_buyiteminfo
+    set id = #{record.id,jdbcType=INTEGER},
+      byIntemId = #{record.byintemid,jdbcType=INTEGER},
+      buyItemName = #{record.buyitemname,jdbcType=VARCHAR},
+      buyItemQty = #{record.buyitemqty,jdbcType=INTEGER},
+      buyItemUnit = #{record.buyitemunit,jdbcType=VARCHAR},
+      buyItemSum = #{record.buyitemsum,jdbcType=DOUBLE},
+      buyItemType = #{record.buyitemtype,jdbcType=CHAR},
+      isImport = #{record.isimport,jdbcType=CHAR},
+      isEnergy = #{record.isenergy,jdbcType=CHAR},
+      isEnvironment = #{record.isenvironment,jdbcType=CHAR},
+      preId = #{record.preid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="io.renren.modules.hbctc.entity.BuyItemInfo">
+    update hbctc_buyiteminfo
+    <set>
+      <if test="byintemid != null">
+        byIntemId = #{byintemid,jdbcType=INTEGER},
+      </if>
+      <if test="buyitemname != null">
+        buyItemName = #{buyitemname,jdbcType=VARCHAR},
+      </if>
+      <if test="buyitemqty != null">
+        buyItemQty = #{buyitemqty,jdbcType=INTEGER},
+      </if>
+      <if test="buyitemunit != null">
+        buyItemUnit = #{buyitemunit,jdbcType=VARCHAR},
+      </if>
+      <if test="buyitemsum != null">
+        buyItemSum = #{buyitemsum,jdbcType=DOUBLE},
+      </if>
+      <if test="buyitemtype != null">
+        buyItemType = #{buyitemtype,jdbcType=CHAR},
+      </if>
+      <if test="isimport != null">
+        isImport = #{isimport,jdbcType=CHAR},
+      </if>
+      <if test="isenergy != null">
+        isEnergy = #{isenergy,jdbcType=CHAR},
+      </if>
+      <if test="isenvironment != null">
+        isEnvironment = #{isenvironment,jdbcType=CHAR},
+      </if>
+      <if test="preid != null">
+        preId = #{preid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="io.renren.modules.hbctc.entity.BuyItemInfo">
+    update hbctc_buyiteminfo
+    set byIntemId = #{byintemid,jdbcType=INTEGER},
+      buyItemName = #{buyitemname,jdbcType=VARCHAR},
+      buyItemQty = #{buyitemqty,jdbcType=INTEGER},
+      buyItemUnit = #{buyitemunit,jdbcType=VARCHAR},
+      buyItemSum = #{buyitemsum,jdbcType=DOUBLE},
+      buyItemType = #{buyitemtype,jdbcType=CHAR},
+      isImport = #{isimport,jdbcType=CHAR},
+      isEnergy = #{isenergy,jdbcType=CHAR},
+      isEnvironment = #{isenvironment,jdbcType=CHAR},
+      preId = #{preid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

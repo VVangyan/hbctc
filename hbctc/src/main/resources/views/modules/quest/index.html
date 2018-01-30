@@ -67,33 +67,33 @@
                         <table class="table table-bordered">
                             <tr>
                                 <td  colspan="2" width="20%"><b>项目申报部门</b> </td>
-                                <td colspan="8"><input type="text" id="xmsbbm" style="width: 716px"></td>
+                                <td colspan="8"><input type="text" id="dept" style="width: 716px"></td>
                             </tr>
                             <tr>
                                 <td  colspan="2" width="20%"><b>项目申报部门<br>负责人</b></td>
-                                <td width="20%"><input type="text" id="xmsbbmfzr" style="width: 150px"></td>
+                                <td width="20%"><input type="text" id="deptPeo" style="width: 150px"></td>
                                 <td ><b>联系方式</b></td>
-                                <td colspan="6" width="50%"><input type="text" id="xmsbbmfzr_lxfs" style="width: 450px"></td>
+                                <td colspan="6" width="50%"><input type="text" id="deptPeoInfo" style="width: 450px"></td>
                             </tr>
                             <tr>
                                 <td rowspan="2" style="text-align: center;line-height: 74px"><b>一</b></td>
                                 <td><b>项目名称</b></td>
-                                <td colspan="8"><input type="text" id="sbxmmc" style="width: 716px"></td>
+                                <td colspan="8"><input type="text" id="projectName" style="width: 716px"></td>
                             </tr>
                             <tr>
                                 <td><b>项目联系人</b></td>
-                                <td><input type="text" id="xmlxr" style="width: 150px"></td>
+                                <td><input type="text" id="projectContact" style="width: 150px"></td>
                                 <td><b>联系方式</b></td>
-                                <td colspan="6"><input type="text" id="er_lxfs" style="width: 450px"></td>
+                                <td colspan="6"><input type="text" id="projectPeoInfo" style="width: 450px"></td>
                             </tr>
                             <tr>
                                 <td style="text-align: center"><b>二</b></td>
                                 <td  colspan="2"><b>采购方式</b></td>
                                 <td colspan="7">
-                                    <label><input type="radio" name="cgfs" id="jzxtp">竞争性谈判</label>
-									<label><input type="radio" name="cgfs" id="xj">询价</label>
-									<label><input type="radio" name="cgfs" id="jzxqc">竞争性磋商</label>
-									<label><input type="radio" name="cgfs" id="dyly">单一来源</label>
+                                    <label><input type="radio" name="buyWay" id="jzxtp">竞争性谈判</label>
+									<label><input type="radio" name="buyWay" id="xj">询价</label>
+									<label><input type="radio" name="buyWay" id="jzxqc">竞争性磋商</label>
+									<label><input type="radio" name="buyWay" id="dyly">单一来源</label>
                                 </td>
                             </tr>
 
@@ -107,9 +107,9 @@
                                 <td colspan="2"><b>申请项目金额（元）</b></td>
                             </tr>
                             <tr>
-                                <td colspan="5"><input type="text" id="zjly" style="width: 500px"></td>
-                                <td colspan="2"><input type="text" id="ysxmje" style="width: 170px"></td>
-                                <td colspan="2"><input type="text" id="sqxmje" style="width: 100px"></td>
+                                <td colspan="5"><input type="text" id="moneyWay" style="width: 500px"></td>
+                                <td colspan="2"><input type="text" id="preMoney" style="width: 170px"></td>
+                                <td colspan="2"><input type="text" id="questMoney" style="width: 100px"></td>
                             </tr>
                             <tr>
                                 <td id="rowspan_change" rowspan="3" style="text-align: center">
@@ -228,7 +228,7 @@
                     </div>
                     <div class="modal-footer" style="text-align: center;">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="modify_ths">申请</button>
+                        <button type="button" class="btn btn-primary" id="add_request">申请</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->

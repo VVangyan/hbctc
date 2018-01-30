@@ -45,12 +45,12 @@ $(function() {
 		function createTd(cgxmxq_tr){
 			var  tr1=$('<tr id='+itemId+'></tr>')
 			var  td1=$('<td><div class="id_div_sub"><div class="sub_img" title="点击删除栏目" checkedtrid='+itemId+'></div><div class="id_value">'+itemId+'</div></div> </td>')
-			var  td2=$('<td><input type="text" id="projectName" style="width: 150px"></td>')
-			var  td3=$('<td><select id="cglb"><option>货物</option><option>服务</option><option>工程</option></select></td>')
+			var  td2=$('<td><input type="text" id="buyItemName" style="width: 150px"></td>')
+			var  td3=$('<td><select id="buyItemType"><option>货物</option><option>服务</option><option>工程</option></select></td>')
 			
-			var td4=$('<td><input type="text" id="qta"></td>')
-			var td5=$('<td><input type="text" id="jldw"></td>')
-			var td6=$('<td><input type="text" id="ysje"></td>')
+			var td4=$('<td><input type="text" id="buyItemQty"></td>')
+			var td5=$('<td><input type="text" id="buyItemUnit"></td>')
+			var td6=$('<td><input type="text" id="buyItemSum"></td>')
 			
 			var td7=$('<td><select id="isImport"><option>是</option><option>否</option></select></td>')
 			var td8=$('<td><select id="isEnergy"><option>是</option><option>否</option></select></td>')
@@ -79,7 +79,52 @@ $(function() {
 			debugger
 		})
 		
-
+		
+		$(document).on("click","#add_request",function(){
+			//var trs=$("tr[id][id!=''] input");//获取 input
+			//var select=$("tr[id][id!=''] select");//获取 select
+			//$(trs[0]).find("input")  //获取 input
+			//$(trs[0]).find("select")
+			//获取 input & select  
+			var inputsAndSelects=$("tr[id][id!='']")
+			var projectRequestForm={}
+			var buyItemInfos=new Array();
+			
+			for(var i=0;i<inputsAndSelects.length;i++){
+				var inputs=$(inputsAndSelects[i]).find("input")
+				var selects=$(inputsAndSelects[i]).find("select")
+				debugger
+				var buyItemInfo=new Object()
+				buyItemInfo.byIntemId=parseInt(inputs.context.id)
+				buyItemInfo.buyItemName=inputs[0].value
+				buyItemInfo.buyItemQty=inputs[1].value
+				buyItemInfo.buyItemUnit=inputs[2].value
+				buyItemInfo.buyItemSum=inputs[3].value
+				
+				buyItemInfo.buyItemType=selects[0].value
+				buyItemInfo.isImport=selects[1].value
+				buyItemInfo.isEnergy=selects[2].value
+				buyItemInfo.isEnvironment=selects[3].value
+				buyItemInfos.push(buyItemInfo)
+				debugger
+			}
+			projectRequestForm.buyItemInfos=buyItemInfos
+			projectRequestForm.dept="dept"
+			
+			debugger
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8080/project",
+                contentType: "application/json",
+			    data: JSON.stringify(projectRequestForm),
+                success: function(r){
+                    
+                }
+            });
+			
+		})
+		
+		
 		// 点击显示（YYYY年MM月DD日 hh:mm:ss）格式
 		$("#ymd01").jeDate({
 			isinitVal : false,

@@ -2,6 +2,8 @@ package io.renren.modules.hbctc.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class ProjectRequestFormExample implements Serializable {
@@ -105,6 +107,32 @@ public class ProjectRequestFormExample implements Serializable {
                 throw new RuntimeException("Between values for " + property + " cannot be null");
             }
             criteria.add(new Criterion(condition, value1, value2));
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value, String property) {
+            if (value == null) {
+                throw new RuntimeException("Value for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value.getTime()), property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, List<Date> values, String property) {
+            if (values == null || values.size() == 0) {
+                throw new RuntimeException("Value list for " + property + " cannot be null or empty");
+            }
+            List<java.sql.Date> dateList = new ArrayList<java.sql.Date>();
+            Iterator<Date> iter = values.iterator();
+            while (iter.hasNext()) {
+                dateList.add(new java.sql.Date(iter.next().getTime()));
+            }
+            addCriterion(condition, dateList, property);
+        }
+
+        protected void addCriterionForJDBCDate(String condition, Date value1, Date value2, String property) {
+            if (value1 == null || value2 == null) {
+                throw new RuntimeException("Between values for " + property + " cannot be null");
+            }
+            addCriterion(condition, new java.sql.Date(value1.getTime()), new java.sql.Date(value2.getTime()), property);
         }
 
         public Criteria andIdIsNull() {
@@ -974,6 +1002,246 @@ public class ProjectRequestFormExample implements Serializable {
 
         public Criteria andOthersNotBetween(String value1, String value2) {
             addCriterion("others not between", value1, value2, "others");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateIsNull() {
+            addCriterion("createDate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateIsNotNull() {
+            addCriterion("createDate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateEqualTo(Date value) {
+            addCriterionForJDBCDate("createDate =", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("createDate <>", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateGreaterThan(Date value) {
+            addCriterionForJDBCDate("createDate >", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("createDate >=", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateLessThan(Date value) {
+            addCriterionForJDBCDate("createDate <", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("createDate <=", value, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateIn(List<Date> values) {
+            addCriterionForJDBCDate("createDate in", values, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("createDate not in", values, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("createDate between", value1, value2, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreatedateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("createDate not between", value1, value2, "createdate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateIsNull() {
+            addCriterion("updateDate is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateIsNotNull() {
+            addCriterion("updateDate is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateEqualTo(Date value) {
+            addCriterionForJDBCDate("updateDate =", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateNotEqualTo(Date value) {
+            addCriterionForJDBCDate("updateDate <>", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateGreaterThan(Date value) {
+            addCriterionForJDBCDate("updateDate >", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateGreaterThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("updateDate >=", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateLessThan(Date value) {
+            addCriterionForJDBCDate("updateDate <", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateLessThanOrEqualTo(Date value) {
+            addCriterionForJDBCDate("updateDate <=", value, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateIn(List<Date> values) {
+            addCriterionForJDBCDate("updateDate in", values, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateNotIn(List<Date> values) {
+            addCriterionForJDBCDate("updateDate not in", values, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("updateDate between", value1, value2, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andUpdatedateNotBetween(Date value1, Date value2) {
+            addCriterionForJDBCDate("updateDate not between", value1, value2, "updatedate");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusIsNull() {
+            addCriterion("stepStatus is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusIsNotNull() {
+            addCriterion("stepStatus is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusEqualTo(Integer value) {
+            addCriterion("stepStatus =", value, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusNotEqualTo(Integer value) {
+            addCriterion("stepStatus <>", value, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusGreaterThan(Integer value) {
+            addCriterion("stepStatus >", value, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusGreaterThanOrEqualTo(Integer value) {
+            addCriterion("stepStatus >=", value, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusLessThan(Integer value) {
+            addCriterion("stepStatus <", value, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusLessThanOrEqualTo(Integer value) {
+            addCriterion("stepStatus <=", value, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusIn(List<Integer> values) {
+            addCriterion("stepStatus in", values, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusNotIn(List<Integer> values) {
+            addCriterion("stepStatus not in", values, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusBetween(Integer value1, Integer value2) {
+            addCriterion("stepStatus between", value1, value2, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andStepstatusNotBetween(Integer value1, Integer value2) {
+            addCriterion("stepStatus not between", value1, value2, "stepstatus");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenIsNull() {
+            addCriterion("isTen is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenIsNotNull() {
+            addCriterion("isTen is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenEqualTo(Integer value) {
+            addCriterion("isTen =", value, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenNotEqualTo(Integer value) {
+            addCriterion("isTen <>", value, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenGreaterThan(Integer value) {
+            addCriterion("isTen >", value, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenGreaterThanOrEqualTo(Integer value) {
+            addCriterion("isTen >=", value, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenLessThan(Integer value) {
+            addCriterion("isTen <", value, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenLessThanOrEqualTo(Integer value) {
+            addCriterion("isTen <=", value, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenIn(List<Integer> values) {
+            addCriterion("isTen in", values, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenNotIn(List<Integer> values) {
+            addCriterion("isTen not in", values, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenBetween(Integer value1, Integer value2) {
+            addCriterion("isTen between", value1, value2, "isten");
+            return (Criteria) this;
+        }
+
+        public Criteria andIstenNotBetween(Integer value1, Integer value2) {
+            addCriterion("isTen not between", value1, value2, "isten");
             return (Criteria) this;
         }
     }

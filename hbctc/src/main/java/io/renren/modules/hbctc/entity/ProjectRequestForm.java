@@ -1,66 +1,56 @@
 package io.renren.modules.hbctc.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 public class ProjectRequestForm implements Serializable {
-	private Integer id;
+    private Integer id;
 
-	private String dept;
+    private String dept;
 
-	private String deptpeo;
+    private String deptpeo;
 
-	private String deptpeoinfo;
+    private String deptpeoinfo;
 
-	private String projectname;
+    private String projectname;
 
-	private String projectcontact;
+    private String projectcontact;
 
-	private String projectpeoinfo;
+    private String projectpeoinfo;
 
-	private String buyway;
+    private String buyway;
 
-	private String moneyway;
+    private String moneyway;
 
-	private Double premoney;
+    private Double premoney;
 
-	private Double questmoney;
-	
-	List<BuyItemInfo> buyItemInfos;// 采购项目需求
+    private Double questmoney;
+    
+    List<BuyItemInfo> buyItemInfos;// 采购项目需求
 
-	private Double totalmoney;
+    private Double totalmoney;
 
-	private String others;
+    private String others;
 
+    private Date createdate;
+
+    private Date updatedate;
+
+    private Integer stepstatus;
+
+    private Integer isten;
+
+    
+    
 	public ProjectRequestForm() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
 			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
-			Double questmoney, List<BuyItemInfo> buyItemInfos, Double totalmoney, String others) {
-		super();
-		this.dept = dept;
-		this.deptpeo = deptpeo;
-		this.deptpeoinfo = deptpeoinfo;
-		this.projectname = projectname;
-		this.projectcontact = projectcontact;
-		this.projectpeoinfo = projectpeoinfo;
-		this.buyway = buyway;
-		this.moneyway = moneyway;
-		this.premoney = premoney;
-		this.questmoney = questmoney;
-		this.buyItemInfos = buyItemInfos;
-		this.totalmoney = totalmoney;
-		this.others = others;
-	}
-
-	
-	
-	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
-			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
-			Double questmoney, Double totalmoney, String others) {
+			Double questmoney, Double totalmoney, String others, Date createdate, Date updatedate, Integer stepstatus,
+			Integer isten) {
 		super();
 		this.dept = dept;
 		this.deptpeo = deptpeo;
@@ -74,6 +64,10 @@ public class ProjectRequestForm implements Serializable {
 		this.questmoney = questmoney;
 		this.totalmoney = totalmoney;
 		this.others = others;
+		this.createdate = createdate;
+		this.updatedate = updatedate;
+		this.stepstatus = stepstatus;
+		this.isten = isten;
 	}
 
 	public Integer getId() {
@@ -188,12 +182,45 @@ public class ProjectRequestForm implements Serializable {
 		this.others = others;
 	}
 
+	public Date getCreatedate() {
+		return createdate;
+	}
+
+	public void setCreatedate(Date createdate) {
+		this.createdate = createdate;
+	}
+
+	public Date getUpdatedate() {
+		return updatedate;
+	}
+
+	public void setUpdatedate(Date updatedate) {
+		this.updatedate = updatedate;
+	}
+
+	public Integer getStepstatus() {
+		return stepstatus;
+	}
+
+	public void setStepstatus(Integer stepstatus) {
+		this.stepstatus = stepstatus;
+	}
+
+	public Integer getIsten() {
+		return isten;
+	}
+
+	public void setIsten(Integer isten) {
+		this.isten = isten;
+	}
+
 	@Override
 	public String toString() {
 		return "ProjectRequestForm [id=" + id + ", dept=" + dept + ", deptpeo=" + deptpeo + ", deptpeoinfo="
 				+ deptpeoinfo + ", projectname=" + projectname + ", projectcontact=" + projectcontact
 				+ ", projectpeoinfo=" + projectpeoinfo + ", buyway=" + buyway + ", moneyway=" + moneyway + ", premoney="
 				+ premoney + ", questmoney=" + questmoney + ", buyItemInfos=" + buyItemInfos + ", totalmoney="
-				+ totalmoney + ", others=" + others + "]";
+				+ totalmoney + ", others=" + others + ", createdate=" + createdate + ", updatedate=" + updatedate
+				+ ", stepstatus=" + stepstatus + ", isten=" + isten + "]";
 	}
 }

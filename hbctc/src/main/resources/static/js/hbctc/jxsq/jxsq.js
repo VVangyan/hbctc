@@ -87,24 +87,36 @@ $(function() {
 			//$(trs[0]).find("select")
 			//获取 input & select  
 			var inputsAndSelects=$("tr[id][id!='']")
-			var projectRequestForm={}
+			//var projectRequestForm={}
+			var projectRequestForm=new ProjectRequestForm();
 			var buyItemInfos=new Array();
 			
 			for(var i=0;i<inputsAndSelects.length;i++){
 				var inputs=$(inputsAndSelects[i]).find("input")
 				var selects=$(inputsAndSelects[i]).find("select")
 				debugger
-				var buyItemInfo=new Object()
-				buyItemInfo.byIntemId=parseInt(inputs.context.id)
-				buyItemInfo.buyItemName=inputs[0].value
-				buyItemInfo.buyItemQty=inputs[1].value
-				buyItemInfo.buyItemUnit=inputs[2].value
-				buyItemInfo.buyItemSum=inputs[3].value
+				//var buyItemInfo=new Object()
+				var buyItemInfo=new BuyItemInfo(
+												parseInt(inputs.context.id),
+												inputs[0].value,
+												inputs[1].value,
+												inputs[2].value,
+												inputs[3].value,
+												selects[0].value,
+												selects[1].value,
+												selects[2].value,
+												selects[3].value)
 				
-				buyItemInfo.buyItemType=selects[0].value
-				buyItemInfo.isImport=selects[1].value
-				buyItemInfo.isEnergy=selects[2].value
-				buyItemInfo.isEnvironment=selects[3].value
+/*				buyItemInfo.byintemid=parseInt(inputs.context.id)
+				buyItemInfo.buyitemname=inputs[0].value
+				buyItemInfo.buyitemqty=inputs[1].value
+				buyItemInfo.buyitemunit=inputs[2].value
+				buyItemInfo.buyitemsum=inputs[3].value
+				
+				buyItemInfo.buyitemtype=selects[0].value
+				buyItemInfo.isimport=selects[1].value
+				buyItemInfo.isenergy=selects[2].value
+				buyItemInfo.isenvironment=selects[3].value*/
 				buyItemInfos.push(buyItemInfo)
 				debugger
 			}

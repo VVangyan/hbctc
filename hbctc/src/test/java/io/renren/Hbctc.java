@@ -1,6 +1,7 @@
 package io.renren;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -38,7 +39,12 @@ public class Hbctc {
     			200.02, 
     			100.20, 
     			100.02, 
-    			"others");
+    			"others",
+    			new Date(),
+    			new Date(),
+    			1,
+    			2
+    			);
 		System.out.println("插入之前："+record.getId());
 		int insertSelective = projectRequestFormService.insertSelective(record);
 		System.out.println("插入之后："+record.getId());

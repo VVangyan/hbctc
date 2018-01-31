@@ -26,8 +26,14 @@ public class BuyItemInfo implements Serializable {
     private Integer preid;
 
     private static final long serialVersionUID = 1L;
+    
+    
 
-    public Integer getId() {
+    public BuyItemInfo() {
+		super();
+	}
+
+	public Integer getId() {
         return id;
     }
 

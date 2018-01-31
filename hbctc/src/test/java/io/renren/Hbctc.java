@@ -37,7 +37,6 @@ public class Hbctc {
     			"moneyWay", 
     			200.02, 
     			100.20, 
-    			null, 
     			100.02, 
     			"others");
 		System.out.println("插入之前："+record.getId());

@@ -56,6 +56,26 @@ public class ProjectRequestForm implements Serializable {
 		this.others = others;
 	}
 
+	
+	
+	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
+			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
+			Double questmoney, Double totalmoney, String others) {
+		super();
+		this.dept = dept;
+		this.deptpeo = deptpeo;
+		this.deptpeoinfo = deptpeoinfo;
+		this.projectname = projectname;
+		this.projectcontact = projectcontact;
+		this.projectpeoinfo = projectpeoinfo;
+		this.buyway = buyway;
+		this.moneyway = moneyway;
+		this.premoney = premoney;
+		this.questmoney = questmoney;
+		this.totalmoney = totalmoney;
+		this.others = others;
+	}
+
 	public Integer getId() {
 		return id;
 	}

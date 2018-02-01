@@ -1244,6 +1244,126 @@ public class ProjectRequestFormExample implements Serializable {
             addCriterion("isTen not between", value1, value2, "isten");
             return (Criteria) this;
         }
+
+        public Criteria andBh1IsNull() {
+            addCriterion("bh1 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1IsNotNull() {
+            addCriterion("bh1 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1EqualTo(Integer value) {
+            addCriterion("bh1 =", value, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1NotEqualTo(Integer value) {
+            addCriterion("bh1 <>", value, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1GreaterThan(Integer value) {
+            addCriterion("bh1 >", value, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1GreaterThanOrEqualTo(Integer value) {
+            addCriterion("bh1 >=", value, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1LessThan(Integer value) {
+            addCriterion("bh1 <", value, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1LessThanOrEqualTo(Integer value) {
+            addCriterion("bh1 <=", value, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1In(List<Integer> values) {
+            addCriterion("bh1 in", values, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1NotIn(List<Integer> values) {
+            addCriterion("bh1 not in", values, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1Between(Integer value1, Integer value2) {
+            addCriterion("bh1 between", value1, value2, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh1NotBetween(Integer value1, Integer value2) {
+            addCriterion("bh1 not between", value1, value2, "bh1");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2IsNull() {
+            addCriterion("bh2 is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2IsNotNull() {
+            addCriterion("bh2 is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2EqualTo(Integer value) {
+            addCriterion("bh2 =", value, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2NotEqualTo(Integer value) {
+            addCriterion("bh2 <>", value, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2GreaterThan(Integer value) {
+            addCriterion("bh2 >", value, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2GreaterThanOrEqualTo(Integer value) {
+            addCriterion("bh2 >=", value, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2LessThan(Integer value) {
+            addCriterion("bh2 <", value, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2LessThanOrEqualTo(Integer value) {
+            addCriterion("bh2 <=", value, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2In(List<Integer> values) {
+            addCriterion("bh2 in", values, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2NotIn(List<Integer> values) {
+            addCriterion("bh2 not in", values, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2Between(Integer value1, Integer value2) {
+            addCriterion("bh2 between", value1, value2, "bh2");
+            return (Criteria) this;
+        }
+
+        public Criteria andBh2NotBetween(Integer value1, Integer value2) {
+            addCriterion("bh2 not between", value1, value2, "bh2");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria implements Serializable {

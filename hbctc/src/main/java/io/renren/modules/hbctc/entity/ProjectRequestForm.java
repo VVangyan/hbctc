@@ -43,11 +43,42 @@ public class ProjectRequestForm implements Serializable {
 
     private Integer isten;//是否是10万以上
 
-    
+    private Integer bh1;//编号1
+    private Integer bh2;//编号2
     
 	public ProjectRequestForm() {
 		super();
 	}
+
+	
+	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
+			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
+			Double questmoney,Double totalmoney, String others, Date createdate,
+			Date updatedate, Integer stepstatus, Integer isten, Integer bh1, Integer bh2) {
+		super();
+		this.dept = dept;
+		this.deptpeo = deptpeo;
+		this.deptpeoinfo = deptpeoinfo;
+		this.projectname = projectname;
+		this.projectcontact = projectcontact;
+		this.projectpeoinfo = projectpeoinfo;
+		this.buyway = buyway;
+		this.moneyway = moneyway;
+		this.premoney = premoney;
+		this.questmoney = questmoney;
+		this.totalmoney = totalmoney;
+		this.others = others;
+		this.createdate = createdate;
+		this.updatedate = updatedate;
+		this.stepstatus = stepstatus;
+		this.isten = isten;
+		this.bh1 = bh1;
+		this.bh2 = bh2;
+	}
+
+
+
+
 
 	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
 			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
@@ -216,6 +247,27 @@ public class ProjectRequestForm implements Serializable {
 		this.isten = isten;
 	}
 
+	
+	
+	
+	public Integer getBh1() {
+		return bh1;
+	}
+
+	public void setBh1(Integer bh1) {
+		this.bh1 = bh1;
+	}
+
+	public Integer getBh2() {
+		return bh2;
+	}
+
+	public void setBh2(Integer bh2) {
+		this.bh2 = bh2;
+	}
+
+	
+	
 	@Override
 	public String toString() {
 		return "ProjectRequestForm [id=" + id + ", dept=" + dept + ", deptpeo=" + deptpeo + ", deptpeoinfo="
@@ -223,6 +275,6 @@ public class ProjectRequestForm implements Serializable {
 				+ ", projectpeoinfo=" + projectpeoinfo + ", buyway=" + buyway + ", moneyway=" + moneyway + ", premoney="
 				+ premoney + ", questmoney=" + questmoney + ", buyItemInfos=" + buyItemInfos + ", totalmoney="
 				+ totalmoney + ", others=" + others + ", createdate=" + createdate + ", updatedate=" + updatedate
-				+ ", stepstatus=" + stepstatus + ", isten=" + isten + "]";
+				+ ", stepstatus=" + stepstatus + ", isten=" + isten + ", bh1=" + bh1 + ", bh2=" + bh2 + "]";
 	}
 }

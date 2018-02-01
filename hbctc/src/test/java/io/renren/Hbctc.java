@@ -43,7 +43,9 @@ public class Hbctc {
     			new Date(),
     			new Date(),
     			1,
-    			2
+    			2,
+    			2018,
+    			1000
     			);
 		System.out.println("插入之前："+record.getId());
 		int insertSelective = projectRequestFormService.insertSelective(record);

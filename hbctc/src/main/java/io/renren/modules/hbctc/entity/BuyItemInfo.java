@@ -5,25 +5,25 @@ import java.io.Serializable;
 public class BuyItemInfo implements Serializable {
     private Integer id;
 
-    private Integer byintemid;
+    private Integer byintemid;//采购项目 id
 
-    private String buyitemname;
+    private String buyitemname;//采购项目  品目名称
 
-    private Integer buyitemqty;
+    private Integer buyitemqty;//采购项目  数量
 
-    private String buyitemunit;
+    private String buyitemunit;//采购项目  计量单位
 
-    private Double buyitemsum;
+    private Double buyitemsum;//采购项目  预算金额
 
-    private String buyitemtype;
+    private String buyitemtype;//采购项目  采购类别   0货物/1服务/2工程
 
-    private String isimport;
+    private String isimport;//采购项目  是否进口  0 否，1 是
 
-    private String isenergy;
+    private String isenergy;//采购项目  节能  0 否，1 是
 
-    private String isenvironment;
+    private String isenvironment;//采购项目 是否环保   0 否，1 是
 
-    private Integer preid;
+    private Integer preid;// 主表id
 
     private static final long serialVersionUID = 1L;
     

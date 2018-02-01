@@ -7,21 +7,21 @@ import java.util.List;
 public class ProjectRequestForm implements Serializable {
     private Integer id;
 
-    private String dept;
+    private String dept;// 项目申报部门
 
-    private String deptpeo;
+    private String deptpeo;// 项目申报部门负责人
 
-    private String deptpeoinfo;
+    private String deptpeoinfo;// 联系方式
 
-    private String projectname;
+    private String projectname;// 项目名称
 
-    private String projectcontact;
+    private String projectcontact;// 项目联系人
 
-    private String projectpeoinfo;
+    private String projectpeoinfo;// 联系方式
 
-    private String buyway;
+    private String buyway;// 采购方式
 
-    private String moneyway;
+    private String moneyway;// 资金来源
 
     private Double premoney;
 
@@ -29,17 +29,19 @@ public class ProjectRequestForm implements Serializable {
     
     List<BuyItemInfo> buyItemInfos;// 采购项目需求
 
-    private Double totalmoney;
+    private Double totalmoney;// 预算项目金额（元）
 
-    private String others;
+    private String others;// 申请项目金额（元）
 
-    private Date createdate;
+    private Date createdate;// 采购项目需求
 
-    private Date updatedate;
+    private Date updatedate;// 合计金额
 
-    private Integer stepstatus;
+    private Integer stepstatus;//步骤  0:项目负责人审核中,  
+    						   //	1：项目负责人审核通过,2：业务经办人审核通过,3：业务负责人审核通过
+    						   //   4：项目负责人审核失败,5：业务经办人审核失败,6： 业务负责人审核失败	
 
-    private Integer isten;
+    private Integer isten;//是否是10万以上
 
     
     

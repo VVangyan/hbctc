@@ -88,6 +88,16 @@ $(function() {
 			//获取 input & select  
 			var inputsAndSelects=$("tr[id][id!='']")
 			//var projectRequestForm={}
+			
+			var dept=$("#dept").val().trim()//
+			
+			
+			
+			
+			
+			
+			
+			
 			var projectRequestForm=new ProjectRequestForm();
 			var buyItemInfos=new Array();
 			

@@ -45,16 +45,16 @@ $(function() {
 		function createTd(cgxmxq_tr){
 			var  tr1=$('<tr id='+itemId+'></tr>')
 			var  td1=$('<td><div class="id_div_sub"><div class="sub_img" title="点击删除栏目" checkedtrid='+itemId+'></div><div class="id_value">'+itemId+'</div></div> </td>')
-			var  td2=$('<td><input type="text" id="buyItemName" style="width: 150px"></td>')
-			var  td3=$('<td><select id="buyItemType"><option>货物</option><option>服务</option><option>工程</option></select></td>')
+			var  td2=$('<td><input type="text" id="buyItemName" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>')
+			var  td3=$('<td><select id="buyItemType"><option value="0">货物</option><option value="1">服务</option><option value="2">工程</option></select></td>')
 			
-			var td4=$('<td><input type="text" id="buyItemQty"></td>')
-			var td5=$('<td><input type="text" id="buyItemUnit"></td>')
-			var td6=$('<td><input type="text" id="buyItemSum"></td>')
+			var td4=$('<td><input type="text" id="buyItemQty" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>')
+			var td5=$('<td><select id="buyItemUnit"><option  value="0">套</option><option value="1">台</option><option value="2">个</option></select></td>')
+			var td6=$('<td><input type="text" id="buyItemSum" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>')
 			
-			var td7=$('<td><select id="isImport"><option>是</option><option>否</option></select></td>')
-			var td8=$('<td><select id="isEnergy"><option>是</option><option>否</option></select></td>')
-			var td9=$('<td><select id="isEnvironment"><option>是</option><option>否</option></select></td>')
+			var td7=$('<td><select id="isImport"><option value="1">是</option><option value="0">否</option></select></td>')
+			var td8=$('<td><select id="isEnergy"><option value="1">是</option><option value="0">否</option></select></td>')
+			var td9=$('<td><select id="isEnvironment"><option value="1">是</option><option value="0">否</option></select></td>')
 			
 			tr1.append(td1)
 				.append(td2)
@@ -65,7 +65,12 @@ $(function() {
 				.append(td7)
 				.append(td8)
 				.append(td9)
-			
+			/**
+			 * Easyui中使用jquery或js动态添加元素时出现的样式失效的解决方法  
+			 * 可以使用$.parser.parse();这个方法进行处理；
+			 * $.parser.parse(tr1);
+			 */
+			$.parser.parse(tr1);//重新渲染样式
 			cgxmxq_tr.after(tr1)
 		}
 		
@@ -89,11 +94,23 @@ $(function() {
 			var inputsAndSelects=$("tr[id][id!='']")
 			//var projectRequestForm={}
 			
-			var dept=$("#dept").val().trim()//
+			var dept=$("#dept").val().trim()//项目申报部门
+			var deptpeo=$("#deptpeo").val().trim()//项目申报部门负责人
+			var deptpeoinfo=$("#deptpeoinfo").val().trim()//联系方式
+			var projectname=$("#projectname").val().trim()//项目名称
+			var projectcontact=$("#projectcontact").val().trim()//项目联系人
+			var projectpeoinfo=$("#projectpeoinfo").val().trim()//联系方式
+			var buyway=$("input[name='buyway']:checked").val()//采购方式
 			
+			var moneyway=$("#moneyway").val().trim()// 资金来源
+			var premoney=$("#premoney").val().trim()//预算项目金额（元)
+			var questmoney=$("#questmoney").val().trim()//申请项目金额（元）
 			
+			var totalmoney=$("#totalmoney").val().trim()//合计金额（元）
 			
+			var others=$("#others").val().trim()// 其他说明
 			
+			debugger
 			
 			
 			
@@ -110,42 +127,59 @@ $(function() {
 												parseInt(inputs.context.id),
 												inputs[0].value,
 												inputs[1].value,
-												inputs[2].value,
-												inputs[3].value,
-												selects[0].value,
 												selects[1].value,
+												inputs[2].value,
+												selects[0].value,
+												
 												selects[2].value,
-												selects[3].value)
+												selects[3].value,
+												selects[4].value
+												)
 				
 /*				buyItemInfo.byintemid=parseInt(inputs.context.id)
 				buyItemInfo.buyitemname=inputs[0].value
 				buyItemInfo.buyitemqty=inputs[1].value
-				buyItemInfo.buyitemunit=inputs[2].value
-				buyItemInfo.buyitemsum=inputs[3].value
+				buyItemInfo.buyitemunit=selects[1].value 
+				
+				buyItemInfo.buyitemsum=inputs[2].value
 				
 				buyItemInfo.buyitemtype=selects[0].value
-				buyItemInfo.isimport=selects[1].value
-				buyItemInfo.isenergy=selects[2].value
+				buyItemInfo.isimport=selects[2].value
+				buyItemInfo.isenergy=selects[3].value
 				buyItemInfo.isenvironment=selects[3].value*/
+				
 				buyItemInfos.push(buyItemInfo)
 				debugger
 			}
 			projectRequestForm.buyItemInfos=buyItemInfos
+			
+			
 			projectRequestForm.dept="dept"
-			
-			debugger
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:8080/project",
-                contentType: "application/json",
-			    data: JSON.stringify(projectRequestForm),
-                success: function(r){
-                    
-                }
-            });
-			
+			//
+			if(isOk(buyItemInfos)){
+	            $.ajax({
+	                type: "POST",
+	                url: "http://localhost:8080/project",
+	                contentType: "application/json",
+				    data: JSON.stringify(projectRequestForm),
+	                success: function(r){
+	                    
+	                }
+	            });
+			}
 		})
 		
+		function isOk(buyItemInfos){
+			var ok=false
+			//form 校验。
+			var flag=$("#formId").form('validate')
+			debugger
+			//采购项目需求不能为空
+			if(flag&&buyItemInfos.length>0){
+				ok=true
+			}
+			return ok
+		}
 		
 		// 点击显示（YYYY年MM月DD日 hh:mm:ss）格式
 		$("#ymd01").jeDate({

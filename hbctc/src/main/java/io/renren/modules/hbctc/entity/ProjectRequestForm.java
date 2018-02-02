@@ -23,19 +23,19 @@ public class ProjectRequestForm implements Serializable {
 
     private String moneyway;// 资金来源
 
-    private Double premoney;
+    private Double premoney;//预算项目金额（元)
 
-    private Double questmoney;
+    private Double questmoney;//申请项目金额（元）
     
     List<BuyItemInfo> buyItemInfos;// 采购项目需求
 
-    private Double totalmoney;// 预算项目金额（元）
+    private Double totalmoney;// 合计金额（元）
 
-    private String others;// 申请项目金额（元）
+    private String others;// 其他说明
 
-    private Date createdate;// 采购项目需求
+    private Date createdate;// 创建时间
 
-    private Date updatedate;// 合计金额
+    private Date updatedate;// 修改时间
 
     private Integer stepstatus;//步骤  0:项目负责人审核中,  
     						   //	1：项目负责人审核通过,2：业务经办人审核通过,3：业务负责人审核通过

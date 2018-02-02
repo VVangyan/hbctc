@@ -92,7 +92,6 @@ $(function() {
 			//$(trs[0]).find("select")
 			//获取 input & select  
 			var inputsAndSelects=$("tr[id][id!='']")
-			//var projectRequestForm={}
 			
 			var dept=$("#dept").val().trim()//项目申报部门
 			var deptpeo=$("#deptpeo").val().trim()//项目申报部门负责人
@@ -111,14 +110,10 @@ $(function() {
 			var others=$("#others").val().trim()// 其他说明
 			
 			debugger
-			
-			
-			
-			
-			var projectRequestForm=new ProjectRequestForm();
 			var buyItemInfos=new Array();
 			
 			for(var i=0;i<inputsAndSelects.length;i++){
+				//变为jq对象，在过滤 input 和select
 				var inputs=$(inputsAndSelects[i]).find("input")
 				var selects=$(inputsAndSelects[i]).find("select")
 				debugger
@@ -151,11 +146,24 @@ $(function() {
 				buyItemInfos.push(buyItemInfo)
 				debugger
 			}
-			projectRequestForm.buyItemInfos=buyItemInfos
+			var projectRequestForm=new ProjectRequestForm(
+														dept,
+														deptpeo,
+														deptpeoinfo,
+														projectname,
+														projectcontact,
+														projectpeoinfo,
+														buyway,
+														moneyway,
+														premoney,
+														questmoney,
+														buyItemInfos,
+														totalmoney,
+														others,
+														(totalmoney>100000)? 1:0)
 			
-			
-			projectRequestForm.dept="dept"
 			//
+			debugger
 			if(isOk(buyItemInfos)){
 	            $.ajax({
 	                type: "POST",
@@ -169,6 +177,7 @@ $(function() {
 			}
 		})
 		
+		//表单校验
 		function isOk(buyItemInfos){
 			var ok=false
 			//form 校验。

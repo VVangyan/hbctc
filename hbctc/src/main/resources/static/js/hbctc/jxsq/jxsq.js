@@ -167,7 +167,7 @@ $(function() {
 			if(isOk(buyItemInfos)){
 	            $.ajax({
 	                type: "POST",
-	                url: "http://localhost:8080/project",
+	                url: "/project",
 	                contentType: "application/json",
 				    data: JSON.stringify(projectRequestForm),
 	                success: function(r){

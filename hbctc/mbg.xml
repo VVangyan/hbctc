@@ -59,8 +59,10 @@
 		</javaClientGenerator>
 
 		<!-- table 指定每个表的生成策略 -->
-		<table tableName="hbctc_buyiteminfo" domainObjectName="BuyItemInfo"></table>
-		<table tableName="hbctc_projectRequestForm" domainObjectName="ProjectRequestForm"></table>
+		<!-- <table tableName="hbctc_buyiteminfo" domainObjectName="BuyItemInfo"></table>
+		<table tableName="hbctc_projectRequestForm" domainObjectName="ProjectRequestForm"></table> -->
+		<table tableName="hbctc_agency" domainObjectName="Agency"></table>
+		<table tableName="hbctc_numfactory" domainObjectName="Numfactory"></table>
 
 	</context>
 </generatorConfiguration>

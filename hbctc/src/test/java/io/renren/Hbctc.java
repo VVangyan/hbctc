@@ -13,6 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.service.BuyItemInfoService;
+import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
 
 
@@ -78,4 +79,11 @@ public class Hbctc {
     	System.out.println("batchInsert  :"+batchInsert);
     }
 
+    @Autowired
+    NumfactoryService numfactoryService;
+    @Test
+    public void getMaxBH() {
+    	Integer selectMaxBH = numfactoryService.selectMaxBH();
+    	System.out.println(selectMaxBH);
+    }
 }

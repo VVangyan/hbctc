@@ -41,7 +41,6 @@ public class ZXJHController extends AbstractController {
 	@Autowired
 	AgencyService agencyService;
 	 
-	@SuppressWarnings("deprecation")
 	@Transactional
 	@PostMapping("/project")
 	public R info(@RequestBody ProjectRequestForm projectRequestForm) {
@@ -59,7 +58,6 @@ public class ZXJHController extends AbstractController {
 			projectRequestForm.setCreatedate(new Date());
 			projectRequestForm.setUpdatedate(new Date());
 			projectRequestForm.setStepstatus(0);// 0,1,2,3,4,5,6,7
-			projectRequestForm.setAgentno("ag1");
 			projectRequestForm.setBh1(year);
 			projectRequestForm.setBh2(bh2);
 			projectRequestFormService.insertSelective(projectRequestForm);

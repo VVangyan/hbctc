@@ -25,7 +25,7 @@ public class BuyItemInfoServiceImpl implements BuyItemInfoService {
 		return buyItemInfoMapper.insertSelective(record);
 	}
 	@Override
-	public int batchInsert(List<BuyItemInfo> record) {
+	public int batchInsert(List<BuyItemInfo> record,int preid) {
 		// 如果自动提交设置为true,将无法控制提交的条数，改为最后统一提交，可能导致内存溢出
 		SqlSession session = null;
 		int status=0;
@@ -34,6 +34,7 @@ public class BuyItemInfoServiceImpl implements BuyItemInfoService {
 			BuyItemInfoMapper mapper = session.getMapper(BuyItemInfoMapper.class);
 			if(record!=null) {
 				for(int i=0;i<record.size();i++) {
+					record.get(i).setPreid(preid);//设置preid
 					status = mapper.insertSelective(record.get(i));
 				}
 			}

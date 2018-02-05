@@ -42,15 +42,16 @@ $(function() {
 			var cgxmxq_tr=$("table tr:eq("+addNum()+")")
 			createTd(cgxmxq_tr)
 		})
+		
 		function createTd(cgxmxq_tr){
 			var  tr1=$('<tr id='+itemId+'></tr>')
 			var  td1=$('<td><div class="id_div_sub"><div class="sub_img" title="点击删除栏目" checkedtrid='+itemId+'></div><div class="id_value">'+itemId+'</div></div> </td>')
 			var  td2=$('<td><input type="text" id="buyItemName" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>')
 			var  td3=$('<td><select id="buyItemType"><option value="0">货物</option><option value="1">服务</option><option value="2">工程</option></select></td>')
 			
-			var td4=$('<td><input type="text" id="buyItemQty" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>')
+			var td4=$('<td><input type="text" id="buyItemQty" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
 			var td5=$('<td><select id="buyItemUnit"><option  value="0">套</option><option value="1">台</option><option value="2">个</option></select></td>')
-			var td6=$('<td><input type="text" id="buyItemSum" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>')
+			var td6=$('<td><input type="text" id="buyItemSum" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
 			
 			var td7=$('<td><select id="isImport"><option value="1">是</option><option value="0">否</option></select></td>')
 			var td8=$('<td><select id="isEnergy"><option value="1">是</option><option value="0">否</option></select></td>')
@@ -161,7 +162,9 @@ $(function() {
 														totalmoney,
 														others,
 														(totalmoney>100000)? 1:0)
-			
+			if(premoney>=100000){//有代理机构
+				projectRequestForm.agentno=$("#agencySelectId").find("option:selected").val();
+			}
 			//
 			debugger
 			if(isOk(buyItemInfos)){
@@ -190,6 +193,58 @@ $(function() {
 			return ok
 		}
 		
+		//预算项目金额  实时事件
+		$("#premoney").bind("input propertychange",function(){
+			var premoney=$(this).val().trim();
+			if(premoney>=100000&&$(".agency_div").length==0){//新增
+				$(".modal-body").append(getAgentcTr())
+			}
+			if(premoney<100000&&$(".agency_div").length>0){//移除
+				$(".agency_div").remove()
+			}
+			console.log(agencyData)
+		})
+		//生成agentcTr
+		function getAgentcTr(){
+			var  baseSelect=$('<select id="agencySelectId"></select>')
+			if(agencyData.length>0){
+				for(var i=0;i<agencyData.length;i++){
+					agentno=agencyData[i].agentno
+					agency=agencyData[i].agency
+					baseSelect.append($("<option value="+agentno+">"+agency+"</option>"))
+				}
+			}
+			var divs=$('<div  class="agency_div"><div class="agency_div_left"><b>代理机构</b></div></div>')
+					.append($('<div class="agency_div_right"></div>')
+					.append(baseSelect))
+			return 	divs
+		}
+		
+		
+		function getRandomAgency(){
+			debugger
+			if(agencyData.length>0){//随机代理
+				var index=Math.floor((Math.random()*agencyData.length)+1);
+				//agency,agentno
+				agentno=agencyData[index].agentno
+				agency=agencyData[index].agency
+			}
+		}
+		var agencyData=null;
+		function getAgency(){
+			debugger
+			if(agencyData==null){
+	            $.ajax({
+	                type: "GET",
+	                url: "/getAgency",
+	                success: function(r){
+	                    console.log(r)
+	                    agencyData=r
+	                }
+	            });
+			}
+		}getAgency()
+		
 		// 点击显示（YYYY年MM月DD日 hh:mm:ss）格式
 		$("#ymd01").jeDate({
 			isinitVal : false,
@@ -198,5 +253,6 @@ $(function() {
 		// format: 'YYYY年MM月DD日 hh:mm:ss'
 		});
 	}
+
 	addzxjh()
 })

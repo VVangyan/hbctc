@@ -21,6 +21,7 @@
     <result column="isTen" jdbcType="INTEGER" property="isten" />
     <result column="bh1" jdbcType="INTEGER" property="bh1" />
     <result column="bh2" jdbcType="INTEGER" property="bh2" />
+    <result column="agentno" jdbcType="VARCHAR" property="agentno" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -191,6 +192,9 @@
       <if test="bh2 != null">
         bh2,
       </if>
+      <if test="agentno != null">
+        agentno,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -249,6 +253,9 @@
       </if>
       <if test="bh2 != null">
         #{bh2,jdbcType=INTEGER},
+      </if>
+      <if test="agentno != null">
+        #{agentno,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

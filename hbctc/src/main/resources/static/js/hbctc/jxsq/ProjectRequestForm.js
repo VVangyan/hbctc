@@ -6,7 +6,7 @@
  */
 function ProjectRequestForm(dept, deptpeo, deptpeoinfo, projectname,
 		projectcontact, projectpeoinfo, buyway, moneyway, premoney, questmoney,
-		buyItemInfos, totalmoney, others, isten) {
+		buyItemInfos, totalmoney, others, isten,agentno) {
 	this.dept = dept;
 	this.deptpeo = deptpeo;
 	this.deptpeoinfo = deptpeoinfo;
@@ -21,4 +21,5 @@ function ProjectRequestForm(dept, deptpeo, deptpeoinfo, projectname,
 	this.totalmoney = totalmoney;
 	this.others = others;
 	this.isten = isten;
+	this.agentno=agentno;
 }

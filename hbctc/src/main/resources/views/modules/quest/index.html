@@ -68,33 +68,33 @@
 	                        <table class="table table-bordered">
 	                            <tr>
 	                                <td  colspan="2" width="20%"><b>项目申报部门</b> </td>
-	                                <td colspan="8"><input type="text" id="dept" style="width: 716px"   class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="8"><input type="text" id="dept" style="width: 682px"   class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
 	                            </tr>
 	                            <tr>
 	                                <td  colspan="2" width="20%"><b>项目申报部门<br>负责人</b></td>
 	                                <td width="20%"><input type="text" id="deptpeo" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
 	                                <td ><b>联系方式</b></td>
-	                                <td colspan="6" width="50%"><input type="text" id="deptpeoinfo" style="width: 450px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="6" width="50%"><input type="text" id="deptpeoinfo" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
 	                            </tr>
 	                            <tr>
 	                                <td rowspan="2" style="text-align: center;line-height: 74px"><b>一</b></td>
 	                                <td><b>项目名称</b></td>
-	                                <td colspan="8"><input type="text" id="projectname" style="width: 716px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="8"><input type="text" id="projectname" style="width: 682px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
 	                            </tr>
 	                            <tr>
 	                                <td><b>项目联系人</b></td>
 	                                <td><input type="text" id="projectcontact" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
 	                                <td><b>联系方式</b></td>
-	                                <td colspan="6"><input type="text" id="projectpeoinfo" style="width: 450px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="6"><input type="text" id="projectpeoinfo" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
 	                            </tr>
 	                            <tr>
 	                                <td style="text-align: center"><b>二</b></td>
 	                                <td  colspan="2"><b>采购方式</b></td>
 	                                <td colspan="7">
-	                                    <label><input type="radio" name="buyway" checked="checked" value="0">竞争性谈判</label>
-										<label><input type="radio" name="buyway"  value="1">询价</label>
-										<label><input type="radio" name="buyway"  value="2">竞争性磋商</label>
-										<label><input type="radio" name="buyway"  value="3">单一来源</label>
+	                                    <label><input type="radio"  style="width: 30px" name="buyway" checked="checked" value="0">竞争性谈判</label>
+										<label><input type="radio" style="width: 30px"name="buyway"  value="1">询价</label>
+										<label><input type="radio" style="width: 30px"name="buyway"  value="2">竞争性磋商</label>
+										<label><input type="radio" style="width: 30px"name="buyway"  value="3">单一来源</label>
 	                                </td>
 	                            </tr>
 	
@@ -109,8 +109,8 @@
 	                            </tr>
 	                            <tr>
 	                                <td colspan="5"><input type="text" id="moneyway" style="width: 500px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                                <td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                                <td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
 	                            </tr>
 	                            <tr>
 	                                <td id="rowspan_change" rowspan="3" style="text-align: center">
@@ -175,7 +175,7 @@
 	                            </tr>  -->
 	                            <tr>
 	                                <td colspan="6"><b>合计金额（元）</b></td>
-	                                <td colspan="3"><input type="text" id="totalmoney" style="width: 170px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="3"><input type="text" id="totalmoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
 	                            </tr>
 	                           <tr>
 	                                <td>
@@ -219,7 +219,7 @@
 		                    </div>
 	                    </div>
                     </form>
-                    <div class="down_text">
+                    <div class="down_text"  id="beforAgentTr">
                     	<b>抄送：</b>监察室、计划财务处。<br>
                     	<b>备注:</b>
                     	<ol>

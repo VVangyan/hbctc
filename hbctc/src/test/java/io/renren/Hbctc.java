@@ -75,7 +75,7 @@ public class Hbctc {
     			buyItemInfo9,
     			buyItemInfo10
     			);
-    	int batchInsert = buyItemInfoService.batchInsert(buyItemInfos);
+    	int batchInsert = buyItemInfoService.batchInsert(buyItemInfos,insertSelective);
     	System.out.println("batchInsert  :"+batchInsert);
     }
 

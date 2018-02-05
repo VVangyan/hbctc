@@ -1,10 +1,24 @@
 package io.renren.modules.hbctc.controller;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.renren.common.utils.R;
+import io.renren.modules.hbctc.entity.Agency;
+import io.renren.modules.hbctc.entity.Numfactory;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
+import io.renren.modules.hbctc.service.AgencyService;
+import io.renren.modules.hbctc.service.BuyItemInfoService;
+import io.renren.modules.hbctc.service.NumfactoryService;
+import io.renren.modules.hbctc.service.ProjectRequestFormService;
 import io.renren.modules.sys.controller.AbstractController;
 
 /**
@@ -13,11 +27,58 @@ import io.renren.modules.sys.controller.AbstractController;
  * @author: yan
  */
 @RestController
-public class ZXJHController extends AbstractController{
+public class ZXJHController extends AbstractController {
+
+	@Autowired
+	ProjectRequestFormService projectRequestFormService;
+
+	@Autowired
+	BuyItemInfoService buyItemInfoService;
+
+	@Autowired
+	NumfactoryService numfactoryService;
+	
+	@Autowired
+	AgencyService agencyService;
+	 
+	@SuppressWarnings("deprecation")
+	@Transactional
 	@PostMapping("/project")
-	public String info(@RequestBody ProjectRequestForm projectRequestForm) {
-		System.out.println(projectRequestForm);
-		return "ok";
+	public R info(@RequestBody ProjectRequestForm projectRequestForm) {
+		Integer bh2 = 0;
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		synchronized (this) {
+			bh2 = numfactoryService.selectMaxBH();
+		}
+		if(bh2==null) {//初始没有数据的时候
+			bh2=1000;
+		}
+		try {
+			Numfactory record=new Numfactory(year, bh2+1);
+			numfactoryService.insertSelective(record);//插入 numFactory 表数据
+			projectRequestForm.setCreatedate(new Date());
+			projectRequestForm.setUpdatedate(new Date());
+			projectRequestForm.setStepstatus(0);// 0,1,2,3,4,5,6,7
+			projectRequestForm.setAgentno("ag1");
+			projectRequestForm.setBh1(year);
+			projectRequestForm.setBh2(bh2);
+			projectRequestFormService.insertSelective(projectRequestForm);
+			
+			Integer preid = projectRequestForm.getId();
+			System.out.println("preid  :"+preid);
+			buyItemInfoService.batchInsert(projectRequestForm.getBuyItemInfos(),preid);
+			System.out.println(projectRequestForm);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return R.error(0, "申请失败");
+		}
+		return R.ok();
 	}
 	
+	@GetMapping("/getAgency")
+	public List<Agency> getAgency(){
+		List<Agency> agencys = agencyService.selectByExample(null);
+		return agencys;
+	}
+
 }

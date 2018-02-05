@@ -7,5 +7,5 @@ import io.renren.modules.hbctc.entity.BuyItemInfo;
 public interface BuyItemInfoService {
 	int insertSelective(BuyItemInfo record);
 	
-	int batchInsert(List<BuyItemInfo> record);
+	int batchInsert(List<BuyItemInfo> record,int preid);
 }

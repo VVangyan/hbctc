@@ -40,59 +40,95 @@ input {
 tr>td {
 	text-align: center;
 }
+
 textarea {
 	resize: none;
 }
-.div_sh{
+
+.div_sh {
 	width: 100%;
 	/* padding-left: 15px;
 	padding-right: 15px; */
 }
-.div_bmsh{
+
+.div_bmsh {
 	height: 100px;
 	width: 100%;
 	border: 1px #DDDDDD solid;
 }
-.div_zcbsh{
+
+.div_zcbsh {
 	border: 1px #DDDDDD solid;
-	border-top:0;
+	border-top: 0;
 	height: 120px;
 	width: 100%;
 }
-.id_div_add{
+
+.id_div_add {
 	width: 60px;
 }
-.add_img{
+
+.add_img {
 	width: 25px;
 	height: 25px;
 	background: url("../../../images/hbctc/add.png");
 	background-size: contain;
 	float: left;
 }
-.add_img:hover{
+
+.add_img:hover {
 	cursor: pointer;
 }
-.id_title{
-	float:right;
+
+.id_title {
+	float: right;
 	width: 30px;
 	height: 25px;
 }
 
-.id_div_sub{
+.id_div_sub {
 	width: 60px
 }
-.sub_img{
+
+.sub_img {
 	width: 25px;
 	height: 25px;
 	background: url("../../../images/hbctc/sub.png");
 	background-size: contain;
 	float: left;
 }
-.sub_img:hover{
+
+.sub_img:hover {
 	cursor: pointer;
 }
-.id_value{
-	float:right;
+
+.id_value {
+	float: right;
 	width: 30px;
 	height: 25px;
+}
+
+.agency_div {
+	height: 30px;
+	width: 100%;
+	border: 1px solid #D4D4D4;
+	border-top:0;
+	margin-top: -20px;
+}
+
+.agency_div_left {
+	float: left;
+	width: 50%;
+	height: 29px;
+	border-right: 1px #D4D4D4 solid;
+	text-align: center;
+	line-height: 29px;
+}
+
+.agency_div_right {
+	float: right;
+	width: 50%;
+	height: 29px;
+	text-align: center;
+	line-height: 29px;
 }

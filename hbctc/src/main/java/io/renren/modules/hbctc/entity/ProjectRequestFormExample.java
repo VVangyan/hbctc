@@ -1364,6 +1364,136 @@ public class ProjectRequestFormExample implements Serializable {
             addCriterion("bh2 not between", value1, value2, "bh2");
             return (Criteria) this;
         }
+
+        public Criteria andAgentnoIsNull() {
+            addCriterion("agentno is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoIsNotNull() {
+            addCriterion("agentno is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoEqualTo(String value) {
+            addCriterion("agentno =", value, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoNotEqualTo(String value) {
+            addCriterion("agentno <>", value, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoGreaterThan(String value) {
+            addCriterion("agentno >", value, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoGreaterThanOrEqualTo(String value) {
+            addCriterion("agentno >=", value, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoLessThan(String value) {
+            addCriterion("agentno <", value, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoLessThanOrEqualTo(String value) {
+            addCriterion("agentno <=", value, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoLike(String value) {
+            addCriterion("agentno like", value, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoNotLike(String value) {
+            addCriterion("agentno not like", value, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoIn(List<String> values) {
+            addCriterion("agentno in", values, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoNotIn(List<String> values) {
+            addCriterion("agentno not in", values, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoBetween(String value1, String value2) {
+            addCriterion("agentno between", value1, value2, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andAgentnoNotBetween(String value1, String value2) {
+            addCriterion("agentno not between", value1, value2, "agentno");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIsNull() {
+            addCriterion("userid is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIsNotNull() {
+            addCriterion("userid is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridEqualTo(Long value) {
+            addCriterion("userid =", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotEqualTo(Long value) {
+            addCriterion("userid <>", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridGreaterThan(Long value) {
+            addCriterion("userid >", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridGreaterThanOrEqualTo(Long value) {
+            addCriterion("userid >=", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridLessThan(Long value) {
+            addCriterion("userid <", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridLessThanOrEqualTo(Long value) {
+            addCriterion("userid <=", value, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridIn(List<Long> values) {
+            addCriterion("userid in", values, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotIn(List<Long> values) {
+            addCriterion("userid not in", values, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridBetween(Long value1, Long value2) {
+            addCriterion("userid between", value1, value2, "userid");
+            return (Criteria) this;
+        }
+
+        public Criteria andUseridNotBetween(Long value1, Long value2) {
+            addCriterion("userid not between", value1, value2, "userid");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria implements Serializable {

@@ -1,11 +1,10 @@
 $(function() {
 	// alert(1)
-
-	function addzxjh() {
-		var btn = $("#btn_add_zxjh")
-		btn.on("click", function() {
-			showReqModal()
-		})
+	var btn = $("#btn_add_zxjh")
+	btn.on("click", function() {
+		showReqModal()
+		getAgency()
+	})
 		function showReqModal(){
 			$("#add_zxjh_Modal").modal({
 				backdrop : "static"
@@ -14,6 +13,11 @@ $(function() {
 		function hideReqModal(){
 			$("#add_zxjh_Modal").modal("hide");
 		}
+		$("#add_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
+		    debugger
+			$("input").val("")
+			$("textarea").val("")
+		});
 		var itemId=0
 		function addNum(){
 			// 获取rowSpan,初始值为4，每次新增一个栏目，值加1
@@ -248,8 +252,7 @@ $(function() {
 	                }
 	            });
 			}
-		}getAgency()
-		
+		}
 		// 点击显示（YYYY年MM月DD日 hh:mm:ss）格式
 		$("#ymd01").jeDate({
 			isinitVal : false,
@@ -257,7 +260,40 @@ $(function() {
 			format : 'YYYY年MM月DD日'
 		// format: 'YYYY年MM月DD日 hh:mm:ss'
 		});
-	}
-
-	addzxjh()
+	
+	
+	function init(){//页面初始化，加载数据
+        $.ajax({
+            type: "GET",
+            url: "/getReqFormList",
+            success: function(r){
+            	var resultList=r.resultList
+            	if(resultList.length>0){
+            		for(x in resultList){
+            			var baseTrList=$("<tr></tr>")
+            			var td1=$("<td></td>").append(resultList[x].id)
+            			var td2=$("<td></td>").append(resultList[x].dept)
+            			var td3=$("<td></td>").append(resultList[x].deptpeo)
+            			var td4=$("<td></td>").append(resultList[x].deptpeoinfo)
+            			var td5=$("<td></td>").append(resultList[x].projectname)
+            			var td6=$("<td></td>").append(resultList[x].projectcontact)
+            			var td7=$("<td></td>").append(resultList[x].projectpeoinfo)
+            			var td8=$("<td></td>").append(resultList[x].stepstatus)
+            			baseTrList.append(td1)
+            					  .append(td2)
+            					  .append(td3)
+            					  .append(td4)
+            					  .append(td5)
+            					  .append(td6)
+            					  .append(td7)
+            					  .append(td8)
+            					  baseTrList.appendTo($("#tbodyId"))
+            		}
+            		
+            		
+            	}
+            	console.log(r)
+            }
+        });
+	}init()
 })

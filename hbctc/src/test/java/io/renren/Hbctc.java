@@ -10,11 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
+import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
+import io.renren.modules.hbctc.entity.ProjectRequestFormExample.Criteria;
 import io.renren.modules.hbctc.service.BuyItemInfoService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
+import io.renren.modules.sys.controller.AbstractController;
 
 
 @RunWith(SpringRunner.class)
@@ -85,5 +91,30 @@ public class Hbctc {
     public void getMaxBH() {
     	Integer selectMaxBH = numfactoryService.selectMaxBH();
     	System.out.println(selectMaxBH);
+    }
+    
+    
+    @Test
+    public void getList() {
+    	PageHelper.startPage(3, 10);
+    	List<BuyItemInfo> selectByExample = buyItemInfoService.selectByExample(null);
+    	System.out.println("selectByExample  :"+selectByExample);
+    /**/	for (BuyItemInfo buyItemInfo : selectByExample) {
+			System.out.println(buyItemInfo);
+		}
+    	System.out.println("-----------------------.....................,,,,,,,,>>>>>>");
+    	PageInfo page=new PageInfo(selectByExample,10);
+    	
+    	System.out.println(page);
+    }
+    
+    
+    @Test
+    public void getbyquery() {
+    	ProjectRequestFormExample example=new ProjectRequestFormExample();
+    	Criteria createCriteria = example.createCriteria();
+    	createCriteria.andUseridEqualTo(1L);
+		List<ProjectRequestForm> selectSomeByExample = projectRequestFormService.selectSomeByExample(example);
+		System.out.println(selectSomeByExample);
     }
 }

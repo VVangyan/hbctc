@@ -1,11 +1,12 @@
 package io.renren.modules.hbctc.dao;
 
-import io.renren.modules.hbctc.entity.ProjectRequestForm;
-import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import io.renren.modules.hbctc.entity.ProjectRequestForm;
+import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 
 @Mapper
 public interface ProjectRequestFormMapper {
@@ -20,7 +21,9 @@ public interface ProjectRequestFormMapper {
     int insertSelective(ProjectRequestForm record);
 
     List<ProjectRequestForm> selectByExample(ProjectRequestFormExample example);
-
+    
+    List<ProjectRequestForm> selectSomeByExample(ProjectRequestFormExample example);
+    
     ProjectRequestForm selectByPrimaryKey(Integer id);
 
     int updateByExampleSelective(@Param("record") ProjectRequestForm record, @Param("example") ProjectRequestFormExample example);

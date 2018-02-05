@@ -47,6 +47,8 @@ public class ProjectRequestForm implements Serializable {
 	private Integer bh2;// 编号2
 
 	private String agentno;// 代理机构编号
+	
+	private Long userid;
 
 	public ProjectRequestForm() {
 		super();
@@ -292,6 +294,15 @@ public class ProjectRequestForm implements Serializable {
 
 	public void setAgentno(String agentno) {
 		this.agentno = agentno;
+	}
+
+	
+	public Long getUserid() {
+		return userid;
+	}
+
+	public void setUserid(Long userid) {
+		this.userid = userid;
 	}
 
 	@Override

@@ -4,11 +4,16 @@ $(function() {
 	function addzxjh() {
 		var btn = $("#btn_add_zxjh")
 		btn.on("click", function() {
+			showReqModal()
+		})
+		function showReqModal(){
 			$("#add_zxjh_Modal").modal({
 				backdrop : "static"
 			});
-		})
-		
+		}
+		function hideReqModal(){
+			$("#add_zxjh_Modal").modal("hide");
+		}
 		var itemId=0
 		function addNum(){
 			// 获取rowSpan,初始值为4，每次新增一个栏目，值加1
@@ -175,6 +180,7 @@ $(function() {
 				    data: JSON.stringify(projectRequestForm),
 	                success: function(r){
 	                    debugger;
+	                    hideReqModal()
 	                }
 	            });
 			}
@@ -238,7 +244,6 @@ $(function() {
 	                type: "GET",
 	                url: "/getAgency",
 	                success: function(r){
-	                    console.log(r)
 	                    agencyData=r
 	                }
 	            });

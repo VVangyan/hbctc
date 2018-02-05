@@ -51,9 +51,11 @@ public class ZXJHController extends AbstractController {
 		}
 		if(bh2==null) {//初始没有数据的时候
 			bh2=1000;
+		}else {
+			bh2+=1;
 		}
 		try {
-			Numfactory record=new Numfactory(year, bh2+1);
+			Numfactory record=new Numfactory(year, bh2);
 			numfactoryService.insertSelective(record);//插入 numFactory 表数据
 			projectRequestForm.setCreatedate(new Date());
 			projectRequestForm.setUpdatedate(new Date());
@@ -65,7 +67,6 @@ public class ZXJHController extends AbstractController {
 			Integer preid = projectRequestForm.getId();
 			System.out.println("preid  :"+preid);
 			buyItemInfoService.batchInsert(projectRequestForm.getBuyItemInfos(),preid);
-			System.out.println(projectRequestForm);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return R.error(0, "申请失败");

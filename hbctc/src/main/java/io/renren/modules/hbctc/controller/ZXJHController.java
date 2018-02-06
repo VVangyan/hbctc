@@ -93,6 +93,8 @@ public class ZXJHController extends AbstractController {
 	@GetMapping("/getReqFormList")
 	public Map<String, Object> getReqFormList(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
+		System.out.println("pn >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+pn);
 		PageHelper.startPage(pn, 10);
 		ProjectRequestFormExample example=new ProjectRequestFormExample();
 		example.createCriteria().andUseridEqualTo(getUserId());//根据用户id来过滤

@@ -1,4 +1,27 @@
 $(function() {
+	
+	
+	
+	/**
+
+	 * 分页
+
+	 */
+	var paginationConf = {
+		currentPage : 1,   //当前第几页
+		totalItems : 0,    //共有多少
+		itemsPerPage : 10, //每页显示记录条数
+		pagesLength : 15,
+		perPageOptions : [ 10 ],
+		rememberPerPage : 'perPageItems',
+		onChange : function() {
+			//showTopicList(this.currentPage, this.totalItems);
+		}
+	};
+	
+	
+	
+	
 	// alert(1)
 	var btn = $("#btn_add_zxjh")
 	btn.on("click", function() {
@@ -269,6 +292,56 @@ $(function() {
             success: function(r){
             	var resultList=r.resultList
             	if(resultList.length>0){
+            		
+            		var bottom_div=$("#bottom_div");
+        			bottom_div.text("");//清空
+            		
+            		/**
+
+        			 * 分页
+
+        			 */
+        			var pageDiv=$("<div></div>");
+        				pageDiv.attr("id","page");
+        				pageDiv.addClass("page_div");
+        				pageDiv.appendTo(bottom_div);
+        				
+        				
+        				//分页
+
+        				$("#page").paging({
+        					totalPage: 1,
+        					totalSize: 10,
+        					pageNo: 1,
+        					callback: function(num) {
+        						
+        						alert(num)
+        						//获取点击的id
+
+        						var clickid = jconfirm.lastClicked[0].id;
+        						//查询拦截过滤
+
+        						if(paginationConf.currentPage<=1&&(clickid=="firstPage"||clickid=="prePage")){
+        							return false;
+        						}else if(paginationConf.currentPage>=totalPage&&(clickid=="nextPage"||clickid=="lastPage")){
+        							return false;
+        						}else{
+        							alert(num);
+        							paginationConf.currentPage=num;
+        							//alert(totalItems,currentPage);
+
+        							paginationConf.onChange();
+        							createTopicList();
+        						}
+        					}
+        				});
+            		
+            		
+            		
+            		
+            		
+            		
+            		
             		for(x in resultList){
             			var baseTrList=$("<tr></tr>")
             			var td1=$("<td></td>").append(resultList[x].id)

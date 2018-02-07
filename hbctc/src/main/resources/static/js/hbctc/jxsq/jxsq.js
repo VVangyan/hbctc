@@ -30,9 +30,35 @@ function hideReqModal(){
 	$("#add_zxjh_Modal").modal("hide");
 };
 $("#add_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
-	$("input").val("")
+	if($("input[name!=buyway]").length>0){
+		$("input[name!=buyway]").val("")
+	}
+	
+	if($("tr[trFlag=trFlag]").length>0){//清除tr,重置 rowspan为3，itemId为0
+		$("tr[trFlag=trFlag]").remove()
+		itemId=0
+		var row = $("#rowspan_change")[0]
+		// debugger
+		row.rowSpan=3
+	}
+	
 	$("textarea").val("")
 	$(".agency_div").remove()
+	$("#add_request").show()
+	$(".div_sh").hide()
+});
+$("#detail_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
+	if($("input[name=detail_buyway]").length>0){
+		$("input[name=detail_buyway]").removeAttr("checked")
+	}
+	
+	if($("tr[detailFlag=detailFlag]").length>0){//清除tr,重置 rowspan为3，itemId为0
+		$("tr[detailFlag=detailFlag]").remove()
+		var row = $("#detail_rowspan_change")[0]
+		// debugger
+		row.rowSpan=3
+	}
+	$("#agency_div_detail").remove()
 });
 var itemId=0
 function addNum(){
@@ -40,7 +66,7 @@ function addNum(){
 	var row = $("#rowspan_change")[0]
 	// debugger
 	row.rowSpan=parseInt(row.rowSpan)+1
-	var num=$("table tr").length
+	var num=$("table[id=add_table_ids] tr").length
 	num=num-3
 	console.log(row)
 	
@@ -56,7 +82,7 @@ function subNum(){
 	row.rowSpan=parseInt(row.rowSpan)-1
 	console.log(row)
 	//tr的个数，如果值为15,说明删除的是最后一个元素，此时需要将itemId的值初始化为0
-	var num=$("table tr").length
+	var num=$("table[id=add_table_ids] tr").length
 	if(num==15){
 		itemId=0
 	}
@@ -64,12 +90,12 @@ function subNum(){
 
 //新增item
 $(document).on("click",".id_div_add",function() {
-	var cgxmxq_tr=$("table tr:eq("+addNum()+")")
+	var cgxmxq_tr=$("table[id=add_table_ids] tr:eq("+addNum()+")")
 	createTd(cgxmxq_tr)
 });
 
 function createTd(cgxmxq_tr){
-	var  tr1=$('<tr id='+itemId+'></tr>')
+	var  tr1=$('<tr id='+itemId+'  trFlag="trFlag"></tr>')
 	var  td1=$('<td><div class="id_div_sub"><div class="sub_img" title="点击删除栏目" checkedtrid='+itemId+'></div><div class="id_value">'+itemId+'</div></div> </td>')
 	var  td2=$('<td><input type="text" id="buyItemName" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>')
 	var  td3=$('<td><select id="buyItemType"><option value="0">货物</option><option value="1">服务</option><option value="2">工程</option></select></td>')
@@ -271,6 +297,174 @@ function getAgency(){
 		});
 	}
 };
+
+//操作事件
+$(document).on("click","a[tag!='']",function(){
+	var tag=$(this).attr("tag")
+	var id=$(this).attr("id")
+	var stepstatus=$(this).attr("stepstatus")
+	debugger
+	if(tag=="detail"){//详情
+		showDetail(id)
+		debugger
+	}
+	if(tag=="request"){//申报
+		
+	}
+	if(tag=="edit"){//编辑
+		
+	}
+	if(tag=="delete"){//删除
+		if(stepstatus==0){
+			delItem(id)
+		}else{
+			alert("当前不能删除")
+		}
+	}
+})
+
+function showDetail(id){
+	$("#detail_zxjh_Modal").modal({backdrop:"static"})
+	getAgency()//获取代理机构
+	
+	$("div[id=detail_zxjh_Modal] input ").attr("disabled", true);
+	$("div[id=detail_zxjh_Modal] textarea ").attr("disabled", true);
+	$.ajax({
+		type: "GET",
+		url:"/getDetails",
+		data:{id:parseInt(id)},
+		success:function(r){
+			loadDetailData(r)
+			console.log(r)
+			debugger
+		}
+		
+	})
+}
+
+function delItem(id){
+	
+	confirm("确定要删除选中的记录？",function(){
+		$.ajax({
+			type: "DELETE",
+			url:"/delItemById/"+id,
+			success:function(r){
+				alert("删除成功！")
+			}
+			
+		})
+	})
+	
+	
+}
+
+
+
+function loadDetailData(r){
+	$("#detail_bh1").val(r.bh1)//项目申报部门
+	$("#detail_bh2").val(r.bh2)//项目申报部门
+	$("#detail_dept").val(r.dept)//项目申报部门
+	$("#detail_deptpeo").val(r.deptpeo)//项目申报部门负责人
+	$("#detail_deptpeoinfo").val(r.deptpeoinfo)//联系方式
+	$("#detail_projectname").val(r.projectname)//项目名称
+	$("#detail_projectcontact").val(r.projectcontact)//项目联系人
+	$("#detail_projectpeoinfo").val(r.projectpeoinfo)//联系方式
+	$("input[name=detail_buyway][value="+r.buyway+"]").prop("checked", true); //采购方式
+	$("#detail_moneyway").val(r.moneyway)// 资金来源
+	$("#detail_premoney").val(r.premoney)//预算项目金额（元)
+	$("#detail_questmoney").val(r.questmoney)//申请项目金额（元）
+	$("#detail_totalmoney").val(r.totalmoney)//合计金额（元）
+	$("#detail_others").val(r.others)// 其他说明
+	
+	
+	
+	
+	var items_tr=$("#detail_items_tr_id")
+	var buyItemInfos=r.buyItemInfos
+
+	function  addRowSpanAndToTr(){
+		var num=$("table[id=detail_table] tr").length
+			num=num-3
+		var row = $("#detail_rowspan_change")[0]
+		    row.rowSpan=parseInt(row.rowSpan)+1    
+		var toTr=$("table[id=detail_table] tr:eq("+num+")")
+		return toTr
+	}
+
+	for(var i=0;i<buyItemInfos.length;i++){
+		
+		var  tr1=$('<tr detailFlag="detailFlag"></tr>')
+		var  td1=$('<td>'+buyItemInfos[i]["byintemid"]+'</td>')
+		
+		var buyItemTypeName=""
+		if(parseInt(buyItemInfos[i]["buyitemtype"])==0){//0.货物 1.服务 2.工程
+			buyItemTypeName="货物"
+		}
+		if(parseInt(buyItemInfos[i]["buyitemtype"])==1){//0.货物 1.服务 2.工程
+			buyItemTypeName="服务"
+		}
+		if(parseInt(buyItemInfos[i]["buyitemtype"])==2){//0.货物 1.服务 2.工程
+			buyItemTypeName="工程"
+		}
+		var  td2=$('<td><input type="text"  style="width: 150px" class="easyui-validatebox" disabled="disabled"  value='+buyItemTypeName+' ></td>')
+		
+		var buyItemUnitName=""
+		if(parseInt(buyItemInfos[i]["buyitemunit"])==0){//0.套 1.台 2.个
+			buyItemUnitName="套"
+		}
+		if(parseInt(buyItemInfos[i]["buyitemunit"])==1){//0.套 1.台 2.个
+			buyItemUnitName="台"
+		}
+		if(parseInt(buyItemInfos[i]["buyitemunit"])==2){//0.套 1.台 2.个
+			buyItemUnitName="个"
+		}
+		
+		var  td3=$('<td><select  disabled="disabled"  id="buyItemType"><option value="0">'+buyItemTypeName+'</option></select></td>')
+		
+		var td4=$('<td><input type="text" id="buyItemQty" class="easyui-numberbox" disabled="disabled"  value='+buyItemInfos[i]["buyitemqty"]+'></td>')
+		var td5=$('<td><select disabled="disabled"  id="buyItemUnit"><option  value="0">'+buyItemUnitName+'</option></select></td>')
+		var td6=$('<td><input type="text" id="buyItemSum" style="width: 100px" class="easyui-numberbox"  disabled="disabled"  value='+buyItemInfos[i]["buyitemsum"]+'></td>')
+		
+		var td7=$('<td><select disabled="disabled"  id="isImport"><option value="1">'+((parseInt(buyItemInfos[i].isImport)==1)? '是':'否')+'</option></select></td>')
+		var td8=$('<td><select disabled="disabled" id="isEnergy"><option value="1">'+((parseInt(buyItemInfos[i].isEnergy)==1)? '是':'否')+'</option></select></td>')
+		var td9=$('<td><select disabled="disabled" id="isEnvironment"><option value="1">'+((parseInt(buyItemInfos[i].isEnvironment)==1)? '是':'否')+'</option></select></td>')
+		
+		tr1.append(td1)
+		   .append(td2)
+		   .append(td3)
+		   .append(td4)
+		   .append(td5)
+		   .append(td6)
+		   .append(td7)
+		   .append(td8)
+		   .append(td9)
+     $.parser.parse(tr1);//重新渲染样式
+	addRowSpanAndToTr().after(tr1)
+	}
+	var agentno=r.agentno
+	if(agentno!=null){
+		$("#detail_table").after(getAgentcTrDetail())
+	}
+	
+	//生成agentcTr
+	function getAgentcTrDetail(){
+		var  baseSelect=$('<select id="agencySelectId" disabled="disabled"></select>')
+		if(agencyData.length>0){
+			for(var i=0;i<agencyData.length;i++){
+				if(agentno==agencyData[i].agentno){
+					var agency=agencyData[i].agency
+					baseSelect.append($("<option value="+agentno+">"+agency+"</option>"))
+					break
+				}
+			}
+		}
+		var divs=$('<div  class="agency_div"  id="agency_div_detail"><div class="agency_div_left"><b>代理机构</b></div></div>')
+		.append($('<div class="agency_div_right"></div>')
+				.append(baseSelect))
+				return 	divs
+	};
+}
+
 // 点击显示（YYYY年MM月DD日 hh:mm:ss）格式
 $("#ymd01").jeDate({
 	isinitVal : false,
@@ -336,7 +530,22 @@ function init(pn){//页面初始化，加载数据
         			var td5=$("<td></td>").append(resultList[x].projectname)
         			var td6=$("<td></td>").append(resultList[x].projectcontact)
         			var td7=$("<td></td>").append(resultList[x].projectpeoinfo)
-        			var td8=$("<td></td>").append(resultList[x].stepstatus)
+        			
+        			
+        			var stepstatus=parseInt(resultList[x].stepstatus)
+        			stepstatusName=""
+        			if(stepstatus==0){
+        				stepstatusName="待申请"
+        			}
+        			
+        			var td8=$("<td></td>").append(stepstatusName)
+        			
+        			
+        			var td9=$("<td></td>").append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='detail'>详情</a>"))					  
+					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='request'   style='padding-left:5px'>申报</a>"))
+					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+" tag='edit'   style='padding-left:5px'>编辑</a>"))
+					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+" tag='delete' style='padding-left:5px'>删除</a>"))
+        								  
         			baseTrList.append(td1)
         					  .append(td2)
         					  .append(td3)
@@ -345,10 +554,11 @@ function init(pn){//页面初始化，加载数据
         					  .append(td6)
         					  .append(td7)
         					  .append(td8)
+        					  .append(td9)
         					  baseTrList.appendTo(tbodyid)
         		}
         	}else{
-        		tbodyid.text("暂无数据。")
+        		tbodyid.html("<h4 style='text-algin:center;width:100px;'>暂无数据。</h4>")
         	}
         }
     });

@@ -168,6 +168,10 @@ textarea {
 	display: inline-block;
 }
 
-
-
+thead>tr>th{
+	text-align: center;
+}
+a:hover{
+	cursor: pointer;
+}
 

@@ -8,7 +8,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +21,8 @@ import com.github.pagehelper.PageInfo;
 
 import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.Agency;
+import io.renren.modules.hbctc.entity.BuyItemInfo;
+import io.renren.modules.hbctc.entity.BuyItemInfoExample;
 import io.renren.modules.hbctc.entity.Numfactory;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
@@ -106,5 +110,32 @@ public class ZXJHController extends AbstractController {
 		resultMap.put("resultList", resultList);
 		return resultMap;
 	}
-
+	
+	@Transactional
+	@GetMapping("/getDetails")
+	public ProjectRequestForm getDetails(Integer id) {
+		ProjectRequestFormExample example1 =new ProjectRequestFormExample();
+								  example1.createCriteria()
+								         .andIdEqualTo(id)
+								         .andUseridEqualTo(getUserId());
+		List<ProjectRequestForm> selectByExample1 = projectRequestFormService.selectByExample(example1);
+		BuyItemInfoExample example2=new BuyItemInfoExample();
+						   example2.createCriteria()
+						           .andPreidEqualTo(id);
+		List<BuyItemInfo> selectByExample2 = buyItemInfoService.selectByExample(example2);
+		ProjectRequestForm projectRequestForm = selectByExample1.get(0);
+		projectRequestForm.setBuyItemInfos(selectByExample2);
+		return projectRequestForm;
+	}
+	
+	@Transactional
+	@DeleteMapping("/delItemById/{id}")
+	public String delItemById(@PathVariable("id") Integer id) {
+		BuyItemInfoExample b1=new BuyItemInfoExample();
+		b1.createCriteria().andPreidEqualTo(id);
+		buyItemInfoService.deleteByExample(b1);
+		projectRequestFormService.deleteByPrimaryKey(id);
+		return "11111111";
+	}
+	
 }

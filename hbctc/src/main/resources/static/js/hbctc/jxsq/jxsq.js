@@ -309,7 +309,11 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="request"){//申报
-		
+		if(stepstatus==0){
+			requestToLeader(id,stepstatus)
+		}else{
+			alert("当前状态不能申报!")
+		}
 	}
 	if(tag=="edit"){//编辑
 		
@@ -322,7 +326,18 @@ $(document).on("click","a[tag!='']",function(){
 		}
 	}
 })
-
+var requestToLeader=function(id,stepstatus){
+	confirm("填写信息无误,确认申报？",function(){
+		$.ajax({
+			type: "POST",
+			url:"/requestToLeader/"+id+"/"+stepstatus,
+			success:function(r){
+				alert(r.msg)
+				init(paginationConf.currentPage);
+			}
+		})
+	})
+}
 function showDetail(id){
 	$("#detail_zxjh_Modal").modal({backdrop:"static"})
 	getAgency()//获取代理机构
@@ -349,6 +364,7 @@ function delItem(id,stepstatus){
 			url:"/delItemById/"+id+"/"+stepstatus,
 			success:function(r){
 				alert(r.msg)
+				init(paginationConf.currentPage);
 			}
 		})
 	})
@@ -534,7 +550,7 @@ function init(pn){//页面初始化，加载数据
         				stepstatusName="待申请"
         			}
         			if(stepstatus==1){
-        				stepstatusName="项目负责人审核中"
+        				stepstatusName="项目负责<br>人审核中"
         			}
         			if(stepstatus==2){
         				stepstatusName="待申请"

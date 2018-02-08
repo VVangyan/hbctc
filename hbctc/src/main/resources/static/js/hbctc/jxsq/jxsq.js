@@ -143,7 +143,7 @@ $(document).on("click","#add_request",function(){
 	//$(trs[0]).find("input")  //获取 input
 	//$(trs[0]).find("select")
 	//获取 input & select  
-	var inputsAndSelects=$("tr[id][id!='']")
+	var inputsAndSelects=$("tr[trFlag=trFlag]")
 	
 	var dept=$("#dept").val().trim()//项目申报部门
 	var deptpeo=$("#deptpeo").val().trim()//项目申报部门负责人
@@ -587,14 +587,14 @@ $(document).on("click","#jumpBtn",function(){
 		totalPage=parseInt(totalPage);
 		jump2page=parseInt(jump2page);
 		if(jump2page>totalPage||jump2page<1){
-			$("#enterTheCorrectNumberModal").modal({backdrop:"static"});
+			alert("请输入正确的页码!")
 			return false;
 		}else{
 			paginationConf.currentPage=jump2page;
 			paginationConf.onChange();
 		}
 	}else{
-		$("#enterTheCorrectNumberModal").modal({backdrop:"static"});
+		alert("请输入正确的页码!")
 		return;
 	}
 });

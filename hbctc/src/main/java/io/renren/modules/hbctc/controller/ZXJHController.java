@@ -129,13 +129,16 @@ public class ZXJHController extends AbstractController {
 	}
 	
 	@Transactional
-	@DeleteMapping("/delItemById/{id}")
-	public String delItemById(@PathVariable("id") Integer id) {
-		BuyItemInfoExample b1=new BuyItemInfoExample();
-		b1.createCriteria().andPreidEqualTo(id);
-		buyItemInfoService.deleteByExample(b1);
-		projectRequestFormService.deleteByPrimaryKey(id);
-		return "11111111";
+	@DeleteMapping("/delItemById/{id}/{stepstatus}")
+	public R delItemById(@PathVariable("id") Integer id,@PathVariable("stepstatus") Integer stepstatus) {
+		if(stepstatus==0) {//0  初始状态下的才能删除
+			BuyItemInfoExample b1=new BuyItemInfoExample();
+			b1.createCriteria().andPreidEqualTo(id);
+			buyItemInfoService.deleteByExample(b1);
+			projectRequestFormService.deleteByPrimaryKey(id);
+			return R.ok("删除成功");
+		}
+		return R.error(1, "当前状态下不能删除");
 	}
 	
 }

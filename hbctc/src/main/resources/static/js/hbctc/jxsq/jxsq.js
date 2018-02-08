@@ -316,9 +316,9 @@ $(document).on("click","a[tag!='']",function(){
 	}
 	if(tag=="delete"){//删除
 		if(stepstatus==0){
-			delItem(id)
+			delItem(id,stepstatus)
 		}else{
-			alert("当前不能删除")
+			alert("当前状态下不能删除")
 		}
 	}
 })
@@ -342,24 +342,20 @@ function showDetail(id){
 	})
 }
 
-function delItem(id){
-	
+function delItem(id,stepstatus){
 	confirm("确定要删除选中的记录？",function(){
 		$.ajax({
 			type: "DELETE",
-			url:"/delItemById/"+id,
+			url:"/delItemById/"+id+"/"+stepstatus,
 			success:function(r){
-				alert("删除成功！")
+				alert(r.msg)
 			}
-			
 		})
 	})
-	
-	
-}
+};
 
 
-
+//加载详情数据。
 function loadDetailData(r){
 	$("#detail_bh1").val(r.bh1)//项目申报部门
 	$("#detail_bh2").val(r.bh2)//项目申报部门
@@ -535,6 +531,21 @@ function init(pn){//页面初始化，加载数据
         			var stepstatus=parseInt(resultList[x].stepstatus)
         			stepstatusName=""
         			if(stepstatus==0){
+        				stepstatusName="待申请"
+        			}
+        			if(stepstatus==1){
+        				stepstatusName="项目负责人审核中"
+        			}
+        			if(stepstatus==2){
+        				stepstatusName="待申请"
+        			}
+        			if(stepstatus==3){
+        				stepstatusName="待申请"
+        			}
+        			if(stepstatus==4){
+        				stepstatusName="待申请"
+        			}
+        			if(stepstatus==5){
         				stepstatusName="待申请"
         			}
         			

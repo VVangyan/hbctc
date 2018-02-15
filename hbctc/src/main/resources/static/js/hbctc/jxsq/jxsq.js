@@ -29,6 +29,8 @@ function showReqModal(){
 function hideReqModal(){
 	$("#add_zxjh_Modal").modal("hide");
 };
+
+//新增
 $("#add_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
 	if($("input[name!=buyway]").length>0){
 		$("input[name!=buyway]").val("")
@@ -47,6 +49,8 @@ $("#add_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空�
 	$("#add_request").show()
 	$(".div_sh").hide()
 });
+
+//详情
 $("#detail_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
 	if($("input[name=detail_buyway]").length>0){
 		$("input[name=detail_buyway]").removeAttr("checked")
@@ -60,6 +64,20 @@ $("#detail_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清�
 	}
 	$("#agency_div_detail").remove()
 });
+//修改
+$("#edit_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
+	if($("input[name=edit_buyway]").length>0){
+		$("input[name=edit_buyway]").removeAttr("checked")
+	}
+	if($("tr[editFlag=editFlag]").length>0){//清除tr,重置 rowspan为3，itemId为0
+		$("tr[editFlag=editFlag]").remove()
+		var row = $("#edit_rowspan_change")[0]
+		// debugger
+		row.rowSpan=3
+	}
+	$("#agency_div_edit").remove()
+		
+});
 var itemId=0
 function addNum(){
 	// 获取rowSpan,初始值为4，每次新增一个栏目，值加1
@@ -67,6 +85,19 @@ function addNum(){
 	// debugger
 	row.rowSpan=parseInt(row.rowSpan)+1
 	var num=$("table[id=add_table_ids] tr").length
+	num=num-3
+	console.log(row)
+	
+	//每行id加1
+	itemId+=1;
+	return num;
+};
+function addNumEdit(){
+	// 获取rowSpan,初始值为4，每次新增一个栏目，值加1
+	var row = $("#edit_rowspan_change")[0]
+	// debugger
+	row.rowSpan=parseInt(row.rowSpan)+1
+	var num=$("table[id=edit_table_ids] tr").length
 	num=num-3
 	console.log(row)
 	
@@ -87,11 +118,28 @@ function subNum(){
 		itemId=0
 	}
 };
+function subNumEdit(){
+	// 获取rowSpan,初始值为4，每次删除一个栏目，值减1
+	var row = $("#edit_rowspan_change")[0]
+	// debugger
+	row.rowSpan=parseInt(row.rowSpan)-1
+	console.log(row)
+	//tr的个数，如果值为15,说明删除的是最后一个元素，此时需要将itemId的值初始化为0
+	var num=$("table[id=edit_table_ids] tr").length
+	if(num==15){
+		itemId=0
+	}
+};
 
 //新增item
 $(document).on("click",".id_div_add",function() {
 	var cgxmxq_tr=$("table[id=add_table_ids] tr:eq("+addNum()+")")
 	createTd(cgxmxq_tr)
+});
+//新增item
+$(document).on("click",".id_div_edit",function() {
+	var cgxmxq_tr=$("table[id=edit_table_ids] tr:eq("+addNumEdit()+")")
+	createTdEdit(cgxmxq_tr)
 });
 
 function createTd(cgxmxq_tr){
@@ -125,6 +173,37 @@ function createTd(cgxmxq_tr){
 	$.parser.parse(tr1);//重新渲染样式
 	cgxmxq_tr.after(tr1)
 };
+function createTdEdit(cgxmxq_tr){
+	var  tr1=$('<tr id='+itemId+'  editFlag="editFlag"></tr>')
+	var  td1=$('<td><div class="id_div_sub"><div class="sub_img_edit" id="sub_img_edit" title="点击删除栏目" checkedtrid='+itemId+'></div><div class="id_value">'+itemId+'</div></div> </td>')
+	var  td2=$('<td><input type="text" id="edit_buyItemName" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>')
+	var  td3=$('<td><select id="edit_buyItemType"><option value="0">货物</option><option value="1">服务</option><option value="2">工程</option></select></td>')
+	
+	var td4=$('<td><input type="text" id="edit_buyItemQty" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
+	var td5=$('<td><select id="edit_buyItemUnit"><option  value="0">套</option><option value="1">台</option><option value="2">个</option></select></td>')
+	var td6=$('<td><input type="text" id="edit_buyItemSum" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
+	
+	var td7=$('<td><select id="edit_isImport"><option value="1">是</option><option value="0">否</option></select></td>')
+	var td8=$('<td><select id="edit_isEnergy"><option value="1">是</option><option value="0">否</option></select></td>')
+	var td9=$('<td><select id="edit_isEnvironment"><option value="1">是</option><option value="0">否</option></select></td>')
+	
+	tr1.append(td1)
+	.append(td2)
+	.append(td3)
+	.append(td4)
+	.append(td5)
+	.append(td6)
+	.append(td7)
+	.append(td8)
+	.append(td9)
+	/**
+	 * Easyui中使用jquery或js动态添加元素时出现的样式失效的解决方法  
+	 * 可以使用$.parser.parse();这个方法进行处理；
+	 * $.parser.parse(tr1);
+	 */
+	$.parser.parse(tr1);//重新渲染样式
+	cgxmxq_tr.after(tr1)
+};
 
 
 //删除item
@@ -134,6 +213,13 @@ $(document).on("click",".sub_img",function(){
 	subNum()
 	$("tr[id="+trid+"]").remove()
 	debugger
+});
+//删除item
+$(document).on("click","#sub_img_edit",function(){
+	var checkedTr=this;
+	var trid=checkedTr.getAttribute("checkedtrid")
+	subNumEdit()
+	$("tr[id="+trid+"]").remove()
 });
 
 
@@ -316,7 +402,16 @@ $(document).on("click","a[tag!='']",function(){
 		}
 	}
 	if(tag=="edit"){//编辑
+		//0:待申报 (将数字设为1):【项目负责人审核中】;项目负责人审核通过(将数值设为3):【业务经办人审核中】,业务经办人审核通过(将数值设为5)
+		//                                      项目负责人审核未通过(将数值设为2)                      4:业务经办人审核未通过        
 		
+		//【业务负责人审核中】业务负责人审核通过7
+		//                   业务负责人审核未通过6
+		if(stepstatus==0||stepstatus==2){
+			editRequestTable(id,stepstatus)
+		}else{
+			alert("当前状态不能修改!")
+		}
 	}
 	if(tag=="delete"){//删除
 		if(stepstatus==0){
@@ -325,7 +420,150 @@ $(document).on("click","a[tag!='']",function(){
 			alert("当前状态下不能删除")
 		}
 	}
-})
+});
+
+function editRequestTable(id,stepstatus){
+	$("#edit_zxjh_Modal").modal({backdrop:"static"})
+	
+	getAgency()//获取代理机构
+	$.ajax({
+		type: "GET",
+		url:"/getDetails",
+		data:{id:parseInt(id)},
+		success:function(r){
+			loadEditData(r)
+			debugger
+		}
+	})
+	debugger
+}
+
+function loadEditData(r){
+	$("#edit_bh1").val(r.bh1)//项目申报部门
+	$("#edit_bh2").val(r.bh2)//项目申报部门
+	$("#edit_dept").val(r.dept)//项目申报部门
+	$("#edit_deptpeo").val(r.deptpeo)//项目申报部门负责人
+	$("#edit_deptpeoinfo").val(r.deptpeoinfo)//联系方式
+	$("#edit_projectname").val(r.projectname)//项目名称
+	$("#edit_projectcontact").val(r.projectcontact)//项目联系人
+	$("#edit_projectpeoinfo").val(r.projectpeoinfo)//联系方式
+	$("input[name=edit_buyway][value="+r.buyway+"]").prop("checked", true); //采购方式
+	$("#edit_moneyway").val(r.moneyway)// 资金来源
+	$("#edit_premoney").val(r.premoney)//预算项目金额（元)
+	$("#edit_questmoney").val(r.questmoney)//申请项目金额（元）
+	$("#edit_totalmoney").val(r.totalmoney)//合计金额（元）
+	$("#edit_others").val(r.others)// 其他说明
+	
+	
+	
+	var items_tr=$("#edit_items_tr_id")
+	var buyItemInfos=r.buyItemInfos
+
+	function  addRowSpanAndToTr(){
+		var num=$("table[id=edit_table_ids] tr").length
+			num=num-3
+		var row = $("#edit_rowspan_change")[0]
+		    row.rowSpan=parseInt(row.rowSpan)+1    
+		var toTr=$("table[id=edit_table_ids] tr:eq("+num+")")
+		return toTr
+	}
+
+	for(var i=0;i<buyItemInfos.length;i++){
+		
+		var  tr1=$('<tr editFlag="editFlag"></tr>')
+		//var  td1=$('<td>'+buyItemInfos[i]["byintemid"]+'</td>')
+		
+		var  td1=$('<td><div class="id_div_sub"><div class="sub_img_edit" id="sub_img_edit" title="点击删除栏目" checkedtrid='+buyItemInfos[i]["byintemid"]+'></div><div class="id_value">'+buyItemInfos[i]["byintemid"]+'</div></div> </td>')
+		
+		var  td2=$('<td><input type="text"  style="width: 150px" class="easyui-validatebox"   value='+buyItemInfos[i]["buyitemname"]+' ></td>')
+		
+		var td3;
+		if(parseInt(buyItemInfos[i]["buyitemtype"])==0){//0.货物 1.服务 2.工程
+			td3=$('<td><select    id="edit_buyItemType"><option value="0">货物</option><option value="1">服务</option><option value="2">工程</option></select></td>')
+		}
+		if(parseInt(buyItemInfos[i]["buyitemtype"])==1){//0.货物 1.服务 2.工程
+			td3=$('<td><select    id="edit_buyItemType"><option value="1">服务</option><option value="0">货物</option><option value="2">工程</option></select></td>')
+		}
+		if(parseInt(buyItemInfos[i]["buyitemtype"])==2){//0.货物 1.服务 2.工程
+			d3=$('<td><select    id="edit_buyItemType"><option value="2">工程</option><option value="0">货物</option><option value="1">服务</option></select></td>')
+		}
+		
+		
+		var td4=$('<td><input type="text" id="edit_buyItemQty" class="easyui-numberbox"   value='+buyItemInfos[i]["buyitemqty"]+'></td>')
+		var td5;
+		if(parseInt(buyItemInfos[i]["buyitemunit"])==0){//0.套 1.台 2.个
+			td5=$('<td><select    id="edit_buyitemunit"><option value="0">套</option><option value="1">台</option><option value="2">个</option></select></td>')
+		}
+		if(parseInt(buyItemInfos[i]["buyitemunit"])==1){//0.套 1.台 2.个
+			td5=$('<td><select    id="edit_buyitemunit"><option value="1">台</option><option value="0">套</option><option value="2">个</option></select></td>')
+		}
+		if(parseInt(buyItemInfos[i]["buyitemunit"])==2){//0.套 1.台 2.个
+			td5=$('<td><select    id="edit_buyitemunit"><option value="2">个</option><option value="0">套</option><option value="1">台</option></select></td>')
+		}
+		
+		var td6=$('<td><input type="text" id="edit_buyItemSum" style="width: 100px" class="easyui-numberbox"    value='+buyItemInfos[i]["buyitemsum"]+'></td>')
+		
+		var td7;
+		debugger
+		if(parseInt(buyItemInfos[i].isimport)==1){
+			td7=$('<td><select  id="isImport"><option value="1">是</option><option value="0">否</option></select></td>')
+		}else{
+			td7=$('<td><select  id="isImport"><option value="0">否</option><option value="1">是</option></select></td>')
+		}
+		var td8;
+		if(parseInt(buyItemInfos[i].isenergy)==1){
+			td8=$('<td><select  id="edit_isEnergy"><option value="1">是</option><option value="0">否</option></select></td>')
+		}else{
+			td8=$('<td><select  id="edit_isEnergy"><option value="0">否</option><option value="1">是</option></select></td>')
+		}
+		
+		var td9;
+		if(parseInt(buyItemInfos[i].isenvironment)==1){
+			td9=$('<td><select  id="edit_isEnvironment"><option value="1">是</option><option value="0">否</option></select></td>')
+		}else{
+			td9=$('<td><select  id="edit_isEnvironment"><option value="0">否</option><option value="1">是</option></select></td>')
+		}
+		
+		
+		tr1.append(td1)
+		   .append(td2)
+		   .append(td3)
+		   .append(td4)
+		   .append(td5)
+		   .append(td6)
+		   .append(td7)
+		   .append(td8)
+		   .append(td9)
+     $.parser.parse(tr1);//重新渲染样式
+	addRowSpanAndToTr().after(tr1)
+	}
+	var agentno=r.agentno
+	if(agentno!=null){
+		$("#edit_table_ids").after(getAgentcTrEdit())
+	}
+	
+	//生成agentcTr
+	function getAgentcTrEdit(){
+		var  baseSelect=$('<select id="agencySelectIdEdit" ></select>')
+		if(agencyData.length>0){
+			for(var i=0;i<agencyData.length;i++){
+					var agency=agencyData[i].agency
+					baseSelect.append($("<option value="+agentno+">"+agency+"</option>"))
+				}
+		}
+		var divs=$('<div  class="agency_div"  id="agency_div_edit"><div class="agency_div_left"><b>代理机构</b></div></div>')
+		.append($('<div class="agency_div_right"></div>')
+				.append(baseSelect))
+				return 	divs
+	};
+	
+	
+	
+	
+	
+}
+
+
 var requestToLeader=function(id,stepstatus){
 	confirm("填写信息无误,确认申报？",function(){
 		$.ajax({
@@ -418,7 +656,7 @@ function loadDetailData(r){
 		if(parseInt(buyItemInfos[i]["buyitemtype"])==2){//0.货物 1.服务 2.工程
 			buyItemTypeName="工程"
 		}
-		var  td2=$('<td><input type="text"  style="width: 150px" class="easyui-validatebox" disabled="disabled"  value='+buyItemTypeName+' ></td>')
+		var  td2=$('<td><input type="text"  style="width: 150px" class="easyui-validatebox" disabled="disabled"  value='+buyItemInfos[i]["buyitemname"]+' ></td>')
 		
 		var buyItemUnitName=""
 		if(parseInt(buyItemInfos[i]["buyitemunit"])==0){//0.套 1.台 2.个
@@ -436,10 +674,9 @@ function loadDetailData(r){
 		var td4=$('<td><input type="text" id="buyItemQty" class="easyui-numberbox" disabled="disabled"  value='+buyItemInfos[i]["buyitemqty"]+'></td>')
 		var td5=$('<td><select disabled="disabled"  id="buyItemUnit"><option  value="0">'+buyItemUnitName+'</option></select></td>')
 		var td6=$('<td><input type="text" id="buyItemSum" style="width: 100px" class="easyui-numberbox"  disabled="disabled"  value='+buyItemInfos[i]["buyitemsum"]+'></td>')
-		
-		var td7=$('<td><select disabled="disabled"  id="isImport"><option value="1">'+((parseInt(buyItemInfos[i].isImport)==1)? '是':'否')+'</option></select></td>')
-		var td8=$('<td><select disabled="disabled" id="isEnergy"><option value="1">'+((parseInt(buyItemInfos[i].isEnergy)==1)? '是':'否')+'</option></select></td>')
-		var td9=$('<td><select disabled="disabled" id="isEnvironment"><option value="1">'+((parseInt(buyItemInfos[i].isEnvironment)==1)? '是':'否')+'</option></select></td>')
+		var td7=$('<td><select disabled="disabled"  id="isImport"><option value="1">'+((parseInt(buyItemInfos[i].isimport)==1 )? '是':'否')+'</option></select></td>')
+		var td8=$('<td><select disabled="disabled" id="isEnergy"><option value="1">'+((parseInt(buyItemInfos[i].isenergy)==1)? '是':'否')+'</option></select></td>')
+		var td9=$('<td><select disabled="disabled" id="isEnvironment"><option value="1">'+((parseInt(buyItemInfos[i].isenvironment)==1)? '是':'否')+'</option></select></td>')
 		
 		tr1.append(td1)
 		   .append(td2)

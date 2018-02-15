@@ -67,6 +67,9 @@ textarea {
 .id_div_add {
 	width: 60px;
 }
+.id_div_edit {
+	width: 60px;
+}
 
 .add_img {
 	width: 25px;
@@ -97,8 +100,17 @@ textarea {
 	background-size: contain;
 	float: left;
 }
-
+.sub_img_edit {
+	width: 25px;
+	height: 25px;
+	background: url("../../../images/hbctc/sub.png");
+	background-size: contain;
+	float: left;
+}
 .sub_img:hover {
+	cursor: pointer;
+}
+.sub_img_edit:hover {
 	cursor: pointer;
 }
 

@@ -545,11 +545,24 @@ function loadEditData(r){
 	//生成agentcTr
 	function getAgentcTrEdit(){
 		var  baseSelect=$('<select id="agencySelectIdEdit" ></select>')
+		var  firstOption
+		var  others=[]
+		var  j=0
 		if(agencyData.length>0){
 			for(var i=0;i<agencyData.length;i++){
+				if(agentno==agencyData[i].agentno){
 					var agency=agencyData[i].agency
-					baseSelect.append($("<option value="+agentno+">"+agency+"</option>"))
+					firstOption=$("<option value="+agentno+">"+agency+"</option>")
+					baseSelect.append(firstOption)
+				}else{
+					var agency=agencyData[i].agency
+					others[j]="<option value="+agentno+">"+agency+"</option>"
+					j+=1
 				}
+			}
+			for(x in others){
+				baseSelect.append(others[x])
+			}
 		}
 		var divs=$('<div  class="agency_div"  id="agency_div_edit"><div class="agency_div_left"><b>代理机构</b></div></div>')
 		.append($('<div class="agency_div_right"></div>')

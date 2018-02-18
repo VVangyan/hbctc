@@ -113,8 +113,7 @@ function subNum(){
 	row.rowSpan=parseInt(row.rowSpan)-1
 	console.log(row)
 	//tr的个数，如果值为15,说明删除的是最后一个元素，此时需要将itemId的值初始化为0
-	var num=$("table[id=add_table_ids] tr").length
-	if(num==15){
+	if(row.rowSpan==3){//2018.02.18 根据rowspan的数量来重置itemId
 		itemId=0
 	}
 };
@@ -125,8 +124,7 @@ function subNumEdit(){
 	row.rowSpan=parseInt(row.rowSpan)-1
 	console.log(row)
 	//tr的个数，如果值为15,说明删除的是最后一个元素，此时需要将itemId的值初始化为0
-	var num=$("table[id=edit_table_ids] tr").length
-	if(num==15){
+	if(row.rowSpan==3){
 		itemId=0
 	}
 };
@@ -217,9 +215,13 @@ $(document).on("click",".sub_img",function(){
 //删除item
 $(document).on("click","#sub_img_edit",function(){
 	var checkedTr=this;
-	var trid=checkedTr.getAttribute("checkedtrid")
-	subNumEdit()
-	$("tr[id="+trid+"]").remove()
+	debugger/////////////////////////////
+	confirm("确定要删除该条记录么？",function(){
+		var trid=checkedTr.getAttribute("checkedtrid")
+		subNumEdit()
+		$("tr[id="+trid+"]").remove()
+		alert(111)
+	})
 });
 
 
@@ -437,7 +439,7 @@ function editRequestTable(id,stepstatus){
 	})
 	debugger
 }
-
+var  tmpArray=[]//  修改时候临时 id的数组
 function loadEditData(r){
 	$("#edit_bh1").val(r.bh1)//项目申报部门
 	$("#edit_bh2").val(r.bh2)//项目申报部门
@@ -467,10 +469,10 @@ function loadEditData(r){
 		var toTr=$("table[id=edit_table_ids] tr:eq("+num+")")
 		return toTr
 	}
-
+	
 	for(var i=0;i<buyItemInfos.length;i++){
-		
-		var  tr1=$('<tr editFlag="editFlag"></tr>')
+		tmpArray[i]=buyItemInfos[i]["byintemid"]
+		var  tr1=$('<tr id='+buyItemInfos[i]["byintemid"]+'  editFlag="editFlag"></tr>')
 		//var  td1=$('<td>'+buyItemInfos[i]["byintemid"]+'</td>')
 		
 		var  td1=$('<td><div class="id_div_sub"><div class="sub_img_edit" id="sub_img_edit" title="点击删除栏目" checkedtrid='+buyItemInfos[i]["byintemid"]+'></div><div class="id_value">'+buyItemInfos[i]["byintemid"]+'</div></div> </td>')
@@ -537,6 +539,13 @@ function loadEditData(r){
      $.parser.parse(tr1);//重新渲染样式
 	addRowSpanAndToTr().after(tr1)
 	}
+	
+	//设置最大值  
+	itemId=Math.max.apply(null, tmpArray)
+	debugger
+	
+	
+	
 	var agentno=r.agentno
 	if(agentno!=null){
 		$("#edit_table_ids").after(getAgentcTrEdit())

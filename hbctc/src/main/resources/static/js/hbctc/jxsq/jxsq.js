@@ -503,9 +503,8 @@ function loadEditData(r){
 			td3=$('<td><select    id="edit_buyItemType"><option value="1">服务</option><option value="0">货物</option><option value="2">工程</option></select></td>')
 		}
 		if(parseInt(buyItemInfos[i]["buyitemtype"])==2){//0.货物 1.服务 2.工程
-			d3=$('<td><select    id="edit_buyItemType"><option value="2">工程</option><option value="0">货物</option><option value="1">服务</option></select></td>')
+			td3=$('<td><select    id="edit_buyItemType"><option value="2">工程</option><option value="0">货物</option><option value="1">服务</option></select></td>')
 		}
-		
 		
 		var td4=$('<td><input type="text" id="edit_buyItemQty" class="easyui-numberbox"   value='+buyItemInfos[i]["buyitemqty"]+'></td>')
 		var td5;

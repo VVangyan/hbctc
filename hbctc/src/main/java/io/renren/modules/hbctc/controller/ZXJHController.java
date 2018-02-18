@@ -153,4 +153,13 @@ public class ZXJHController extends AbstractController {
 		return R.error(1, "当前状态下不能申报!");
 	}
 	
+	@Transactional
+	@DeleteMapping("/deleteByItemInfoById/{id}/{preid}")
+	public R deleteByItemInfoById(@PathVariable("id") Integer id,@PathVariable("preid") Integer preid) {
+		BuyItemInfoExample example=new BuyItemInfoExample();
+		example.createCriteria().andPreidEqualTo(preid).andByintemidEqualTo(id);
+		buyItemInfoService.deleteByExample(example);
+		return R.ok("删除成功!");
+	}
+	
 }

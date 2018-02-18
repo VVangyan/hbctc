@@ -215,13 +215,28 @@ $(document).on("click",".sub_img",function(){
 //删除item
 $(document).on("click","#sub_img_edit",function(){
 	var checkedTr=this;
-	debugger/////////////////////////////
-	confirm("确定要删除该条记录么？",function(){
-		var trid=checkedTr.getAttribute("checkedtrid")
+	var preid=checkedTr.getAttribute("preid")
+	var id=checkedTr.getAttribute("checkedtrid")
+	
+	if(preid==null){
 		subNumEdit()
-		$("tr[id="+trid+"]").remove()
-		alert(111)
-	})
+		$("tr[id="+id+"]").remove()
+	}else{
+		debugger/////////////////////////////
+		confirm("确定要删除该条记录么？",function(){
+			$.ajax({
+				type: "DELETE",
+				url: "/deleteByItemInfoById/"+id+"/"+preid,
+				success: function(r){
+					subNumEdit()
+					$("tr[id="+id+"]").remove()
+					debugger;
+					alert("删除成功!")
+				}
+			});
+			
+		})
+	}
 });
 
 
@@ -472,10 +487,11 @@ function loadEditData(r){
 	
 	for(var i=0;i<buyItemInfos.length;i++){
 		tmpArray[i]=buyItemInfos[i]["byintemid"]
+		debugger
 		var  tr1=$('<tr id='+buyItemInfos[i]["byintemid"]+'  editFlag="editFlag"></tr>')
 		//var  td1=$('<td>'+buyItemInfos[i]["byintemid"]+'</td>')
 		
-		var  td1=$('<td><div class="id_div_sub"><div class="sub_img_edit" id="sub_img_edit" title="点击删除栏目" checkedtrid='+buyItemInfos[i]["byintemid"]+'></div><div class="id_value">'+buyItemInfos[i]["byintemid"]+'</div></div> </td>')
+		var  td1=$('<td><div class="id_div_sub"><div class="sub_img_edit" id="sub_img_edit" title="点击删除栏目" checkedtrid='+buyItemInfos[i]["byintemid"]+'  preid='+buyItemInfos[i]["preid"]+'></div><div class="id_value">'+buyItemInfos[i]["byintemid"]+'</div></div> </td>')
 		
 		var  td2=$('<td><input type="text"  style="width: 150px" class="easyui-validatebox"   value='+buyItemInfos[i]["buyitemname"]+' ></td>')
 		

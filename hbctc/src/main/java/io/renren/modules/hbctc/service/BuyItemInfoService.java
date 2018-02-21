@@ -31,4 +31,6 @@ public interface BuyItemInfoService {
     int updateByPrimaryKey(BuyItemInfo record);
 	
 	int batchInsert(List<BuyItemInfo> record,int preid);
+	
+	int batchUpdate(List<BuyItemInfo> record,int preid);
 }

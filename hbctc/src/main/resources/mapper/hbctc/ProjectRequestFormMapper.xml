@@ -363,7 +363,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update hbctc_projectrequestform
+     update hbctc_projectrequestform
     set id = #{record.id,jdbcType=INTEGER},
       dept = #{record.dept,jdbcType=VARCHAR},
       deptPeo = #{record.deptpeo,jdbcType=VARCHAR},
@@ -385,6 +385,28 @@
       bh2 = #{record.bh2,jdbcType=INTEGER},
       agentno = #{record.agentno,jdbcType=VARCHAR},
       userid = #{record.userid,jdbcType=BIGINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleSimple" parameterType="map">
+    update hbctc_projectrequestform
+    set 
+      dept = #{record.dept,jdbcType=VARCHAR},
+      deptPeo = #{record.deptpeo,jdbcType=VARCHAR},
+      deptPeoInfo = #{record.deptpeoinfo,jdbcType=VARCHAR},
+      projectName = #{record.projectname,jdbcType=VARCHAR},
+      projectContact = #{record.projectcontact,jdbcType=VARCHAR},
+      projectPeoInfo = #{record.projectpeoinfo,jdbcType=VARCHAR},
+      buyWay = #{record.buyway,jdbcType=CHAR},
+      moneyWay = #{record.moneyway,jdbcType=VARCHAR},
+      preMoney = #{record.premoney,jdbcType=DOUBLE},
+      questMoney = #{record.questmoney,jdbcType=DOUBLE},
+      totalMoney = #{record.totalmoney,jdbcType=DOUBLE},
+      others = #{record.others,jdbcType=VARCHAR},
+      updateDate = #{record.updatedate,jdbcType=DATE},
+      isTen = #{record.isten,jdbcType=INTEGER},
+      agentno = #{record.agentno,jdbcType=VARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>

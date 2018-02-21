@@ -321,8 +321,9 @@ $(document).on("click","#add_request",function(){
 	}
 	//
 	debugger
-	if(isOk(buyItemInfos)){
-		$.ajax({
+	if(isOk(buyItemInfos,"#formId")){
+		
+	$.ajax({
 			type: "POST",
 			url: "/project",
 			contentType: "application/json",
@@ -337,11 +338,103 @@ $(document).on("click","#add_request",function(){
 	}
 });
 
+$(document).on("click","#edit_request",function(){
+	var inputsAndSelects=$("tr[editFlag=editFlag]")
+	
+	var dept=$("#edit_dept").val().trim()//项目申报部门
+	var deptpeo=$("#edit_deptpeo").val().trim()//项目申报部门负责人
+	var deptpeoinfo=$("#edit_deptpeoinfo").val().trim()//联系方式
+	var projectname=$("#edit_projectname").val().trim()//项目名称
+	var projectcontact=$("#edit_projectcontact").val().trim()//项目联系人
+	var projectpeoinfo=$("#edit_projectpeoinfo").val().trim()//联系方式
+	var buyway=$("input[name='edit_buyway']:checked").val()//采购方式
+	
+	var moneyway=$("#edit_moneyway").val().trim()// 资金来源
+	var premoney=$("#edit_premoney").val().trim()//预算项目金额（元)
+	var questmoney=$("#edit_questmoney").val().trim()//申请项目金额（元）
+	
+	var totalmoney=$("#edit_totalmoney").val().trim()//合计金额（元）
+	
+	var others=$("#edit_others").val().trim()// 其他说明
+	
+	debugger
+	var buyItemInfos=new Array();
+	
+	for(var i=0;i<inputsAndSelects.length;i++){
+		//变为jq对象，在过滤 input 和select
+		var inputs=$(inputsAndSelects[i]).find("input")
+		var selects=$(inputsAndSelects[i]).find("select")
+		
+		var ids=$(".sub_img_edit")
+		
+		//ids[0].getAttribute("checkedtrid")
+		//ids[0].getAttribute("preid")
+		debugger
+		//var buyItemInfo=new Object()
+		var buyItemInfo=new BuyItemInfo(
+				parseInt(inputs.context.id),
+				inputs[0].value,
+				inputs[1].value,
+				selects[1].value,
+				inputs[2].value,
+				selects[0].value,
+				
+				selects[2].value,
+				selects[3].value,
+				selects[4].value
+		)
+		buyItemInfo.id=ids[i].getAttribute("checkedtrid")
+		buyItemInfos.push(buyItemInfo)
+		debugger
+	}
+	var projectRequestForm=new ProjectRequestForm(
+			dept,
+			deptpeo,
+			deptpeoinfo,
+			projectname,
+			projectcontact,
+			projectpeoinfo,
+			buyway,
+			moneyway,
+			premoney,
+			questmoney,
+			buyItemInfos,
+			totalmoney,
+			others,
+			(totalmoney>100000)? 1:0)
+	projectRequestForm.id=ids[0].getAttribute("preid")
+	if(premoney>=100000){//有代理机构
+		projectRequestForm.agentno=$("#agency_div_edit").find("option:selected").val();
+	}
+	//
+	debugger
+	if(isOk(buyItemInfos,"#edit_formId")){
+		$.ajax({
+			type: "POST",
+			url: "/updatePorject",
+			contentType: "application/json",
+			data: JSON.stringify(projectRequestForm),
+			success: function(r){
+				debugger;
+				$("#edit_zxjh_Modal").modal('hide')
+				$("#agency_div_edit").remove()
+				init(paginationConf.currentPage);
+				alert("修改成功!")
+			}
+		});
+	}
+});
+
+
+
+
+
+
 //表单校验
-function isOk(buyItemInfos){
+function isOk(buyItemInfos,id){
 	var ok=false
 	//form 校验。
-	var flag=$("#formId").form('validate')
+	var flag=$(id).form('validate')
 	debugger
 	//采购项目需求不能为空
 	if(flag&&buyItemInfos.length>0){
@@ -355,6 +448,17 @@ $("#premoney").bind("input propertychange",function(){
 	var premoney=$(this).val().trim();
 	if(premoney>=100000&&$(".agency_div").length==0){//新增
 		$(".modal-body").append(getAgentcTr())
+	}
+	if(premoney<100000&&$(".agency_div").length>0){//移除
+		$(".agency_div").remove()
+	}
+	console.log(agencyData)
+});
+//预算项目金额  实时事件
+$("#edit_premoney").bind("input propertychange",function(){
+	var premoney=$(this).val().trim();
+	if(premoney>=100000&&$(".agency_div").length==0){//新增
+		$(".modal-body").append(getAgentcTrEdit())
 	}
 	if(premoney<100000&&$(".agency_div").length>0){//移除
 		$(".agency_div").remove()
@@ -387,7 +491,7 @@ function getRandomAgency(){
 		agency=agencyData[index].agency
 	}
 };
-var agencyData=null;
+agencyData=null;
 function getAgency(){
 	debugger
 	if(agencyData==null){
@@ -485,6 +589,7 @@ function loadEditData(r){
 		return toTr
 	}
 	
+	//设置id ,preid edit_request
 	for(var i=0;i<buyItemInfos.length;i++){
 		tmpArray[i]=buyItemInfos[i]["byintemid"]
 		debugger
@@ -566,13 +671,23 @@ function loadEditData(r){
 		$("#edit_table_ids").after(getAgentcTrEdit())
 	}
 	
-	//生成agentcTr
-	function getAgentcTrEdit(){
-		var  baseSelect=$('<select id="agencySelectIdEdit" ></select>')
-		var  firstOption
-		var  others=[]
-		var  j=0
-		if(agencyData.length>0){
+}
+
+
+//生成agentcTr
+function getAgentcTrEdit(){
+	var  baseSelect=$('<select id="agencySelectIdEdit" ></select>')
+	var  firstOption
+	var  others=[]
+	var  j=0
+	if(agencyData.length>0){
+		if(typeof(defined)=="undefined"){
+			for(var i=0;i<agencyData.length;i++){
+				var agentno=agencyData[i].agentno
+				var agency=agencyData[i].agency
+				baseSelect.append($("<option value="+agentno+">"+agency+"</option>"))
+			}
+		}else{
 			for(var i=0;i<agencyData.length;i++){
 				if(agentno==agencyData[i].agentno){
 					var agency=agencyData[i].agency
@@ -588,17 +703,12 @@ function loadEditData(r){
 				baseSelect.append(others[x])
 			}
 		}
-		var divs=$('<div  class="agency_div"  id="agency_div_edit"><div class="agency_div_left"><b>代理机构</b></div></div>')
-		.append($('<div class="agency_div_right"></div>')
-				.append(baseSelect))
-				return 	divs
-	};
-	
-	
-	
-	
-	
-}
+	}
+	var divs=$('<div  class="agency_div"  id="agency_div_edit"><div class="agency_div_left"><b>代理机构</b></div></div>')
+	.append($('<div class="agency_div_right"></div>')
+			.append(baseSelect))
+			return 	divs
+};
 
 
 var requestToLeader=function(id,stepstatus){

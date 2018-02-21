@@ -162,4 +162,24 @@ public class ZXJHController extends AbstractController {
 		return R.ok("删除成功!");
 	}
 	
+	
+	@Transactional
+	@PostMapping("/updatePorject")
+	public R updatePorject(@RequestBody ProjectRequestForm projectRequestForm) {
+		List<BuyItemInfo> buyItemInfos = projectRequestForm.getBuyItemInfos();
+		
+		System.out.println("buyItemInfos  :  "+buyItemInfos);
+		System.out.println("  <<<<<<<<<::  "+projectRequestForm);
+		//更新item
+		Integer preid = projectRequestForm.getId();
+		buyItemInfoService.batchUpdate(buyItemInfos, preid);
+		
+		//更新project
+		ProjectRequestFormExample proExample=new ProjectRequestFormExample();
+		proExample.createCriteria().andIdEqualTo(preid);
+		projectRequestForm.setUpdatedate(new Date());
+		projectRequestFormService.updateByExampleSimple(projectRequestForm, proExample);
+		
+		return R.ok();
+	}
 }

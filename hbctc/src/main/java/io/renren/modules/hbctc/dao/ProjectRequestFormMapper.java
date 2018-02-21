@@ -29,7 +29,9 @@ public interface ProjectRequestFormMapper {
     int updateByExampleSelective(@Param("record") ProjectRequestForm record, @Param("example") ProjectRequestFormExample example);
 
     int updateByExample(@Param("record") ProjectRequestForm record, @Param("example") ProjectRequestFormExample example);
-
+    
+    int updateByExampleSimple(@Param("record") ProjectRequestForm record, @Param("example") ProjectRequestFormExample example);
+   
     int updateByPrimaryKeySelective(ProjectRequestForm record);
 
     int updateByPrimaryKey(ProjectRequestForm record);

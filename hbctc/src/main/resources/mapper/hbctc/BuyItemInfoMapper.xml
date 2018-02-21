@@ -198,9 +198,11 @@
   <update id="updateByExampleSelective" parameterType="map">
     update hbctc_buyiteminfo
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
+       <!-- 
+		<if test="record.id != null">
+		  id = #{record.id,jdbcType=INTEGER},
+		</if> 
+      -->
       <if test="record.byintemid != null">
         byIntemId = #{record.byintemid,jdbcType=INTEGER},
       </if>
@@ -228,9 +230,9 @@
       <if test="record.isenvironment != null">
         isEnvironment = #{record.isenvironment,jdbcType=CHAR},
       </if>
-      <if test="record.preid != null">
+<!--       <if test="record.preid != null">
         preId = #{record.preid,jdbcType=INTEGER},
-      </if>
+      </if> -->
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />

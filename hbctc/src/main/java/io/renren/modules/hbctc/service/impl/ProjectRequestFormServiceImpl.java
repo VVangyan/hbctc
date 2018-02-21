@@ -75,4 +75,9 @@ public class ProjectRequestFormServiceImpl implements ProjectRequestFormService 
 	public List<ProjectRequestForm> selectSomeByExample(ProjectRequestFormExample example) {
 		return projectRequestFormMapper.selectSomeByExample(example);
 	}
+
+	@Override
+	public int updateByExampleSimple(ProjectRequestForm record, ProjectRequestFormExample example) {
+		return projectRequestFormMapper.updateByExampleSimple(record, example);
+	}
 }

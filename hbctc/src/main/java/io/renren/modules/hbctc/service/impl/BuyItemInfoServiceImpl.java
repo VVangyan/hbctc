@@ -105,4 +105,16 @@ public class BuyItemInfoServiceImpl implements BuyItemInfoService {
 	public int updateByPrimaryKey(BuyItemInfo record) {
 		return buyItemInfoMapper.updateByPrimaryKey(record);
 	}
+
+	@Override
+	public int batchUpdate(List<BuyItemInfo> record, int preid) {
+		int status=0;
+		for(int i=0;i<record.size();i++) {
+			BuyItemInfoExample example=new BuyItemInfoExample();
+			BuyItemInfo buyItemInfo = record.get(i);
+			example.createCriteria().andPreidEqualTo(preid).andByintemidEqualTo(buyItemInfo.getId());
+			status=buyItemInfoMapper.updateByExampleSelective(buyItemInfo, example);
+		}
+		return status;
+	}
 }

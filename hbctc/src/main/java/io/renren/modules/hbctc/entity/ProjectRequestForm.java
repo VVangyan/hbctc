@@ -37,9 +37,10 @@ public class ProjectRequestForm implements Serializable {
 
 	private Date updatedate;// 修改时间
 
-	private Integer stepstatus;// 步骤 0:项目负责人审核中,
-								// 1：项目负责人审核通过,2：业务经办人审核通过,3：业务负责人审核通过
-								// 4：项目负责人审核失败,5：业务经办人审核失败,6： 业务负责人审核失败
+	private Integer stepstatus;// 步骤
+	//0:待申报 点击申报 (将数字设为1):【项目负责人审核中】;项目负责人审核通过(将数值设为):【3业务经办人审核中】,业务经办人审核通过(将数值设为5)
+	//                                                 项目负责人审核未通过(将数值设为2)                    4:业务经办人审核未通过  
+	//                                                 业务服务负责人通过 7   业务服务负责人未通过6
 
 	private Integer isten;// 是否是10万以上
 

@@ -937,18 +937,24 @@ function init(pn){//页面初始化，加载数据
         				stepstatusName="项目负责<br>人审核中"
         			}
         			if(stepstatus==2){
-        				stepstatusName="待申请"
+        				stepstatusName="项目负责<br>人审核未通过"
         			}
         			if(stepstatus==3){
-        				stepstatusName="待申请"
+        				stepstatusName="项目负责<br>人审核通过"
         			}
         			if(stepstatus==4){
-        				stepstatusName="待申请"
+        				stepstatusName="业务经办<br>人审核未通过 "
         			}
         			if(stepstatus==5){
-        				stepstatusName="待申请"
+        				stepstatusName="业务经办<br>人审核通过"
         			}
-        			
+        			if(stepstatus==6){
+        				stepstatusName="业务负责<br>人审核未通过 "
+        			}
+        			if(stepstatus==7){
+        				stepstatusName="业务负责<br>人审核通过"
+        			}
+            			
         			var td8=$("<td></td>").append(stepstatusName)
         			
         			

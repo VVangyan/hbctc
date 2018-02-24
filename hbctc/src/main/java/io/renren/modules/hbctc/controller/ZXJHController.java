@@ -73,7 +73,7 @@ public class ZXJHController extends AbstractController {
 			projectRequestForm.setStepstatus(0);// 0,1,2,3,4,5,6,7
 			projectRequestForm.setBh1(year);
 			projectRequestForm.setBh2(bh2);
-
+			projectRequestForm.setIsten(projectRequestForm.getPremoney()>=100000 ? 1:0);
 			projectRequestForm.setUserid(getUserId());// 用户id。 确认身份。
 			projectRequestFormService.insertSelective(projectRequestForm);
 

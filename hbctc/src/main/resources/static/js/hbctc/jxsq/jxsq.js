@@ -401,7 +401,7 @@ $(document).on("click","#edit_request",function(){
 			buyItemInfos,
 			totalmoney,
 			others,
-			(totalmoney>100000)? 1:0)
+			(premoney>=100000)? 1:0)//是否是超过10w
 	projectRequestForm.id=ids[0].getAttribute("preid")
 	if(premoney>=100000){//有代理机构
 		projectRequestForm.agentno=$("#agency_div_edit").find("option:selected").val();

@@ -189,7 +189,7 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="plan_YWJBR"){//审批
-		if(stepstatus==1){
+		if(stepstatus==3){
 			checkPlan(id)
 		}else{
 			alert("当前状态不能审批!")
@@ -217,7 +217,7 @@ $("#planStatus_div button").on("click",function(){
 		checkMsg.checkdate=$("#ymd01").val().trim()
 		checkMsg.preid=preid
 		checkMsg.id=planStatus
-		checkMsg.checkby=1
+		checkMsg.checkby=2
 		if(btn=="plan_fail"){
 			sendData(checkMsg)
 		}

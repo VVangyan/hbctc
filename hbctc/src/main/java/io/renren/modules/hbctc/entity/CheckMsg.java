@@ -14,6 +14,8 @@ public class CheckMsg implements Serializable {
 
     private Integer preid;
 
+    private Integer checkby;
+
     private static final long serialVersionUID = 1L;
 
     public Integer getId() {
@@ -56,19 +58,15 @@ public class CheckMsg implements Serializable {
         this.preid = preid;
     }
 
-    
-    public CheckMsg() {
-	}
-    
-    public CheckMsg(String msg, Date checkdate, Integer userid, Integer preid) {
-		super();
-		this.msg = msg;
-		this.checkdate = checkdate;
-		this.userid = userid;
-		this.preid = preid;
-	}
+    public Integer getCheckby() {
+        return checkby;
+    }
 
-	@Override
+    public void setCheckby(Integer checkby) {
+        this.checkby = checkby;
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
@@ -79,6 +77,7 @@ public class CheckMsg implements Serializable {
         sb.append(", checkdate=").append(checkdate);
         sb.append(", userid=").append(userid);
         sb.append(", preid=").append(preid);
+        sb.append(", checkby=").append(checkby);
         sb.append("]");
         return sb.toString();
     }
@@ -99,7 +98,8 @@ public class CheckMsg implements Serializable {
             && (this.getMsg() == null ? other.getMsg() == null : this.getMsg().equals(other.getMsg()))
             && (this.getCheckdate() == null ? other.getCheckdate() == null : this.getCheckdate().equals(other.getCheckdate()))
             && (this.getUserid() == null ? other.getUserid() == null : this.getUserid().equals(other.getUserid()))
-            && (this.getPreid() == null ? other.getPreid() == null : this.getPreid().equals(other.getPreid()));
+            && (this.getPreid() == null ? other.getPreid() == null : this.getPreid().equals(other.getPreid()))
+            && (this.getCheckby() == null ? other.getCheckby() == null : this.getCheckby().equals(other.getCheckby()));
     }
 
     @Override
@@ -111,6 +111,7 @@ public class CheckMsg implements Serializable {
         result = prime * result + ((getCheckdate() == null) ? 0 : getCheckdate().hashCode());
         result = prime * result + ((getUserid() == null) ? 0 : getUserid().hashCode());
         result = prime * result + ((getPreid() == null) ? 0 : getPreid().hashCode());
+        result = prime * result + ((getCheckby() == null) ? 0 : getCheckby().hashCode());
         return result;
     }
 }

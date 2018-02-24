@@ -7,28 +7,27 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-
 @Mapper
 public interface CheckMsgMapper {
-	long countByExample(CheckMsgExample example);
+    long countByExample(CheckMsgExample example);
 
-	int deleteByExample(CheckMsgExample example);
+    int deleteByExample(CheckMsgExample example);
 
-	int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer id);
 
-	int insert(CheckMsg record);
+    int insert(CheckMsg record);
 
-	int insertSelective(CheckMsg record);
+    int insertSelective(CheckMsg record);
 
-	List<CheckMsg> selectByExample(CheckMsgExample example);
+    List<CheckMsg> selectByExample(CheckMsgExample example);
 
-	CheckMsg selectByPrimaryKey(Integer id);
+    CheckMsg selectByPrimaryKey(Integer id);
 
-	int updateByExampleSelective(@Param("record") CheckMsg record, @Param("example") CheckMsgExample example);
+    int updateByExampleSelective(@Param("record") CheckMsg record, @Param("example") CheckMsgExample example);
 
-	int updateByExample(@Param("record") CheckMsg record, @Param("example") CheckMsgExample example);
+    int updateByExample(@Param("record") CheckMsg record, @Param("example") CheckMsgExample example);
 
-	int updateByPrimaryKeySelective(CheckMsg record);
+    int updateByPrimaryKeySelective(CheckMsg record);
 
-	int updateByPrimaryKey(CheckMsg record);
+    int updateByPrimaryKey(CheckMsg record);
 }

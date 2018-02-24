@@ -417,6 +417,66 @@ public class CheckMsgExample implements Serializable {
             addCriterion("preid not between", value1, value2, "preid");
             return (Criteria) this;
         }
+
+        public Criteria andCheckbyIsNull() {
+            addCriterion("checkby is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyIsNotNull() {
+            addCriterion("checkby is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyEqualTo(Integer value) {
+            addCriterion("checkby =", value, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyNotEqualTo(Integer value) {
+            addCriterion("checkby <>", value, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyGreaterThan(Integer value) {
+            addCriterion("checkby >", value, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyGreaterThanOrEqualTo(Integer value) {
+            addCriterion("checkby >=", value, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyLessThan(Integer value) {
+            addCriterion("checkby <", value, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyLessThanOrEqualTo(Integer value) {
+            addCriterion("checkby <=", value, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyIn(List<Integer> values) {
+            addCriterion("checkby in", values, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyNotIn(List<Integer> values) {
+            addCriterion("checkby not in", values, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyBetween(Integer value1, Integer value2) {
+            addCriterion("checkby between", value1, value2, "checkby");
+            return (Criteria) this;
+        }
+
+        public Criteria andCheckbyNotBetween(Integer value1, Integer value2) {
+            addCriterion("checkby not between", value1, value2, "checkby");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria implements Serializable {

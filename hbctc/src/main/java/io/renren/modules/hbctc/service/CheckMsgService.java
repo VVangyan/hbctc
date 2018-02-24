@@ -1,15 +1,13 @@
-package io.renren.modules.hbctc.dao;
+package io.renren.modules.hbctc.service;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.CheckMsgExample;
-import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-
-@Mapper
-public interface CheckMsgMapper {
+public interface CheckMsgService {
 	long countByExample(CheckMsgExample example);
 
 	int deleteByExample(CheckMsgExample example);

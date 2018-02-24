@@ -861,14 +861,6 @@ function loadDetailData(r){
 	};
 }
 
-// 点击显示（YYYY年MM月DD日 hh:mm:ss）格式
-$("#ymd01").jeDate({
-	isinitVal : false,
-	festival : false,
-	format : 'YYYY年MM月DD日'
-		// format: 'YYYY年MM月DD日 hh:mm:ss'
-});
-
 function init(pn){//页面初始化，加载数据
 	var  tbodyid=$("#tbodyId")
 		 tbodyid.text("")

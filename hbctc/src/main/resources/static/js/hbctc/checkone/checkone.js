@@ -188,9 +188,57 @@ $(document).on("click","a[tag!='']",function(){
 		showDetail(id)
 		debugger
 	}
+	if(tag=="plan_YWJBR"){//审批
+		if(stepstatus==1){
+			checkPlan(id)
+		}else{
+			alert("当前状态不能审批!")
+		}
+		debugger
+	}
 
 });
 
+var checkPlan=function(id){
+	$("#checkPlan_Modal").modal({backdrop:"static"})
+	$("#plan_fail").attr({"preid":id})
+	$("#plan_pass").attr({"preid":id})
+}
+
+$("#planStatus_div button").on("click",function(){
+	var btn=$(this).attr("id")
+	var planStatus=$(this).attr("planStatus")
+	var preid=$(this).attr("preid")
+	var checkMsg={}
+	
+	if(isOk("#checkPlan__formId")){
+		checkMsg.msg=$("#check_Msg").val().trim()
+		//2018年02月22日 17:42:03
+		checkMsg.checkdate=$("#ymd01").val().trim()
+		checkMsg.preid=preid
+		checkMsg.id=planStatus
+		if(btn=="plan_fail"){
+			sendData(checkMsg)
+		}
+		if(btn=="plan_pass"){
+			sendData(checkMsg)
+		}
+	}
+});
+function sendData(checkMsg){
+	$.ajax({
+		type: "POST",
+		url:"/checkPlanByYWJBR",
+		contentType: "application/json",
+		data: JSON.stringify(checkMsg),
+		success:function(r){
+			$("#checkPlan_Modal").modal("hide")
+			init(paginationConf.currentPage)
+			debugger
+			alert(r.msg)
+		}
+	})
+}
 function editRequestTable(id,stepstatus){
 	$("#edit_zxjh_Modal").modal({backdrop:"static"})
 	
@@ -338,8 +386,8 @@ function loadDetailData(r){
 $("#ymd01").jeDate({
 	isinitVal : false,
 	festival : false,
-	format : 'YYYY年MM月DD日'
-		// format: 'YYYY年MM月DD日 hh:mm:ss'
+	//format : 'YYYY年MM月DD日'
+	format: 'YYYY-MM-DD hh:mm:ss'
 });
 
 function init(pn){//页面初始化，加载数据
@@ -432,7 +480,7 @@ function init(pn){//页面初始化，加载数据
         			
         			
         			var td9=$("<td></td>").append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='detail'>详情</a>"))					  
-					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='plan'   style='padding-left:5px'>审批</a>"))
+					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='plan_YWJBR'   style='padding-left:5px'>审批</a>"))
         								  
         			baseTrList.append(td1)
         					  .append(td2)
@@ -476,6 +524,20 @@ $(document).on("click","#jumpBtn",function(){
 	}
 });
 	
+
+//表单校验
+function isOk(id){
+	var ok=false
+	//form 校验。
+	var flag=$(id).form('validate')
+	debugger
+	//采购项目需求不能为空
+	if(flag){
+		ok=true
+	}
+	return ok
+};
+
 /**
 
  * 检查是否为正整数
@@ -492,3 +554,43 @@ var isNum=function(inputNum){
 
 })
 
+
+/*******************************时间转换工具  start   ************************************/
+/**
+
+ * timeStamp
+
+ * 转换
+
+ * StringDate
+
+ */
+var timeStamp2String= function(time){
+    var datetime = new Date();
+     datetime.setTime(time);
+     var year = datetime.getFullYear();
+     var month = datetime.getMonth() + 1;
+     var date = datetime.getDate();
+     var hour = datetime.getHours();
+     var minute = datetime.getMinutes();
+     var second = datetime.getSeconds();
+     //var mseconds = datetime.getMilliseconds();
+
+     //return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second+"."+mseconds;
+
+     return year + "-" + month + "-" + date+" "+hour+":"+minute+":"+second;
+};
+
+/**
+
+ * datetime
+
+ * 转换
+
+ * timestamp
+
+ */
+var datetime2timestamp=function(strdate){
+	var date = new Date(strdate);
+	return Math.round(date.getTime());
+}

@@ -52,145 +52,6 @@
     </div>
     <div class="bottom_div"  id="bottom_div"></div>
     
-    <!--修改  -->
-    <div id="edit_zxjh_modal_div">
-        <!--ths 修改模态框（Modal） -->
-        <div class="modal fade" id="edit_zxjh_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog  modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h5 class="modal-title" id="myModalLabel">
-                            新增执行计划
-                        </h5>
-                    </div>
-                    <form  id="edit_formId">
-	                    <div class="modal-body">
-	                        <!--表单 -->
-	                        <h3>自主采购项目预算执行计划</h3>
-	                        <h4>鄂交自采计[<input type="text" id="edit_bh1" style="width: 100px" disabled="disabled">]-<input type="text" id="edit_bh2" disabled="disabled" style="width: 100px">   号</h4>
-	                        <table class="table table-bordered"   id="edit_table_ids">
-	                            <tr>
-	                                <td  colspan="2" width="20%"><b>项目申报部门</b> </td>
-	                                <td colspan="8"><input type="text" id="edit_dept" style="width: 682px"   class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                            </tr>
-	                            <tr>
-	                                <td  colspan="2" width="20%"><b>项目申报部门<br>负责人</b></td>
-	                                <td width="20%"><input type="text" id="edit_deptpeo" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                                <td ><b>联系方式</b></td>
-	                                <td colspan="6" width="50%"><input type="text" id="edit_deptpeoinfo" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                            </tr>
-	                            <tr>
-	                                <td rowspan="2" style="text-align: center;line-height: 74px"><b>一</b></td>
-	                                <td><b>项目名称</b></td>
-	                                <td colspan="8"><input type="text" id="edit_projectname" style="width: 682px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                            </tr>
-	                            <tr>
-	                                <td><b>项目联系人</b></td>
-	                                <td><input type="text" id="edit_projectcontact" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                                <td><b>联系方式</b></td>
-	                                <td colspan="6"><input type="text" id="edit_projectpeoinfo" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                            </tr>
-	                            <tr>
-	                                <td style="text-align: center"><b>二</b></td>
-	                                <td  colspan="2"><b>采购方式</b></td>
-	                                <td colspan="7">
-	                                    <label><input type="radio"  style="width: 30px" name="edit_buyway" value="0">竞争性谈判</label>
-										<label><input type="radio" style="width: 30px"name="edit_buyway"  value="1">询价</label>
-										<label><input type="radio" style="width: 30px"name="edit_buyway"  value="2">竞争性磋商</label>
-										<label><input type="radio" style="width: 30px"name="edit_buyway"  value="3">单一来源</label>
-	                                </td>
-	                            </tr>
-	
-	                            <tr>
-	                                <td rowspan="3" style="line-height: 111px;text-align: center"><b>三</b></td>
-	                                <td colspan="9"><b>自主采购资金来源</b></td>
-	                            </tr>
-	                            <tr>
-	                                <td colspan="5" ><b>资金来源</b></td>
-	                                <td colspan="2"><b>预算项目金额（元）</b></td>
-	                                <td colspan="2"><b>申请项目金额（元）</b></td>
-	                            </tr>
-	                            <tr>
-	                                <td colspan="5"><input type="text" id="edit_moneyway" style="width: 500px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                                <td colspan="2"><input type="text" id="edit_premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
-	                                <td colspan="2"><input type="text" id="edit_questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
-	                            </tr>
-	                            <tr>
-	                                <td id="edit_rowspan_change" rowspan="3" style="text-align: center">
-	                                  	<b>四</b>
-	                                </td>
-	                                <td colspan="9">
-	                                  	  <b>采购项目需求</b>
-	                                </td>
-	                            </tr>
-								<tr>
-	                                <td>
-	                                <div class="id_div_edit">
-		                                 <div class="add_img" title="点击新增栏目"></div>
-		                                 <div class="id_title"><b>序号</b></div>
-	                                </div>
-	                                </td>
-	                                <td width="20%"><b>品目名称</b></td>
-	                                <td width="90px"><b>采购类别</b></td>
-	                                <td><b>数量</b></td>
-	                                <td width="90px"><b>计量单位</b></td>
-	                                <td width="115px"><b>预算金额(元)</b></td>
-	                                <td width="90px"><b>是否进口</b></td>
-	                                <td><b>节能</b></td>
-	                                <td><b>环保</b></td>
-	                            </tr>
-	                            <tr>
-	                                <td colspan="6"><b>合计金额（元）</b></td>
-	                                <td colspan="3"><input type="text" id="edit_totalmoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
-	                            </tr>
-	                           <tr>
-	                                <td>
-							            <b> 其他<br>
-							                                    说明</b>
-	                                </td>
-	                                <td colspan="9">
-	                                	<textarea rows="4" style="width: 800px;" id="edit_others" class="easyui-validatebox" required="true" missingMessage="不能为空"></textarea>
-	                                </td>
-	                            </tr>
-	                        </table>
-		                    <div  class="div_sh" style="display: none">
-		                    	<div class="div_bmsh">
-		                    		<div style="width: 30px;height: 100px;border-right: 1px #DDDDDD solid;">
-		                    			<b>部门审核意见</b>
-		                    		</div>
-		                    		<div></div>
-		                    	</div>
-		                    	<div class="div_zcbsh">
-		                    		<div style="width: 30px;height: 100px;border-right: 1px #DDDDDD solid">
-		                    			<b>资产办管理办公室审批意见</b>
-		                    		</div>
-		                    		<div></div>
-		                    	</div>
-		                    </div>
-	                    </div>
-                    </form>
-                    <div class="down_text"  id="edit_beforAgentTr">
-                    	<b>抄送：</b>监察室、计划财务处。<br>
-                    	<b>备注:</b>
-                    	<ol>
-                    		<li>进口设备需在“一上”阶段向省财政厅报备，否则不得购置；</li>
-                    		<li>如项目采购金额与预算文本一致，由部门负责人在平台审核即可；</li>
-                    		<li>如项目采购金额与预算文本不一致，请说明理由，并请分管校长审批。</li>
-                    	</ol>
-                    </div>
-                    <div class="modal-footer" style="text-align: center;">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" id="edit_request">修改</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
-    </div>
-
-
 	<!--详情  -->
     <div id="detail_zxjh_modal_div">
         <!--ths 修改模态框（Modal） -->
@@ -321,6 +182,38 @@
                     </div>
                     <div class="modal-footer" style="text-align: center;">
                         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+
+	<!--审批  -->
+    <div id="checkPlan_modal_div">
+        <!--ths 修改模态框（Modal） -->
+        <div class="modal fade" id="checkPlan_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h5 class="modal-title" id="myModalLabel">
+                                 	项目负责人审核
+                        </h5>
+                    </div>
+                    <form  id="checkPlan__formId">
+						<div class="modal-body"  id="modal_body_div"  >
+						说明 :
+							<textarea rows="3" class="easyui-validatebox" style="width: 523px" required="true" missingMessage="不能为空" id="check_Msg"></textarea>
+						</div>
+						<div class="jeinpbox"  style="text-align: right;padding-right: 20px">
+						       		日期:<input type="text" class="jeinput easyui-validatebox" id="ymd01" placeholder="" required="true" missingMessage="不能为空" style="width: 200px;text-align: center;">
+						</div>
+                    </form>
+                    <div class="modal-footer" style="text-align: center;" id="planStatus_div">
+                        <button type="button" class="btn btn-default"  planStatus="2" id="plan_fail" >审批未过</button>
+                        <button type="button" class="btn btn-primary"  planStatus="3" id="plan_pass" >审批通过</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->

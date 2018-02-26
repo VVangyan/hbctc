@@ -137,6 +137,7 @@ $(document).on("click",".id_div_add",function() {
 //新增item
 $(document).on("click",".id_div_edit",function() {
 	var cgxmxq_tr=$("table[id=edit_table_ids] tr:eq("+addNumEdit()+")")
+	debugger
 	createTdEdit(cgxmxq_tr)
 });
 
@@ -339,6 +340,8 @@ $(document).on("click","#add_request",function(){
 });
 
 $(document).on("click","#edit_request",function(){
+	
+	var webpreid=$(this).attr("webpreid")
 	var inputsAndSelects=$("tr[editFlag=editFlag]")
 	
 	var dept=$("#edit_dept").val().trim()//项目申报部门
@@ -402,7 +405,14 @@ $(document).on("click","#edit_request",function(){
 			totalmoney,
 			others,
 			(premoney>=100000)? 1:0)//是否是超过10w
-	projectRequestForm.id=ids[0].getAttribute("preid")
+	
+	if(ids[0].getAttribute("preid")==null){
+		projectRequestForm.id=webpreid
+	}else{
+		projectRequestForm.id=ids[0].getAttribute("preid")
+	}
+	
+	debugger
 	if(premoney>=100000){//有代理机构
 		projectRequestForm.agentno=$("#agency_div_edit").find("option:selected").val();
 	}
@@ -545,7 +555,7 @@ $(document).on("click","a[tag!='']",function(){
 
 function editRequestTable(id,stepstatus){
 	$("#edit_zxjh_Modal").modal({backdrop:"static"})
-	
+	$("#edit_request").attr({"webpreid":id})
 	getAgency()//获取代理机构
 	$.ajax({
 		type: "GET",
@@ -660,8 +670,11 @@ function loadEditData(r){
 	addRowSpanAndToTr().after(tr1)
 	}
 	
-	//设置最大值  
-	itemId=Math.max.apply(null, tmpArray)
+	if(tmpArray.length>0){
+		//设置最大值  
+		itemId=Math.max.apply(null, tmpArray)
+	}
+	
 	debugger
 	
 	

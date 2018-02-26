@@ -37,6 +37,7 @@ public class BuyItemInfoServiceImpl implements BuyItemInfoService {
 			if (record != null) {
 				for (int i = 0; i < record.size(); i++) {
 					record.get(i).setPreid(preid);// 设置preid
+					record.get(i).setId(null);// 设置id为null
 					status = mapper.insertSelective(record.get(i));
 				}
 			}

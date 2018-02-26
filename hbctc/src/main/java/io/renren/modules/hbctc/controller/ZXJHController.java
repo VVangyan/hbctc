@@ -170,9 +170,16 @@ public class ZXJHController extends AbstractController {
 		
 		System.out.println("buyItemInfos  :  "+buyItemInfos);
 		System.out.println("  <<<<<<<<<::  "+projectRequestForm);
-		//更新item
 		Integer preid = projectRequestForm.getId();
-		buyItemInfoService.batchUpdate(buyItemInfos, preid);
+		BuyItemInfoExample example=new BuyItemInfoExample();
+		example.createCriteria().andPreidEqualTo(preid);
+		long countByExample = buyItemInfoService.countByExample(example);
+		if(countByExample>0) {
+			//更新item
+			buyItemInfoService.batchUpdate(buyItemInfos, preid);
+		}else {//若没有一条记录说明全部删光了。
+			buyItemInfoService.batchInsert(buyItemInfos, preid);
+		}
 		
 		//更新project
 		ProjectRequestFormExample proExample=new ProjectRequestFormExample();

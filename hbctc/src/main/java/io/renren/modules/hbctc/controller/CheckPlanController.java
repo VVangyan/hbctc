@@ -1,18 +1,21 @@
 package io.renren.modules.hbctc.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.alibaba.fastjson.JSON;
 
 import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.service.CheckMsgService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
+import io.renren.modules.hbctc.util.FileUpload;
 import io.renren.modules.sys.controller.AbstractController;
-import io.renren.modules.sys.entity.SysUserEntity;
 
 @RestController
 public class CheckPlanController extends AbstractController {
@@ -25,13 +28,20 @@ public class CheckPlanController extends AbstractController {
 	
 	@Transactional
 	@PostMapping("/checkPlanByYWJBR")
-	public R checkPlanByYWJBR(@RequestBody CheckMsg checkMsg) {
+	public R checkPlanByYWJBR(HttpServletRequest request) {
 		long userid = getUserId();
+		String checkMsgString = request.getParameter("checkMsg");//获取checkMsg
+		CheckMsg checkMsg = JSON.parseObject(checkMsgString, CheckMsg.class);//解析checkMsg JSON
+		
 		checkMsg.setUserid((int)userid);
 		Integer stepstatus=checkMsg.getId();
 		checkMsg.setId(null);
 		System.out.println("checkMsg  :"+checkMsg);
 		try {
+			
+			String filePath = FileUpload.uploadFile(request);//上传 zbwj
+			System.out.println("filePath :" + filePath);
+			
 			checkMsgService.insertSelective(checkMsg);
 			
 			ProjectRequestForm record=new ProjectRequestForm();

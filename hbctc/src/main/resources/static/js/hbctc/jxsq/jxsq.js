@@ -526,7 +526,7 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="request"){//申报
-		if(stepstatus==0){
+		if(stepstatus==0||stepstatus==2){
 			requestToLeader(id,stepstatus)
 		}else{
 			alert("当前状态不能申报!")

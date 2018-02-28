@@ -219,10 +219,12 @@ $("#planStatus_div button").on("click",function(){
 		checkMsg.id=planStatus
 		checkMsg.checkby=1
 		if(btn=="plan_fail"){
-			sendData(checkMsg)
+			//sendData(checkMsg)
+			uploadFile(checkMsg)
 		}
 		if(btn=="plan_pass"){
-			sendData(checkMsg)
+			//sendData(checkMsg)
+			uploadFile(checkMsg)
 		}
 	}
 });
@@ -239,6 +241,26 @@ function sendData(checkMsg){
 			alert(r.msg)
 		}
 	})
+}
+
+//上传文件
+function uploadFile(checkMsg) {
+	var formData = new FormData();
+		formData.append('checkMsg', JSON.stringify(checkMsg)); 
+		
+		$.ajax({
+			url :"/checkPlanByYWJBR",
+			type : 'POST',
+			cache : false,
+			data : formData,
+			processData : false,
+			contentType : false,
+			success : function(r) {
+				$("#checkPlan_Modal").modal("hide")
+				init(paginationConf.currentPage)
+				alert(r.msg)
+			}
+		});
 }
 function editRequestTable(id,stepstatus){
 	$("#edit_zxjh_Modal").modal({backdrop:"static"})

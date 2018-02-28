@@ -143,7 +143,7 @@ public class ZXJHController extends AbstractController {
 	@Transactional
 	@PostMapping("/requestToLeader/{id}/{stepstatus}")
 	public R requestToLeader(@PathVariable("id") Integer id,@PathVariable("stepstatus") Integer stepstatus) {
-		if(stepstatus==0) {//0  初始状态下的才能删除
+		if(stepstatus==0||stepstatus==2) {//0  初始状态, 2项目负责人未通过
 			ProjectRequestForm record=new ProjectRequestForm();
 			record.setId(id);
 			record.setStepstatus(1);

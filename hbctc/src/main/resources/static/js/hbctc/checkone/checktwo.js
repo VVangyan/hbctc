@@ -190,8 +190,8 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="plan_YWJBR"){//审批
-		if(stepstatus==3){
-			checkPlan(id)
+		if(stepstatus==3||stepstatus==6){
+			checkPlan(id,isten)
 		}else{
 			alert("当前状态不能审批!")
 		}
@@ -200,16 +200,22 @@ $(document).on("click","a[tag!='']",function(){
 
 });
 
-var checkPlan=function(id){
+var checkPlan=function(id,isten){
 	$("#checkPlan_Modal").modal({backdrop:"static"})
-	$("#plan_fail").attr({"preid":id})
-	$("#plan_pass").attr({"preid":id})
+	if(isten==0){
+		$("#zbwj_div").hide()
+	}
+	$("#plan_fail").attr({"preid":id,"isten":isten})
+	$("#plan_pass").attr({"preid":id,"isten":isten})
+	
+	
 }
 
 $("#planStatus_div button").on("click",function(){
 	var btn=$(this).attr("id")
 	var planStatus=$(this).attr("planStatus")
 	var preid=$(this).attr("preid")
+	var isten=$(this).attr("isten")
 	var checkMsg={}
 	
 	if(isOk("#checkPlan__formId")){
@@ -221,11 +227,11 @@ $("#planStatus_div button").on("click",function(){
 		checkMsg.checkby=2
 		if(btn=="plan_fail"){
 			//sendData(checkMsg)
-			uploadFile(checkMsg)
+			uploadFile(checkMsg,isten,btn)
 		}
 		if(btn=="plan_pass"){
 			//sendData(checkMsg)
-			uploadFile(checkMsg)
+			uploadFile(checkMsg,isten,btn)
 		}
 	}
 });
@@ -245,13 +251,13 @@ function sendData(checkMsg){
 }
 
 //上传文件
-function uploadFile(checkMsg) {
+function uploadFile(checkMsg,isten,btn) {
 	var formData = new FormData();
 		formData.append('checkMsg', JSON.stringify(checkMsg)); 
-		
-	var files=$('#zbwj')[0].files[0];
+	if(isten==1||btn=="plan_pass"){
+		var files=$('#zbwj')[0].files[0];
 		formData.append('file', files);
-		
+	}
 	$.ajax({
 		url :"/checkPlanByYWJBR",
 		type : 'POST',

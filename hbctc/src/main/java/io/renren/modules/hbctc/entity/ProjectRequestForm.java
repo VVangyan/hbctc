@@ -315,7 +315,7 @@ public class ProjectRequestForm implements Serializable {
 	public void setClist(List<CheckMsg> clist) {
 		this.clist = clist;
 	}
-
+	
 	@Override
 	public String toString() {
 		return "ProjectRequestForm [id=" + id + ", dept=" + dept + ", deptpeo=" + deptpeo + ", deptpeoinfo="

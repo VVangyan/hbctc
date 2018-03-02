@@ -25,6 +25,8 @@ import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.BuyItemInfoExample;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.CheckMsgExample;
+import io.renren.modules.hbctc.entity.FileUploadPath;
+import io.renren.modules.hbctc.entity.FileUploadPathExample;
 import io.renren.modules.hbctc.entity.Numfactory;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
@@ -125,23 +127,19 @@ public class ZXJHController extends AbstractController {
 	@GetMapping("/getDetails")
 	public ProjectRequestForm getDetails(Integer id) {
 		ProjectRequestFormExample example1 =new ProjectRequestFormExample();
-								  example1.createCriteria()
-								         .andIdEqualTo(id)
-								         .andUseridEqualTo(getUserId());
+								  example1.createCriteria().andIdEqualTo(id).andUseridEqualTo(getUserId());
 		List<ProjectRequestForm> selectByExample1 = projectRequestFormService.selectByExample(example1);
 		BuyItemInfoExample example2=new BuyItemInfoExample();
-						   example2.createCriteria()
-						           .andPreidEqualTo(id);
+						   example2.createCriteria().andPreidEqualTo(id);
 		List<BuyItemInfo> selectByExample2 = buyItemInfoService.selectByExample(example2);
 		ProjectRequestForm projectRequestForm = selectByExample1.get(0);
 		projectRequestForm.setBuyItemInfos(selectByExample2);
 		
 		CheckMsgExample example3=new CheckMsgExample();
-		example3.createCriteria().andPreidEqualTo(id);
-		
+						example3.createCriteria().andPreidEqualTo(id);
 		List<CheckMsg> clist = checkMsgService.selectByExample(example3);
-		
 		projectRequestForm.setClist(clist);
+
 		return projectRequestForm;
 	}
 	

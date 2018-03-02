@@ -199,10 +199,66 @@ $(document).on("click","a[tag!='']",function(){
 
 });
 
+function getUploadFiles(id){
+	$.ajax({
+		type: "GET",
+		url:"/getUploadFiles",
+		data:{preid:parseInt(id)},
+		success:function(r){
+			debugger
+			 //<a href="javascript:;" target="_blank" id="download" filepath="C:/uploadZbwj/20180301/月报上传.doc"  filename="月报上传.doc">下载</a>
+			var flist=r
+			var nnn=0
+			var cform=$("#checkPlan__formId")
+			var fileDiv=$("#fileDiv")
+				fileDiv.removeClass("height")
+				fileDiv.remove()
+			if(flist.length>0){
+				var  itemDiv=$("<div style='width:100%' id='fileDiv'></div>")
+				var uL3 = $('<ul class="list-group" ></ul>')
+				for(f in flist){
+					var filename=flist[f].filename
+					var path=flist[f].path
+					var li=$(' <li class="list-group-item"></li>')
+					var itemA=$("<a></a>")
+					    itemA.attr({"href":"javascript:;","class":"download","filepath":path,"filename":filename})
+					    itemA.append(filename)
+					    li.append(itemA)
+					uL3.append(li)
+					nnn+=1
+				}
+				if(nnn*42>0){
+					itemDiv.css({"height":nnn*42+"px"})
+				}
+				itemDiv.append(li)
+				cform.after(itemDiv)
+			}
+		}
+	})
+}
+
+$(document).on("click",".download",function(){
+	var action="/download"
+	var form = $("<form></form>")
+    	form.attr({'action':action,'method':'post'})
+    var input1 = $("<input type='hidden' name='filepath'/>")
+     	input1.attr('value',$(this).attr("filepath"))
+ 	var input2 = $("<input type='hidden' name='filename'/>")
+ 		input2.attr('value',$(this).attr("filename"))
+    	form.append(input1)
+    	form.append(input2)
+    	form.appendTo("body")//如果不添加到 body中是不会提交到后台
+    	form.css('display','none')
+    	form.submit()
+})
+
+
 var checkPlan=function(id){
 	$("#checkPlan_Modal").modal({backdrop:"static"})
 	$("#plan_fail").attr({"preid":id})
 	$("#plan_pass").attr({"preid":id})
+	
+	getUploadFiles(id)
 }
 
 $("#planStatus_div button").on("click",function(){
@@ -301,6 +357,7 @@ function showDetail(id){
 
 //加载详情数据。
 function loadDetailData(r){
+	debugger
 	var  bc=$(".bmshc")
 	var  bm=$("#bmshyj")
 	var  zb=$(".zcbshc")
@@ -426,7 +483,6 @@ function loadDetailData(r){
 			zc.append(uL2)
 
 	}
-	
 }
 	var agentno=r.agentno
 	if(agentno!=null){

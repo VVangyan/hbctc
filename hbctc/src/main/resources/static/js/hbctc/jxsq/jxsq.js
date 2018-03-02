@@ -553,20 +553,6 @@ $(document).on("click","a[tag!='']",function(){
 	}
 });
 
-$("#download").on("click",function(){
-	var action="/download"
-	var form = $("<form></form>")
-    	form.attr({'action':action,'method':'post'})
-    var input1 = $("<input type='hidden' name='filepath'/>")
-     	input1.attr('value',$(this).attr("filepath"))
- 	var input2 = $("<input type='hidden' name='filename'/>")
- 		input2.attr('value',$(this).attr("filename"))
-    	form.append(input1)
-    	form.append(input2)
-    	form.appendTo("body")//如果不添加到 body中是不会提交到后台
-    	form.css('display','none')
-    	form.submit()
-})
 
 function editRequestTable(id,stepstatus){
 	$("#edit_zxjh_Modal").modal({backdrop:"static"})

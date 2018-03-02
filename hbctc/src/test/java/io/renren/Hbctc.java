@@ -14,10 +14,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import io.renren.modules.hbctc.entity.BuyItemInfo;
+import io.renren.modules.hbctc.entity.FileUploadPath;
+import io.renren.modules.hbctc.entity.FileUploadPathExample;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample.Criteria;
 import io.renren.modules.hbctc.service.BuyItemInfoService;
+import io.renren.modules.hbctc.service.FileUploadPathService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
 import io.renren.modules.sys.controller.AbstractController;
@@ -31,6 +34,10 @@ public class Hbctc {
 	
 	@Autowired
 	BuyItemInfoService buyItemInfoService;
+	
+	
+	@Autowired  
+	FileUploadPathService fileUploadPathService;
 	
     @Test
     public void test() {
@@ -116,5 +123,19 @@ public class Hbctc {
     	createCriteria.andUseridEqualTo(1L);
 		List<ProjectRequestForm> selectSomeByExample = projectRequestFormService.selectSomeByExample(example);
 		System.out.println(selectSomeByExample);
+    }
+    
+    
+    @Test
+    public void getUploadPath() {
+    	FileUploadPathExample example=new FileUploadPathExample();
+    	example.createCriteria().andPreidEqualTo(58);
+		List<FileUploadPath> selectByExample = fileUploadPathService.selectByExample(example);
+		for (FileUploadPath f : selectByExample) {
+			//System.out.println(fileUploadPath);
+			System.out.println(f.getFilename());
+			System.out.println(f.getPath());
+			System.out.println(f.getSuffix());
+		}
     }
 }

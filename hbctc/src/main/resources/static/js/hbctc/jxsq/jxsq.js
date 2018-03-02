@@ -553,6 +553,21 @@ $(document).on("click","a[tag!='']",function(){
 	}
 });
 
+$("#download").on("click",function(){
+	var action="/download"
+	var form = $("<form></form>")
+    	form.attr({'action':action,'method':'post'})
+    var input1 = $("<input type='hidden' name='filepath'/>")
+     	input1.attr('value',$(this).attr("filepath"))
+ 	var input2 = $("<input type='hidden' name='filename'/>")
+ 		input2.attr('value',$(this).attr("filename"))
+    	form.append(input1)
+    	form.append(input2)
+    	form.appendTo("body")//如果不添加到 body中是不会提交到后台
+    	form.css('display','none')
+    	form.submit()
+})
+
 function editRequestTable(id,stepstatus){
 	$("#edit_zxjh_Modal").modal({backdrop:"static"})
 	$("#edit_request").attr({"webpreid":id})
@@ -771,6 +786,7 @@ function delItem(id,stepstatus){
 
 //加载详情数据。
 function loadDetailData(r){
+	debugger
 	$("#detail_bh1").val(r.bh1)//项目申报部门
 	$("#detail_bh2").val(r.bh2)//项目申报部门
 	$("#detail_dept").val(r.dept)//项目申报部门
@@ -802,6 +818,14 @@ function loadDetailData(r){
 	}
 
 	for(var i=0;i<buyItemInfos.length;i++){
+		var  bc=$(".bmshc")
+		var  bm=$("#bmshyj")
+		var  zb=$(".zcbshc")
+		var  zc=$("#zcbspyj")
+			 bc.removeClass("height")
+			 bm.text("")
+			 zb.removeClass("height")
+			 zc.text("")
 		
 		var  tr1=$('<tr detailFlag="detailFlag"></tr>')
 		var  td1=$('<td>'+buyItemInfos[i]["byintemid"]+'</td>')
@@ -847,8 +871,56 @@ function loadDetailData(r){
 		   .append(td7)
 		   .append(td8)
 		   .append(td9)
-     $.parser.parse(tr1);//重新渲染样式
-	addRowSpanAndToTr().after(tr1)
+	     $.parser.parse(tr1);//重新渲染样式
+		 addRowSpanAndToTr().after(tr1)
+	
+		 
+		 
+/*		 <ul class="list-group">
+		  <li class="list-group-item">Cras justo odio</li>
+		  <li class="list-group-item">Dapibus ac facilisis in</li>
+		  <li class="list-group-item">Morbi leo risus</li>
+		  <li class="list-group-item">Porta ac consectetur ac</li>
+		  <li class="list-group-item">Vestibulum at eros</li>
+		</ul>*/
+		 var clist=r.clist
+		 var num=0
+		 var nnm=0
+		 if (clist.length > 0) {
+				var uL1 = $('<ul class="list-group" ></ul>')
+				var uL2 = $('<ul class="list-group" ></ul>')
+				for (var i = 0; i < clist.length; i++) {
+					var checkby = clist[i].checkby
+					var msg = clist[i].msg
+					var checkdate = clist[i].checkdate
+					if (checkby == 1) {
+						uL1.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+						num+=1
+					} else {
+						nnm+=1
+						uL2.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+					}
+				}
+				
+				if(num*42>120){
+					bc.css({"height":num*42+"px"})
+					bm.css({"height":num*42+"px"})
+				}else{
+					bc.css({"height":"130px"})
+					bm.css({"height":"130px"})
+				}
+				if(nnm*42>120){
+					zb.css({"height":nnm*42+"px"})
+					zc.css({"height":nnm*42+"px"})
+				}else{
+					zb.css({"height":"130px"})
+					zc.css({"height":"130px"})
+				}
+				
+				bm.append(uL1)
+				zc.append(uL2)
+
+		}
 	}
 	var agentno=r.agentno
 	if(agentno!=null){
@@ -873,6 +945,9 @@ function loadDetailData(r){
 				return 	divs
 	};
 }
+
+
+
 
 function init(pn){//页面初始化，加载数据
 	var  tbodyid=$("#tbodyId")

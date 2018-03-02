@@ -23,11 +23,15 @@ import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.Agency;
 import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.BuyItemInfoExample;
+import io.renren.modules.hbctc.entity.CheckMsg;
+import io.renren.modules.hbctc.entity.CheckMsgExample;
 import io.renren.modules.hbctc.entity.Numfactory;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 import io.renren.modules.hbctc.service.AgencyService;
 import io.renren.modules.hbctc.service.BuyItemInfoService;
+import io.renren.modules.hbctc.service.CheckMsgService;
+import io.renren.modules.hbctc.service.FileUploadPathService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
 import io.renren.modules.sys.controller.AbstractController;
@@ -51,6 +55,12 @@ public class ZXJHController extends AbstractController {
 
 	@Autowired
 	AgencyService agencyService;
+	
+	@Autowired  
+	FileUploadPathService fileUploadPathService;
+	
+	@Autowired
+	CheckMsgService checkMsgService;
 
 	@Transactional
 	@PostMapping("/project")
@@ -125,6 +135,13 @@ public class ZXJHController extends AbstractController {
 		List<BuyItemInfo> selectByExample2 = buyItemInfoService.selectByExample(example2);
 		ProjectRequestForm projectRequestForm = selectByExample1.get(0);
 		projectRequestForm.setBuyItemInfos(selectByExample2);
+		
+		CheckMsgExample example3=new CheckMsgExample();
+		example3.createCriteria().andPreidEqualTo(id);
+		
+		List<CheckMsg> clist = checkMsgService.selectByExample(example3);
+		
+		projectRequestForm.setClist(clist);
 		return projectRequestForm;
 	}
 	

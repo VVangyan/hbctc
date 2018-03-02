@@ -52,15 +52,16 @@ textarea {
 }
 
 .div_bmsh {
-	height: 100px;
+	height: 100%;
 	width: 100%;
 	border: 1px #DDDDDD solid;
+	border-top: 0;
 }
 
 .div_zcbsh {
 	border: 1px #DDDDDD solid;
 	border-top: 0;
-	height: 120px;
+	height: 100%;
 	width: 100%;
 }
 

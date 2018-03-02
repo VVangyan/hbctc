@@ -256,8 +256,14 @@ function uploadFile(checkMsg,isten,btn) {
 		formData.append('checkMsg', JSON.stringify(checkMsg)); 
 	if(isten==1||btn=="plan_pass"){
 		var files=$('#zbwj')[0].files[0];
+		debugger
+		if(files==undefined){
+			alert("请选择招标文件")
+			return false
+		}
 		formData.append('file', files);
 	}
+	
 	$.ajax({
 		url :"/checkPlanByYWJBR",
 		type : 'POST',
@@ -312,6 +318,14 @@ function showDetail(id){
 
 //加载详情数据。
 function loadDetailData(r){
+	var  bc=$(".bmshc")
+	var  bm=$("#bmshyj")
+	var  zb=$(".zcbshc")
+	var  zc=$("#zcbspyj")
+		 bc.removeClass("height")
+		 bm.text("")
+		 zb.removeClass("height")
+		 zc.text("")	
 	$("#detail_bh1").val(r.bh1)//项目申报部门
 	$("#detail_bh2").val(r.bh2)//项目申报部门
 	$("#detail_dept").val(r.dept)//项目申报部门
@@ -390,6 +404,46 @@ function loadDetailData(r){
 		   .append(td9)
      $.parser.parse(tr1);//重新渲染样式
 	addRowSpanAndToTr().after(tr1)
+	
+	 var clist=r.clist
+	 var num=0
+	 var nnm=0
+	 if (clist.length > 0) {
+			var uL1 = $('<ul class="list-group" ></ul>')
+			var uL2 = $('<ul class="list-group" ></ul>')
+			for (var i = 0; i < clist.length; i++) {
+				var checkby = clist[i].checkby
+				var msg = clist[i].msg
+				var checkdate = clist[i].checkdate
+				if (checkby == 1) {
+					uL1.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+					num+=1
+				} else {
+					nnm+=1
+					uL2.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+				}
+			}
+			
+			if(num*42>120){
+				bc.css({"height":num*42+"px"})
+				bm.css({"height":num*42+"px"})
+			}else{
+				bc.css({"height":"130px"})
+				bm.css({"height":"130px"})
+			}
+			if(nnm*42>120){
+				zb.css({"height":nnm*42+"px"})
+				zc.css({"height":nnm*42+"px"})
+			}else{
+				zb.css({"height":"130px"})
+				zc.css({"height":"130px"})
+			}
+			
+			bm.append(uL1)
+			zc.append(uL2)
+
+	}
+	
 	}
 	var agentno=r.agentno
 	if(agentno!=null){

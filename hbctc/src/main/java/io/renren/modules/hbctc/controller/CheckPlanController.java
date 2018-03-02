@@ -11,8 +11,10 @@ import com.alibaba.fastjson.JSON;
 
 import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.CheckMsg;
+import io.renren.modules.hbctc.entity.FileUploadPath;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.service.CheckMsgService;
+import io.renren.modules.hbctc.service.FileUploadPathService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
 import io.renren.modules.hbctc.util.FileUpload;
 import io.renren.modules.sys.controller.AbstractController;
@@ -25,6 +27,9 @@ public class CheckPlanController extends AbstractController {
 	
 	@Autowired
 	private ProjectRequestFormService projectRequestFormService;
+	
+	@Autowired
+	private FileUploadPathService fileUploadPathService;
 	
 	@Transactional
 	@PostMapping("/checkPlanByYWJBR")
@@ -41,6 +46,12 @@ public class CheckPlanController extends AbstractController {
 			
 			String filePath = FileUpload.uploadFile(request);//上传 zbwj
 			System.out.println("filePath :" + filePath);
+			
+			if(filePath!=null) {
+				String fileName=filePath.split("/")[3];
+				FileUploadPath record=new FileUploadPath(filePath, fileName,fileName.substring(fileName.lastIndexOf(".") + 1) , checkMsg.getPreid());
+				fileUploadPathService.insertSelective(record);
+			}
 			
 			checkMsgService.insertSelective(checkMsg);
 			

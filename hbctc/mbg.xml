@@ -62,9 +62,10 @@
 		<!-- <table tableName="hbctc_buyiteminfo" domainObjectName="BuyItemInfo"></table> -->
 		<!-- <table tableName="hbctc_projectRequestForm" domainObjectName="ProjectRequestForm"></table>  -->
 		<!-- <table tableName="hbctc_agency" domainObjectName="Agency"></table>
-		<table tableName="hbctc_numfactory" domainObjectName="Numfactory"></table> -->
-		
+		<table tableName="hbctc_numfactory" domainObjectName="Numfactory"></table> 
 		<table tableName="hbctc_checkMsg" domainObjectName="CheckMsg"></table> 
+		-->
+		<table tableName="hbctc_fileuploadpath" domainObjectName="FileUploadPath"></table> 
 
 	</context>
 </generatorConfiguration>

@@ -50,7 +50,9 @@ public class ProjectRequestForm implements Serializable {
 	private String agentno;// 代理机构编号
 	
 	private Long userid;
-
+	
+	private List<CheckMsg> clist;
+	
 	public ProjectRequestForm() {
 		super();
 	}
@@ -304,6 +306,14 @@ public class ProjectRequestForm implements Serializable {
 
 	public void setUserid(Long userid) {
 		this.userid = userid;
+	}
+
+	public List<CheckMsg> getClist() {
+		return clist;
+	}
+
+	public void setClist(List<CheckMsg> clist) {
+		this.clist = clist;
 	}
 
 	@Override

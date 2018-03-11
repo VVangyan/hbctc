@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 
+import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.FileUploadPath;
@@ -31,6 +32,7 @@ public class CheckPlanController extends AbstractController {
 	@Autowired
 	private FileUploadPathService fileUploadPathService;
 	
+	@SysLog("申请审批")
 	@Transactional
 	@PostMapping("/checkPlanByYWJBR")
 	public R checkPlanByYWJBR(HttpServletRequest request) {

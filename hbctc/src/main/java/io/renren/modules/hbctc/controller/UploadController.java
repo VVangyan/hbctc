@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 
+import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.util.FileUpload;
@@ -22,6 +23,7 @@ public class UploadController {
 	 * @throws IOException
 	 * @throws IllegalStateException
 	 */
+	@SysLog("上传文件")
 	@PostMapping("/uploadFile")
 	public R uploadEecel(HttpServletRequest request) throws IllegalStateException, IOException {
 		

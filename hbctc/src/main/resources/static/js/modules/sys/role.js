@@ -153,6 +153,7 @@ var vm = new Vue({
 		getMenuTree: function(roleId) {
 			//加载菜单树
 			$.get(baseURL + "sys/menu/list", function(r){
+				debugger
 				ztree = $.fn.zTree.init($("#menuTree"), setting, r);
 				//展开所有节点
 				ztree.expandAll(true);

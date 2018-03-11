@@ -64,8 +64,10 @@
 		<!-- <table tableName="hbctc_agency" domainObjectName="Agency"></table>
 		<table tableName="hbctc_numfactory" domainObjectName="Numfactory"></table> 
 		<table tableName="hbctc_checkMsg" domainObjectName="CheckMsg"></table> 
-		-->
 		<table tableName="hbctc_fileuploadpath" domainObjectName="FileUploadPath"></table> 
+		<table tableName="hbctc_dept" domainObjectName="Department"></table> 
+		-->
+		<table tableName="hbctc_user_dept" domainObjectName="UserDepartment"></table> 
 
 	</context>
 </generatorConfiguration>

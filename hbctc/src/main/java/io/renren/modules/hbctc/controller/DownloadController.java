@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import io.renren.common.annotation.SysLog;
 import io.renren.modules.hbctc.entity.FileUploadPath;
 import io.renren.modules.hbctc.entity.FileUploadPathExample;
 import io.renren.modules.hbctc.service.DownloadService;
@@ -28,7 +29,7 @@ public class DownloadController {
 	
 	@Autowired  
 	FileUploadPathService fileUploadPathService;
-	
+	@SysLog("文件下载")
 	@PostMapping("/download")
 	public ResponseEntity<byte[]> download(@RequestParam("filepath") String filepath,@RequestParam("filename") String filename){
 		ResponseEntity<byte[]> download=null;
@@ -40,6 +41,7 @@ public class DownloadController {
 		return download;
 	}
 
+	@SysLog("获取上传文件")
 	@GetMapping("/getUploadFiles")
 	@ResponseBody
 	public List<FileUploadPath> getUploadFiles(@RequestParam("preid") Integer preid){

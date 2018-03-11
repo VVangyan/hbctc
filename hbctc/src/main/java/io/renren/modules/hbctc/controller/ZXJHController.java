@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import io.renren.common.annotation.SysLog;
 import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.Agency;
 import io.renren.modules.hbctc.entity.BuyItemInfo;
@@ -63,7 +64,8 @@ public class ZXJHController extends AbstractController {
 	
 	@Autowired
 	CheckMsgService checkMsgService;
-
+	
+	@SysLog("提交申请")
 	@Transactional
 	@PostMapping("/project")
 	public R info(@RequestBody ProjectRequestForm projectRequestForm) {
@@ -99,12 +101,13 @@ public class ZXJHController extends AbstractController {
 		return R.ok();
 	}
 
+	@SysLog("获取代理机构")
 	@GetMapping("/getAgency")
 	public List<Agency> getAgency() {
 		List<Agency> agencys = agencyService.selectByExample(null);
 		return agencys;
 	}
-
+	@SysLog("获取报表数据")
 	@SuppressWarnings("unchecked")
 	@GetMapping("/getReqFormList")
 	public Map<String, Object> getReqFormList(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
@@ -123,6 +126,7 @@ public class ZXJHController extends AbstractController {
 		return resultMap;
 	}
 	
+	@SysLog("获取详情")
 	@Transactional
 	@GetMapping("/getDetails")
 	public ProjectRequestForm getDetails(Integer id) {
@@ -142,7 +146,7 @@ public class ZXJHController extends AbstractController {
 
 		return projectRequestForm;
 	}
-	
+	@SysLog("删除清单元素")
 	@Transactional
 	@DeleteMapping("/delItemById/{id}/{stepstatus}")
 	public R delItemById(@PathVariable("id") Integer id,@PathVariable("stepstatus") Integer stepstatus) {
@@ -155,6 +159,7 @@ public class ZXJHController extends AbstractController {
 		}
 		return R.error(1, "当前状态下不能删除");
 	}
+	@SysLog("申报")
 	@Transactional
 	@PostMapping("/requestToLeader/{id}/{stepstatus}")
 	public R requestToLeader(@PathVariable("id") Integer id,@PathVariable("stepstatus") Integer stepstatus) {
@@ -168,6 +173,7 @@ public class ZXJHController extends AbstractController {
 		return R.error(1, "当前状态下不能申报!");
 	}
 	
+	@SysLog("删除申报表")
 	@Transactional
 	@DeleteMapping("/deleteByItemInfoById/{id}/{preid}")
 	public R deleteByItemInfoById(@PathVariable("id") Integer id,@PathVariable("preid") Integer preid) {
@@ -177,7 +183,7 @@ public class ZXJHController extends AbstractController {
 		return R.ok("删除成功!");
 	}
 	
-	
+	@SysLog("更新报表")
 	@Transactional
 	@PostMapping("/updatePorject")
 	public R updatePorject(@RequestBody ProjectRequestForm projectRequestForm) {

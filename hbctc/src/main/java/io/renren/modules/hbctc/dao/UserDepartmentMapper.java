@@ -1,11 +1,13 @@
 package io.renren.modules.hbctc.dao;
 
-import io.renren.modules.hbctc.entity.UserDepartment;
-import io.renren.modules.hbctc.entity.UserDepartmentExample;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import io.renren.modules.hbctc.entity.UserDepartment;
+import io.renren.modules.hbctc.entity.UserDepartmentExample;
 
 @Mapper
 public interface UserDepartmentMapper {
@@ -20,6 +22,8 @@ public interface UserDepartmentMapper {
     int insertSelective(UserDepartment record);
 
     List<UserDepartment> selectByExample(UserDepartmentExample example);
+    
+    List<HashMap<Object,Object>> selectMapResutl();
 
     UserDepartment selectByPrimaryKey(Integer id);
 

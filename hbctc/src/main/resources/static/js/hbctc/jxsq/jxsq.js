@@ -527,7 +527,8 @@ $(document).on("click","a[tag!='']",function(){
 	}
 	if(tag=="request"){//申报
 		if(stepstatus==0||stepstatus==2){
-			requestToLeader(id,stepstatus)
+			//requestToLeader(id,stepstatus)
+			loadUserDeptModal()
 		}else{
 			alert("当前状态不能申报!")
 		}
@@ -737,6 +738,61 @@ var requestToLeader=function(id,stepstatus){
 		})
 	})
 }
+function loadUserDeptModal(){
+	$("#load_user_dept_Modal").modal({backdrop:"static"})
+	
+	$.get(baseURL + "getMapResult", function(r){
+		debugger
+		var zDiv = $("#tree")
+	    zDiv = $.fn.zTree.init(zDiv, setting, r);
+	    //展开所有节点
+		zDiv.expandAll(true);
+	});
+};
+var zNodes =[
+	{id:"QCYHKXY", pId:"0", name:"汽车与航空学院", open:true},
+	{id:"zs", pId:"QCYHKXY", name:"张三", open:true},
+	{id:"ls", pId:"QCYHKXY", name:"李四", open:true},
+	{id:"xxx", pId:"0", name:"汽车与航空学院", open:true},
+	{id:"zs", pId:"xxx", name:"张三", open:true},
+	{id:"ls", pId:"xxx", name:"李四", open:true}
+];
+
+var ztree;
+var setting = {
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "deptno",
+			pIdKey: "preid",
+			rootPId: "-1"
+		}
+	},
+	check: {
+        enable: true,
+        chkStyle: "radio",  //单选框
+        radioType: "all"   //对所有节点设置单选
+    }
+};
+var vm=new Vue({
+	el: '#app',
+	data: {
+		message: 'Runoob!'
+	},
+	methods: {
+		hello: function() {
+			var treeObj = $.fn.zTree.getZTreeObj("tree");
+            var nodes = treeObj.getCheckedNodes(true);
+            debugger
+		},
+		checkItem:function(){
+			var treeObj = $.fn.zTree.getZTreeObj("tree");
+            var nodes = treeObj.getCheckedNodes(true);
+            debugger
+		}
+	}
+})
+
 function showDetail(id){
 	$("#detail_zxjh_Modal").modal({backdrop:"static"})
 	getAgency()//获取代理机构

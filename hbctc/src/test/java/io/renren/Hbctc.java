@@ -2,6 +2,7 @@ package io.renren;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Test;
@@ -23,6 +24,7 @@ import io.renren.modules.hbctc.service.BuyItemInfoService;
 import io.renren.modules.hbctc.service.FileUploadPathService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
+import io.renren.modules.hbctc.service.UserDepartmentService;
 import io.renren.modules.sys.controller.AbstractController;
 
 
@@ -38,7 +40,8 @@ public class Hbctc {
 	
 	@Autowired  
 	FileUploadPathService fileUploadPathService;
-	
+	@Autowired  
+	UserDepartmentService userDepartmentService;	
     @Test
     public void test() {
 		ProjectRequestForm record=new ProjectRequestForm(
@@ -136,6 +139,14 @@ public class Hbctc {
 			System.out.println(f.getFilename());
 			System.out.println(f.getPath());
 			System.out.println(f.getSuffix());
+		}
+    }
+    
+    @Test
+    public void getMapResult() {
+    	List<HashMap<Object, Object>> selectMapResutl = userDepartmentService.selectMapResutl();
+    	for (HashMap<Object, Object> hashMap : selectMapResutl) {
+    		System.out.println(hashMap);
 		}
     }
 }

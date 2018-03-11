@@ -88,6 +88,32 @@
     from hbctc_user_dept
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="selectMapResutl" resultType="java.util.HashMap">
+	  SELECT
+		base.*
+		FROM
+			(
+				SELECT
+					dp.userid AS deptno,
+					dp.deptno AS preid,
+					u.username AS name,
+					dp.userid AS userid
+				FROM
+					hbctc_user_dept dp
+				JOIN hbctc_dept d ON d.deptno = dp.deptno
+				JOIN sys_user u ON dp.userid = u.user_id
+				UNION ALL
+					SELECT
+						dp.deptno AS deptno,
+						"0" AS preid,
+						dp.detpname AS name,
+						dp.userid AS userid
+					FROM
+						hbctc_user_dept dp
+					JOIN hbctc_dept d ON d.deptno = dp.deptno
+					GROUP BY dp.deptno
+			) base
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hbctc_user_dept
     where id = #{id,jdbcType=INTEGER}

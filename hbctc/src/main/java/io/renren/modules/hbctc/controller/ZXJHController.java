@@ -37,6 +37,7 @@ import io.renren.modules.hbctc.service.CheckMsgService;
 import io.renren.modules.hbctc.service.FileUploadPathService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
+import io.renren.modules.hbctc.service.UserDepartmentService;
 import io.renren.modules.sys.controller.AbstractController;
 
 /**
@@ -64,6 +65,9 @@ public class ZXJHController extends AbstractController {
 	
 	@Autowired
 	CheckMsgService checkMsgService;
+	
+	@Autowired
+	UserDepartmentService userDepartmentService;
 	
 	@SysLog("提交申请")
 	@Transactional
@@ -209,5 +213,12 @@ public class ZXJHController extends AbstractController {
 		projectRequestFormService.updateByExampleSimple(projectRequestForm, proExample);
 		
 		return R.ok();
+	}
+	
+	@GetMapping("/getMapResult")
+	public List<HashMap<Object,Object>> getMapResult(){
+		List<HashMap<Object, Object>> selectMapResutlt = userDepartmentService.selectMapResutl();
+		System.out.println("selectMapResutl  "+selectMapResutlt);
+		return selectMapResutlt;
 	}
 }

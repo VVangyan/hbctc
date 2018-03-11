@@ -1,5 +1,6 @@
 package io.renren.modules.hbctc.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -19,6 +20,8 @@ public interface UserDepartmentService {
     int insertSelective(UserDepartment record);
 
     List<UserDepartment> selectByExample(UserDepartmentExample example);
+    
+    List<HashMap<Object,Object>> selectMapResutl();
 
     UserDepartment selectByPrimaryKey(Integer id);
 

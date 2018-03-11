@@ -1,5 +1,6 @@
 package io.renren.modules.hbctc.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,11 @@ public class UserDepartmentServiceImpl implements UserDepartmentService {
 	@Override
 	public int updateByPrimaryKey(UserDepartment record) {
 		return departmentMapper.updateByPrimaryKey(record);
+	}
+
+	@Override
+	public List<HashMap<Object, Object>> selectMapResutl() {
+		return departmentMapper.selectMapResutl();
 	}
 
 }

@@ -149,4 +149,9 @@ public class Hbctc {
     		System.out.println(hashMap);
 		}
     }
+    @Test
+    public void getIsMiddleMap() {
+    	HashMap<String, Object> selectIsMiddleDeptMap = userDepartmentService.selectIsMiddleDeptMap(6);
+    	System.out.println(selectIsMiddleDeptMap);
+    }
 }

@@ -31,6 +31,8 @@ import io.renren.modules.hbctc.entity.FileUploadPathExample;
 import io.renren.modules.hbctc.entity.Numfactory;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
+import io.renren.modules.hbctc.entity.UserDepartment;
+import io.renren.modules.hbctc.entity.UserDepartmentExample;
 import io.renren.modules.hbctc.service.AgencyService;
 import io.renren.modules.hbctc.service.BuyItemInfoService;
 import io.renren.modules.hbctc.service.CheckMsgService;
@@ -220,5 +222,66 @@ public class ZXJHController extends AbstractController {
 		List<HashMap<Object, Object>> selectMapResutlt = userDepartmentService.selectMapResutl();
 		System.out.println("selectMapResutl  "+selectMapResutlt);
 		return selectMapResutlt;
+	}
+	
+	@PostMapping("/sendCheckData")
+	public R sendCheckData(@RequestBody HashMap checkData){
+		Integer userId = Integer.parseInt(getUserId()+"");
+		Integer ztreeUserId=Integer.parseInt(checkData.get("ztreUserid")+"");
+		String ztreDeptno=(String) checkData.get("ztreDeptno");
+		Integer stepstatus=  Integer.parseInt(checkData.get("stepstatus")+"");
+		Integer object = Integer.parseInt(checkData.get("id")+"");
+		
+		if(userId==ztreeUserId) {//不能选择自己
+			return R.error("请选择正确的审批人");
+		}
+		//状态为0,2,4,6,8的时候(需要修改正确后)只能发送给项目负责人
+		if((stepstatus==0||stepstatus==2||stepstatus==4||stepstatus==6||stepstatus==8)&&ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
+			
+		} else if (stepstatus == 3) {// 只有当状态为3的时候才能发送给 业务主管部门或者业务经办人
+			// 1:业务主管部门 2:业务经办人
+			int ismiddledept = getismiddledept(ztreeUserId);
+			if (ismiddledept == 1 || ismiddledept == 2) {
+
+			} else {
+				return R.error("请选择正确的审批人");
+			}
+		} else if (stepstatus == 15) {// 当状态为15可以发送给业务主管部门、项目负责人、业务经办人
+			// 1:业务主管部门 2:业务经办人
+			int ismiddledept = getismiddledept(ztreeUserId);
+			if(ismiddledept==1||ismiddledept==2||ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
+				
+			}else {
+				return R.error("请选择正确的审批人");
+			}
+		} else if (stepstatus == 7) {//状态为7只能发送给业务负责人审核
+			// 1:业务主管部门 2:业务经办人
+			int ismiddledept = getismiddledept(ztreeUserId);
+			if(ismiddledept==2) {
+				
+			}else {
+				return R.error("请选择正确的审批人");
+			}
+		} else {
+			return R.error("请选择正确的审批人");
+		}
+		System.out.println("selectByExample "+getUserDepartment(userId).get(0));
+		System.out.println("checkData  ："+ checkData);
+		return R.ok();
+	}
+	/**
+	 * 获取 isMiddleDept
+	 * @param ztreeUserId
+	 * @return
+	 */
+	private  int getismiddledept(Integer ztreeUserId) {
+		HashMap<String, Object> selectIsMiddleDeptMap = userDepartmentService.selectIsMiddleDeptMap(ztreeUserId);
+		return Integer.parseInt(selectIsMiddleDeptMap.get("ismiddledept") + "");
+	}
+	
+	private List<UserDepartment> getUserDepartment(Integer userId){
+		UserDepartmentExample example=new UserDepartmentExample();
+		example.createCriteria().andUseridEqualTo(userId);
+		return  userDepartmentService.selectByExample(example);
 	}
 }

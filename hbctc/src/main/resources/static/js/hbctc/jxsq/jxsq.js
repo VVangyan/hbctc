@@ -526,12 +526,12 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="request"){//申报
-		if(stepstatus==0||stepstatus==2){
+		//if(stepstatus==0||stepstatus==2){
 			//requestToLeader(id,stepstatus)
-			loadUserDeptModal()
-		}else{
+			loadUserDeptModal(id,stepstatus)
+		/*}else{
 			alert("当前状态不能申报!")
-		}
+		}*/
 	}
 	if(tag=="edit"){//编辑
 		//0:待申报 (将数字设为1):【项目负责人审核中】;项目负责人审核通过(将数值设为3):【业务经办人审核中】,业务经办人审核通过(将数值设为5)
@@ -738,9 +738,10 @@ var requestToLeader=function(id,stepstatus){
 		})
 	})
 }
-function loadUserDeptModal(){
+function loadUserDeptModal(id,stepstatus){
 	$("#load_user_dept_Modal").modal({backdrop:"static"})
-	
+	vm.stepstatus=stepstatus
+	vm.id=id
 	$.get(baseURL + "getMapResult", function(r){
 		debugger
 		var zDiv = $("#tree")
@@ -777,18 +778,42 @@ var setting = {
 var vm=new Vue({
 	el: '#app',
 	data: {
-		message: 'Runoob!'
+		message: 'Runoob!',
+		stepstatus:null,
+		id:null
 	},
 	methods: {
-		hello: function() {
+		addToSend: function() {
 			var treeObj = $.fn.zTree.getZTreeObj("tree");
             var nodes = treeObj.getCheckedNodes(true);
+            var stepstatus=this.stepstatus;
+            var id=parseInt(this.id);
+            debugger
+            if(nodes.length>0&&nodes[0].preid!="-1"){
+            	var ztreDeptno=nodes[0].preid//detpno  
+            	var ztreUserid=nodes[0].userid//userid 
+            	var checkData={}
+	            	checkData.ztreDeptno=ztreDeptno
+	            	checkData.ztreUserid=ztreUserid
+	            	checkData.stepstatus=stepstatus
+	            	checkData.id=id//当前选择记录的id
+	            	vm.sendCheckData(checkData)
+            }else{
+            	alert("请选择发送人")
+            }
             debugger
 		},
-		checkItem:function(){
-			var treeObj = $.fn.zTree.getZTreeObj("tree");
-            var nodes = treeObj.getCheckedNodes(true);
-            debugger
+		sendCheckData:function(checkData){
+			var url="sendCheckData"
+			$.ajax({
+				type: "POST",
+			    url: baseURL + url,
+                contentType: "application/json",
+			    data: JSON.stringify(checkData),
+			    success: function(r){
+			    	alert(r.msg)
+			    }
+			});
 		}
 	}
 })

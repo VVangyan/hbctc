@@ -76,4 +76,9 @@ public class UserDepartmentServiceImpl implements UserDepartmentService {
 		return departmentMapper.selectMapResutl();
 	}
 
+	@Override
+	public HashMap<String, Object> selectIsMiddleDeptMap(Integer userid) {
+		return departmentMapper.selectIsMiddleDeptMap(userid);
+	}
+
 }

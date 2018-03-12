@@ -114,6 +114,21 @@
 					GROUP BY dp.deptno
 			) base
   </select>
+  
+  <select id="selectIsMiddleDeptMap"  parameterType="java.lang.Integer" resultType="java.util.HashMap">
+  	SELECT
+		u.id,
+		u.userid,
+		u.deptno,
+		u.detpname,
+		d.ismiddledept
+	FROM
+		hbctc_user_dept u
+	JOIN hbctc_dept d ON u.deptno = d.deptno
+	WHERE
+		u.userid = #{userid,jdbcType=INTEGER}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from hbctc_user_dept
     where id = #{id,jdbcType=INTEGER}

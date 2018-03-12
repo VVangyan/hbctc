@@ -24,6 +24,8 @@ public interface UserDepartmentMapper {
     List<UserDepartment> selectByExample(UserDepartmentExample example);
     
     List<HashMap<Object,Object>> selectMapResutl();
+    
+    HashMap<String,Object> selectIsMiddleDeptMap(@Param("userid") Integer userid);
 
     UserDepartment selectByPrimaryKey(Integer id);
 

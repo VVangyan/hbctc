@@ -230,44 +230,52 @@ public class ZXJHController extends AbstractController {
 		Integer ztreeUserId=Integer.parseInt(checkData.get("ztreUserid")+"");
 		String ztreDeptno=(String) checkData.get("ztreDeptno");
 		Integer stepstatus=  Integer.parseInt(checkData.get("stepstatus")+"");
-		Integer object = Integer.parseInt(checkData.get("id")+"");
+		Integer id = Integer.parseInt(checkData.get("id")+"");
 		
 		if(userId==ztreeUserId) {//不能选择自己
 			return R.error("请选择正确的审批人");
 		}
 		//状态为0,2,4,6,8的时候(需要修改正确后)只能发送给项目负责人
 		if((stepstatus==0||stepstatus==2||stepstatus==4||stepstatus==6||stepstatus==8)&&ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
-			
+			reportToLeader(id, 1);
 		} else if (stepstatus == 3) {// 只有当状态为3的时候才能发送给 业务主管部门或者业务经办人
 			// 1:业务主管部门 2:业务经办人
 			int ismiddledept = getismiddledept(ztreeUserId);
-			if (ismiddledept == 1 || ismiddledept == 2) {
-
+			if (ismiddledept == 1) {
+				reportToLeader(id, 13);// 业务主管部门
+			} else if (ismiddledept == 2) {
+				reportToLeader(id, 5);// 业务经办人
 			} else {
 				return R.error("请选择正确的审批人");
 			}
 		} else if (stepstatus == 15) {// 当状态为15可以发送给业务主管部门、项目负责人、业务经办人
 			// 1:业务主管部门 2:业务经办人
 			int ismiddledept = getismiddledept(ztreeUserId);
-			if(ismiddledept==1||ismiddledept==2||ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
-				
-			}else {
+			if (ismiddledept == 1) {
+				reportToLeader(id, 13);// 业务主管部门
+			} else if (ismiddledept == 2) {
+				reportToLeader(id, 5);// 业务经办人
+			} else if (ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
+				reportToLeader(id, 1);// 项目负责人
+			} else {
 				return R.error("请选择正确的审批人");
 			}
 		} else if (stepstatus == 7) {//状态为7只能发送给业务负责人审核
 			// 1:业务主管部门 2:业务经办人
 			int ismiddledept = getismiddledept(ztreeUserId);
 			if(ismiddledept==2) {
-				
+				reportToLeader(id, 9);
 			}else {
 				return R.error("请选择正确的审批人");
 			}
+		}else if(stepstatus==1||stepstatus==5||stepstatus==9||stepstatus==13) {
+			return R.error("当前状态不能申报");
 		} else {
 			return R.error("请选择正确的审批人");
 		}
 		System.out.println("selectByExample "+getUserDepartment(userId).get(0));
 		System.out.println("checkData  ："+ checkData);
-		return R.ok();
+		return R.ok("申报成功!");
 	}
 	/**
 	 * 获取 isMiddleDept
@@ -279,9 +287,21 @@ public class ZXJHController extends AbstractController {
 		return Integer.parseInt(selectIsMiddleDeptMap.get("ismiddledept") + "");
 	}
 	
+	/**
+	 * 获取用户部门信息
+	 * @param userId
+	 * @return
+	 */
 	private List<UserDepartment> getUserDepartment(Integer userId){
 		UserDepartmentExample example=new UserDepartmentExample();
 		example.createCriteria().andUseridEqualTo(userId);
 		return  userDepartmentService.selectByExample(example);
+	}
+	
+	private void reportToLeader(Integer id,Integer status) {
+		ProjectRequestForm record=new ProjectRequestForm();
+		record.setId(id);
+		record.setStepstatus(status);
+		projectRequestFormService.updateByPrimaryKeySelective(record);
 	}
 }

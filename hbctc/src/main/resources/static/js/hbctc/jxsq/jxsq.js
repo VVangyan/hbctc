@@ -332,8 +332,8 @@ $(document).on("click","#add_request",function(){
 			success: function(r){
 				debugger;
 				hideReqModal()
-				init(paginationConf.currentPage);
 				alert("申请成功!")
+				init(paginationConf.currentPage);
 			}
 		});
 	}
@@ -813,6 +813,7 @@ var vm=new Vue({
 			    success: function(r){
 			    	$("#load_user_dept_Modal").modal("hide")
 			    	alert(r.msg)
+			    	init(paginationConf.currentPage)
 			    }
 			});
 		}
@@ -1122,7 +1123,7 @@ function init(pn){//页面初始化，加载数据
             				stepstatusName="业务主管部门<br>审核未通过"
             			}
             			if(stepstatus==9){
-            				stepstatusName="业务负责<br>审核中"
+            				stepstatusName="业务负责人<br>审核中"
             			}
             			if(stepstatus==11){
             				stepstatusName="业务负责<br>人审核通过"

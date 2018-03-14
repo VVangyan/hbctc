@@ -183,15 +183,14 @@ $(document).on("click","a[tag!='']",function(){
 	var tag=$(this).attr("tag")
 	var id=$(this).attr("id")
 	var stepstatus=$(this).attr("stepstatus")
-	var isten=$(this).attr("isten")
 	debugger
 	if(tag=="detail"){//详情
 		showDetail(id)
 		debugger
 	}
 	if(tag=="plan_YWJBR"){//审批
-		if(stepstatus==3||stepstatus==6){
-			checkPlan(id,isten)
+		if(stepstatus==13){
+			checkPlan(id)
 		}else{
 			alert("当前状态不能审批!")
 		}
@@ -200,22 +199,16 @@ $(document).on("click","a[tag!='']",function(){
 
 });
 
-var checkPlan=function(id,isten){
+var checkPlan=function(id){
 	$("#checkPlan_Modal").modal({backdrop:"static"})
-	if(isten==0){
-		$("#zbwj_div").hide()
-	}
-	$("#plan_fail").attr({"preid":id,"isten":isten})
-	$("#plan_pass").attr({"preid":id,"isten":isten})
-	
-	
+	$("#plan_fail").attr({"preid":id})
+	$("#plan_pass").attr({"preid":id})
 }
 
 $("#planStatus_div button").on("click",function(){
 	var btn=$(this).attr("id")
 	var planStatus=$(this).attr("planStatus")
 	var preid=$(this).attr("preid")
-	var isten=$(this).attr("isten")
 	var checkMsg={}
 	
 	if(isOk("#checkPlan__formId")){
@@ -224,14 +217,14 @@ $("#planStatus_div button").on("click",function(){
 		checkMsg.checkdate=$("#ymd01").val().trim()
 		checkMsg.preid=preid
 		checkMsg.id=planStatus
-		checkMsg.checkby=2
+		checkMsg.checkby=1
 		if(btn=="plan_fail"){
 			//sendData(checkMsg)
-			uploadFile(checkMsg,isten,btn)
+			uploadFile(checkMsg)
 		}
 		if(btn=="plan_pass"){
 			//sendData(checkMsg)
-			uploadFile(checkMsg,isten,btn)
+			uploadFile(checkMsg)
 		}
 	}
 });
@@ -243,40 +236,31 @@ function sendData(checkMsg){
 		data: JSON.stringify(checkMsg),
 		success:function(r){
 			$("#checkPlan_Modal").modal("hide")
+			alert(r.msg)
 			init(paginationConf.currentPage)
 			debugger
-			alert(r.msg)
 		}
 	})
 }
 
 //上传文件
-function uploadFile(checkMsg,isten,btn) {
+function uploadFile(checkMsg) {
 	var formData = new FormData();
 		formData.append('checkMsg', JSON.stringify(checkMsg)); 
-	if(isten==1||btn=="plan_pass"){
-		var files=$('#zbwj')[0].files[0];
-		debugger
-		if(files==undefined){
-			alert("请选择招标文件")
-			return false
-		}
-		formData.append('file', files);
-	}
-	
-	$.ajax({
-		url :"/checkPlanByYWJBR",
-		type : 'POST',
-		cache : false,
-		data : formData,
-		processData : false,
-		contentType : false,
-		success : function(r) {
-			$("#checkPlan_Modal").modal("hide")
-			init(paginationConf.currentPage)
-			alert(r.msg)
-		}
-	});
+		
+		$.ajax({
+			url :"/checkPlanByYWJBR",
+			type : 'POST',
+			cache : false,
+			data : formData,
+			processData : false,
+			contentType : false,
+			success : function(r) {
+				$("#checkPlan_Modal").modal("hide")
+				init(paginationConf.currentPage)
+				alert(r.msg)
+			}
+		});
 }
 function editRequestTable(id,stepstatus){
 	$("#edit_zxjh_Modal").modal({backdrop:"static"})
@@ -325,7 +309,8 @@ function loadDetailData(r){
 		 bc.removeClass("height")
 		 bm.text("")
 		 zb.removeClass("height")
-		 zc.text("")	
+		 zc.text("")
+	
 	$("#detail_bh1").val(r.bh1)//项目申报部门
 	$("#detail_bh2").val(r.bh2)//项目申报部门
 	$("#detail_dept").val(r.dept)//项目申报部门
@@ -405,6 +390,7 @@ function loadDetailData(r){
      $.parser.parse(tr1);//重新渲染样式
 	addRowSpanAndToTr().after(tr1)
 	
+	
 	 var clist=r.clist
 	 var num=0
 	 var nnm=0
@@ -442,27 +428,26 @@ function loadDetailData(r){
 			bm.append(uL1)
 			zc.append(uL2)
 
-	 }else{
-				var uL1 = $('<ul class="list-group" ></ul>')
-				var uL2 = $('<ul class="list-group" ></ul>')
-					if(num*42>120){
-						bc.css({"height":num*42+"px"})
-						bm.css({"height":num*42+"px"})
-					}else{
-						bc.css({"height":"130px"})
-						bm.css({"height":"130px"})
-					}
-					if(nnm*42>120){
-						zb.css({"height":nnm*42+"px"})
-						zc.css({"height":nnm*42+"px"})
-					}else{
-						zb.css({"height":"130px"})
-						zc.css({"height":"130px"})
-					}
-					bm.append(uL1)
-					zc.append(uL2)
+	}else{
+		var uL1 = $('<ul class="list-group" ></ul>')
+		var uL2 = $('<ul class="list-group" ></ul>')
+			if(num*42>120){
+				bc.css({"height":num*42+"px"})
+				bm.css({"height":num*42+"px"})
+			}else{
+				bc.css({"height":"130px"})
+				bm.css({"height":"130px"})
 			}
-	
+			if(nnm*42>120){
+				zb.css({"height":nnm*42+"px"})
+				zc.css({"height":nnm*42+"px"})
+			}else{
+				zb.css({"height":"130px"})
+				zc.css({"height":"130px"})
+			}
+			bm.append(uL1)
+			zc.append(uL2)
+	}
 	}
 	var agentno=r.agentno
 	if(agentno!=null){
@@ -557,51 +542,54 @@ function init(pn){//页面初始化，加载数据
         			
         			var stepstatus=parseInt(resultList[x].stepstatus)
         			stepstatusName=""
-            			if(stepstatus==1){
-            				stepstatusName="项目负责<br>人审核中"
-            			}
-            			if(stepstatus==2){
-            				stepstatusName="项目负责<br>人审核未通过"
-            			}
-            			if(stepstatus==3){
-            				stepstatusName="项目负责<br>人审核通过"
-            			}
-            			if(stepstatus==4){
-            				stepstatusName="业务经办<br>人审核未通过 "
-            			}
-            			if(stepstatus==5){
-            				stepstatusName="业务经办<br>人审核中"
-            			}
-            			if(stepstatus==6){
-            				stepstatusName="业务负责<br>人审核未通过 "
-            			}
-            			if(stepstatus==7){
-            				stepstatusName="业务经办<br>人审核通过"
-            			}
-            			if(stepstatus==8){
-            				stepstatusName="业务主管部门<br>审核未通过"
-            			}
-            			if(stepstatus==9){
-            				stepstatusName="业务负责<br>审核中"
-            			}
-            			if(stepstatus==11){
-            				stepstatusName="业务负责<br>人审核通过"
-            			}
-            			if(stepstatus==13){
-            				stepstatusName="业务主管部门<br>审核中"
-            			}
-            			if(stepstatus==15){
-            				stepstatusName="业务主管部门<br>审核通过"
-            			}
-            			if(stepstatus==17){
-            				stepstatusName="结项"
-            			}
-            			
+        			if(stepstatus==0){
+        				stepstatusName="待申请"
+        			}
+        			if(stepstatus==1){
+        				stepstatusName="项目负责<br>人审核中"
+        			}
+        			if(stepstatus==2){
+        				stepstatusName="项目负责<br>人审核未通过"
+        			}
+        			if(stepstatus==3){
+        				stepstatusName="项目负责<br>人审核通过"
+        			}
+        			if(stepstatus==4){
+        				stepstatusName="业务经办<br>人审核未通过 "
+        			}
+        			if(stepstatus==5){
+        				stepstatusName="业务经办<br>人审核中"
+        			}
+        			if(stepstatus==6){
+        				stepstatusName="业务负责<br>人审核未通过 "
+        			}
+        			if(stepstatus==7){
+        				stepstatusName="业务经办<br>人审核通过"
+        			}
+        			if(stepstatus==8){
+        				stepstatusName="业务主管部门<br>审核未通过"
+        			}
+        			if(stepstatus==9){
+        				stepstatusName="业务负责人<br>审核中"
+        			}
+        			if(stepstatus==11){
+        				stepstatusName="业务负责<br>人审核通过"
+        			}
+        			if(stepstatus==13){
+        				stepstatusName="业务主管部门<br>审核中"
+        			}
+        			if(stepstatus==15){
+        				stepstatusName="业务主管部门<br>审核通过"
+        			}
+        			if(stepstatus==17){
+        				stepstatusName="结项"
+        			}
+        			
         			var td8=$("<td></td>").append(stepstatusName)
         			
         			
         			var td9=$("<td></td>").append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='detail'>详情</a>"))					  
-					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='plan_YWJBR'  isten="+resultList[x].isten+" style='padding-left:5px'>审批</a>"))
+					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='plan_YWJBR'   style='padding-left:5px'>审批</a>"))
         								  
         			baseTrList.append(td1)
         					  .append(td2)

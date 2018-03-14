@@ -293,7 +293,7 @@ public class ZXJHController extends AbstractController {
 		} else if (stepstatus == 3) {// 只有当状态为3的时候才能发送给 业务主管部门或者业务经办人
 			// 1:业务主管部门 2:业务经办人
 			HashMap getismiddledept = getismiddledept(ztreeUserId);
-			int ismiddledept = (int) getismiddledept.get("ismiddledept"); 
+			Long ismiddledept = Long.parseLong(getismiddledept.get("ismiddledept")+""); 
 			if (ismiddledept == 1) {
 				reportToLeader(id, 13);// 业务主管部门
 				sendRequstToLeader(tmpmap);
@@ -306,12 +306,12 @@ public class ZXJHController extends AbstractController {
 		} else if (stepstatus == 15) {// 当状态为15可以发送给业务主管部门、项目负责人、业务经办人
 			// 1:业务主管部门 2:业务经办人
 			HashMap getismiddledept = getismiddledept(ztreeUserId);
-			int ismiddledept = (int) getismiddledept.get("ismiddledept"); 
+			Long ismiddledept = Long.parseLong(getismiddledept.get("ismiddledept")+""); 
 			if (ismiddledept == 1) {
 				reportToLeader(id, 13);// 业务主管部门
 				sendRequstToLeader(tmpmap);
-			} else if (ismiddledept == 2) {
-				reportToLeader(id, 5);// 业务经办人
+			} else if (ismiddledept == 2&&toroleId==4) {// 业务经办人
+				reportToLeader(id, 5);
 				sendRequstToLeader(tmpmap);
 			} else if (ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
 				reportToLeader(id, 1);// 项目负责人
@@ -322,8 +322,8 @@ public class ZXJHController extends AbstractController {
 		} else if (stepstatus == 7) {//状态为7只能发送给业务负责人审核
 			// 1:业务主管部门 2:业务经办人
 			HashMap getismiddledept = getismiddledept(ztreeUserId);
-			int ismiddledept = (int) getismiddledept.get("ismiddledept"); 
-			if(ismiddledept==2&&toroleId==6) {
+			Long ismiddledept = Long.parseLong(getismiddledept.get("ismiddledept")+""); 
+			if(ismiddledept==2&&toroleId==6) {//业务负责人审核
 				reportToLeader(id, 9);
 				sendRequstToLeader(tmpmap);
 			}else {

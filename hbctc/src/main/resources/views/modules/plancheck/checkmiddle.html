@@ -74,24 +74,24 @@
 	                        <table class="table table-bordered"  id="detail_table">
 	                            <tr>
 	                                <td  colspan="2" width="20%"><b>项目申报部门</b> </td>
-	                                <td colspan="8"><input type="text" id="detail_dept" style="width: 682px"   class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="8"><input type="text" id="detail_dept" style="width: 682px"   ></td>
 	                            </tr>
 	                            <tr>
 	                                <td  colspan="2" width="20%"><b>项目申报部门<br>负责人</b></td>
-	                                <td width="20%"><input type="text" id="detail_deptpeo" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td width="20%"><input type="text" id="detail_deptpeo" style="width: 150px" ></td>
 	                                <td ><b>联系方式</b></td>
-	                                <td colspan="6" width="50%"><input type="text" id="detail_deptpeoinfo" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="6" width="50%"><input type="text" id="detail_deptpeoinfo" style="width: 400px" ></td>
 	                            </tr>
 	                            <tr>
 	                                <td rowspan="2" style="text-align: center;line-height: 74px"><b>一</b></td>
 	                                <td><b>项目名称</b></td>
-	                                <td colspan="8"><input type="text" id="detail_projectname" style="width: 682px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="8"><input type="text" id="detail_projectname" style="width: 682px" ></td>
 	                            </tr>
 	                            <tr>
 	                                <td><b>项目联系人</b></td>
-	                                <td><input type="text" id="detail_projectcontact" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td><input type="text" id="detail_projectcontact" style="width: 150px" ></td>
 	                                <td><b>联系方式</b></td>
-	                                <td colspan="6"><input type="text" id="detail_projectpeoinfo" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="6"><input type="text" id="detail_projectpeoinfo" style="width: 400px" ></td>
 	                            </tr>
 	                            <tr>
 	                                <td style="text-align: center"><b>二</b></td>
@@ -114,7 +114,7 @@
 	                                <td colspan="2"><b>申请项目金额（元）</b></td>
 	                            </tr>
 	                            <tr>
-	                                <td colspan="5"><input type="text" id="detail_moneyway" style="width: 500px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="5"><input type="text" id="detail_moneyway" style="width: 500px" ></td>
 	                                <td colspan="2"><input type="text" id="detail_premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
 	                                <td colspan="2"><input type="text" id="detail_questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
 	                            </tr>
@@ -151,7 +151,7 @@
 							                                    说明</b>
 	                                </td>
 	                                <td colspan="9">
-	                                	<textarea rows="4" style="width: 800px;" id="detail_others" class="easyui-validatebox" required="true" missingMessage="不能为空"></textarea>
+	                                	<textarea rows="4" style="width: 800px;" id="detail_others" ></textarea>
 	                                </td>
 	                            </tr>
 	                        </table>
@@ -210,17 +210,9 @@
 						<div class="modal-body"  id="modal_body_div"  >
 						说明:<textarea rows="3" class="easyui-validatebox" style="width: 523px" required="true" missingMessage="不能为空" id="check_Msg"></textarea>
 						</div>
-						<div class="jeinpbox" style="padding-left: 17px;">
+						<div class="jeinpbox"  style="padding-left: 17px;">
 						 日期:<input type="text" class="jeinput easyui-validatebox" id="ymd01" placeholder="" required="true" missingMessage="不能为空" style="width: 523px;text-align: center;">
 						</div>
-						<div style="width: 580px;height: 80px;padding-top: 53px"  id="zbwj_div">
-					    	<div style="float: left;width: 120px;padding-left: 17px">
-					    		选择招标文件:
-					    	</div>
-					    	<div style="float: right;width: 460px;">
-						    	<input type="file" id="zbwj" name="zbwj" style="width: 454px">
-					    	</div>
-					  	</div>
                     </form>
                     <div class="modal-footer" style="text-align: center;" id="planStatus_div">
                         <button type="button" class="btn btn-default"  planStatus="8" id="plan_fail" >审批未过</button>

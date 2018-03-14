@@ -189,8 +189,11 @@ $(document).on("click","a[tag!='']",function(){
 		showDetail(id)
 		debugger
 	}
+	if(tag=="request"){//申报
+		loadUserDeptModal(id,stepstatus)
+	}
 	if(tag=="plan_YWJBR"){//审批
-		if(stepstatus==3||stepstatus==6){
+		if(stepstatus==5){
 			checkPlan(id,isten)
 		}else{
 			alert("当前状态不能审批!")
@@ -243,9 +246,9 @@ function sendData(checkMsg){
 		data: JSON.stringify(checkMsg),
 		success:function(r){
 			$("#checkPlan_Modal").modal("hide")
-			init(paginationConf.currentPage)
-			debugger
 			alert(r.msg)
+			debugger
+			init(paginationConf.currentPage)
 		}
 	})
 }
@@ -273,8 +276,8 @@ function uploadFile(checkMsg,isten,btn) {
 		contentType : false,
 		success : function(r) {
 			$("#checkPlan_Modal").modal("hide")
-			init(paginationConf.currentPage)
 			alert(r.msg)
+			init(paginationConf.currentPage)
 		}
 	});
 }
@@ -294,6 +297,91 @@ function editRequestTable(id,stepstatus){
 	debugger
 }
 var  tmpArray=[]//  修改时候临时 id的数组
+
+
+
+
+
+function loadUserDeptModal(id,stepstatus){
+	$("#load_user_dept_Modal").modal({backdrop:"static"})
+	vm.stepstatus=stepstatus
+	vm.id=id
+	$.get(baseURL + "getMapResult", function(r){
+		debugger
+		var zDiv = $("#tree")
+	    zDiv = $.fn.zTree.init(zDiv, setting, r);
+	    //展开所有节点
+		zDiv.expandAll(true);
+	});
+};
+
+var ztree;
+var setting = {
+	data: {
+		simpleData: {
+			enable: true,
+			idKey: "deptno",
+			pIdKey: "preid",
+			rootPId: "-1"
+		}
+	},
+	check: {
+        enable: true,
+        chkStyle: "radio",  //单选框
+        radioType: "all"   //对所有节点设置单选
+    }
+};
+var vm=new Vue({
+	el: '#app',
+	data: {
+		message: 'Runoob!',
+		stepstatus:null,
+		id:null
+	},
+	methods: {
+		addToSend: function() {
+			var treeObj = $.fn.zTree.getZTreeObj("tree");
+            var nodes = treeObj.getCheckedNodes(true);
+            var stepstatus=this.stepstatus;
+            var id=parseInt(this.id);
+            debugger
+            if(nodes.length>0&&nodes[0].preid!="-1"){
+            	var ztreDeptno=nodes[0].preid//detpno  
+            	var ztreUserid=nodes[0].userid//userid 
+            	var checkData={}
+	            	checkData.ztreDeptno=ztreDeptno
+	            	checkData.ztreUserid=ztreUserid
+	            	checkData.stepstatus=stepstatus
+	            	checkData.id=id//当前选择记录的id
+	            	vm.sendCheckData(checkData)
+            }else{
+            	alert("请选择发送人")
+            }
+            debugger
+		},
+		sendCheckData:function(checkData){
+			var url="sendCheckData"
+			$.ajax({
+				type: "POST",
+			    url: baseURL + url,
+                contentType: "application/json",
+			    data: JSON.stringify(checkData),
+			    success: function(r){
+			    	$("#load_user_dept_Modal").modal("hide")
+			    	alert(r.msg)
+			    	init(paginationConf.currentPage)
+			    }
+			});
+		}
+	}
+})
+
+
+
+
+
+
+
 
 function showDetail(id){
 	$("#detail_zxjh_Modal").modal({backdrop:"static"})
@@ -462,7 +550,6 @@ function loadDetailData(r){
 				bm.append(uL1)
 				zc.append(uL2)
 		}
-	}
 	
 	}
 	var agentno=r.agentno
@@ -583,7 +670,7 @@ function init(pn){//页面初始化，加载数据
             				stepstatusName="业务主管部门<br>审核未通过"
             			}
             			if(stepstatus==9){
-            				stepstatusName="业务负责<br>审核中"
+            				stepstatusName="业务负责人<br>审核中"
             			}
             			if(stepstatus==11){
             				stepstatusName="业务负责<br>人审核通过"
@@ -604,6 +691,7 @@ function init(pn){//页面初始化，加载数据
         			
         			var td9=$("<td></td>").append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='detail'>详情</a>"))					  
 					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='plan_YWJBR'  isten="+resultList[x].isten+" style='padding-left:5px'>审批</a>"))
+					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='request'   style='padding-left:5px'>申报</a>"));
         								  
         			baseTrList.append(td1)
         					  .append(td2)

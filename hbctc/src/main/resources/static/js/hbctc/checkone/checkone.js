@@ -236,9 +236,9 @@ function sendData(checkMsg){
 		data: JSON.stringify(checkMsg),
 		success:function(r){
 			$("#checkPlan_Modal").modal("hide")
+			alert(r.msg)
 			init(paginationConf.currentPage)
 			debugger
-			alert(r.msg)
 		}
 	})
 }

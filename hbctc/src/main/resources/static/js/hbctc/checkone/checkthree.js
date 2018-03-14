@@ -189,7 +189,7 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="plan_YWJBR"){//审批
-		if(stepstatus==5){
+		if(stepstatus==9){
 			checkPlan(id)
 		}else{
 			alert("当前状态不能审批!")
@@ -312,8 +312,8 @@ function uploadFile(checkMsg) {
 			contentType : false,
 			success : function(r) {
 				$("#checkPlan_Modal").modal("hide")
-				init(paginationConf.currentPage)
 				alert(r.msg)
+				init(paginationConf.currentPage)
 			}
 		});
 }
@@ -621,7 +621,7 @@ function init(pn){//页面初始化，加载数据
             				stepstatusName="业务主管部门<br>审核未通过"
             			}
             			if(stepstatus==9){
-            				stepstatusName="业务负责<br>审核中"
+            				stepstatusName="业务负责人<br>审核中"
             			}
             			if(stepstatus==11){
             				stepstatusName="业务负责<br>人审核通过"

@@ -231,7 +231,34 @@
         </div>
     </div>
 
-
+	<!--加载用户组织  -->
+    <div id="load_user_dept_modal_div">
+        <!--ths 修改模态框（Modal） -->
+        <div class="modal fade" id="load_user_dept_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm"  id="app">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h5 class="modal-title" id="myModalLabel">
+                               	选择用户
+                        </h5>
+                    </div>
+                    <form  id="load_user_dept_formId">
+               			<div  style="margin: 0 auto;overflow: scroll;overflow-x:hidden;height: 200px">
+							<ul id="tree" class="ztree">
+							</ul>
+						</div>
+                    </form>
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" @click="addToSend"  :stepstatus="stepstatus"  :id="id">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
 </div>
 <link rel="stylesheet" href="../../../css/hbctc/jxsq/jxsq.css">
 <script src="../../../js/hbctc/jxsq/BuyItemInfo.js"></script>

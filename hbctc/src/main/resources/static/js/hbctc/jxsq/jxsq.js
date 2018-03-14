@@ -811,6 +811,7 @@ var vm=new Vue({
                 contentType: "application/json",
 			    data: JSON.stringify(checkData),
 			    success: function(r){
+			    	$("#load_user_dept_Modal").modal("hide")
 			    	alert(r.msg)
 			    }
 			});

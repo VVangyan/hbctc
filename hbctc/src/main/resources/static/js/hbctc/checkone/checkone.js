@@ -428,6 +428,25 @@ function loadDetailData(r){
 			bm.append(uL1)
 			zc.append(uL2)
 
+	}else{
+		var uL1 = $('<ul class="list-group" ></ul>')
+		var uL2 = $('<ul class="list-group" ></ul>')
+			if(num*42>120){
+				bc.css({"height":num*42+"px"})
+				bm.css({"height":num*42+"px"})
+			}else{
+				bc.css({"height":"130px"})
+				bm.css({"height":"130px"})
+			}
+			if(nnm*42>120){
+				zb.css({"height":nnm*42+"px"})
+				zc.css({"height":nnm*42+"px"})
+			}else{
+				zb.css({"height":"130px"})
+				zc.css({"height":"130px"})
+			}
+			bm.append(uL1)
+			zc.append(uL2)
 	}
 	}
 	var agentno=r.agentno

@@ -1,5 +1,6 @@
 package io.renren.modules.hbctc.controller;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.annotation.JsonFormat.Value;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -26,11 +29,11 @@ import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.BuyItemInfoExample;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.CheckMsgExample;
-import io.renren.modules.hbctc.entity.FileUploadPath;
-import io.renren.modules.hbctc.entity.FileUploadPathExample;
 import io.renren.modules.hbctc.entity.Numfactory;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
+import io.renren.modules.hbctc.entity.RequestBox;
+import io.renren.modules.hbctc.entity.RequestBoxExample;
 import io.renren.modules.hbctc.entity.UserDepartment;
 import io.renren.modules.hbctc.entity.UserDepartmentExample;
 import io.renren.modules.hbctc.service.AgencyService;
@@ -39,8 +42,12 @@ import io.renren.modules.hbctc.service.CheckMsgService;
 import io.renren.modules.hbctc.service.FileUploadPathService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
+import io.renren.modules.hbctc.service.RequestBoxService;
 import io.renren.modules.hbctc.service.UserDepartmentService;
 import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.entity.SysUserEntity;
+import io.renren.modules.sys.service.SysUserRoleService;
+import io.renren.modules.sys.service.SysUserService;
 
 /**
  * @Description:执行计划controller
@@ -70,6 +77,15 @@ public class ZXJHController extends AbstractController {
 	
 	@Autowired
 	UserDepartmentService userDepartmentService;
+	
+	@Autowired
+	SysUserRoleService sysUserRoleService;	
+	
+	@Autowired
+	SysUserService sysUserService;	
+	
+	@Autowired
+	RequestBoxService requestBoxService;
 	
 	@SysLog("提交申请")
 	@Transactional
@@ -118,13 +134,25 @@ public class ZXJHController extends AbstractController {
 	@GetMapping("/getReqFormList")
 	public Map<String, Object> getReqFormList(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		Long userId = getUserId();
 		
 		System.out.println("pn >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+pn);
 		PageHelper.startPage(pn, 10);
-		ProjectRequestFormExample example=new ProjectRequestFormExample();
-		example.createCriteria().andUseridEqualTo(getUserId());//根据用户id来过滤
-		List<ProjectRequestForm> resultList = projectRequestFormService.selectSomeByExample(example);
 
+		String deptno = getUserDepartment(Integer.parseInt(getUserId()+"")).get(0).getDeptno();
+		
+		Long roleId = getRoleIdByUserId(userId);
+		
+		List<ProjectRequestForm> resultList=new ArrayList<ProjectRequestForm>();
+		
+		
+		List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));
+		List idList=new ArrayList<>();
+		for (RequestBox r : requestBox) {
+			idList.add(r.getFromid());
+		}
+		resultList= getProjects(userId,idList,roleId);
+		
 		@SuppressWarnings("rawtypes")
 		PageInfo page = new PageInfo(resultList, 10);
 		resultMap.put("page", page);
@@ -137,7 +165,7 @@ public class ZXJHController extends AbstractController {
 	@GetMapping("/getDetails")
 	public ProjectRequestForm getDetails(Integer id) {
 		ProjectRequestFormExample example1 =new ProjectRequestFormExample();
-								  example1.createCriteria().andIdEqualTo(id).andUseridEqualTo(getUserId());
+								  example1.createCriteria().andIdEqualTo(id);
 		List<ProjectRequestForm> selectByExample1 = projectRequestFormService.selectByExample(example1);
 		BuyItemInfoExample example2=new BuyItemInfoExample();
 						   example2.createCriteria().andPreidEqualTo(id);
@@ -224,13 +252,35 @@ public class ZXJHController extends AbstractController {
 		return selectMapResutlt;
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/sendCheckData")
 	public R sendCheckData(@RequestBody HashMap checkData){
 		Integer userId = Integer.parseInt(getUserId()+"");
 		Integer ztreeUserId=Integer.parseInt(checkData.get("ztreUserid")+"");
-		String ztreDeptno=(String) checkData.get("ztreDeptno");
+		String  ztreDeptno=(String) checkData.get("ztreDeptno");
 		Integer stepstatus=  Integer.parseInt(checkData.get("stepstatus")+"");
 		Integer id = Integer.parseInt(checkData.get("id")+"");
+		String fromusername = getUser().getUsername();
+		Long fromroleid = getRoleIdByUserId(Long.parseLong(userId+""));//接收人的 roleid
+		Long toroleId = getRoleIdByUserId(Long.parseLong(ztreeUserId+""));//接收人的 roleid
+		
+		SysUserEntity queryObject = sysUserService.queryObject(Long.parseLong(ztreeUserId+""));
+		
+		HashMap tmpmap=new HashMap();
+				tmpmap.put("fromid",id);
+				tmpmap.put("fromuserid",userId);
+				tmpmap.put("fromusername",fromusername);
+				tmpmap.put("fromroleid",fromroleid);
+				tmpmap.put("fromdeptno",getUserDepartment(userId).get(0).getDeptno());
+				tmpmap.put("fromdeptname",getUserDepartment(userId).get(0).getDetpname());
+				tmpmap.put("fromdate",new Date());
+				
+				tmpmap.put("touserid",ztreeUserId);
+				tmpmap.put("tousername",queryObject.getUsername());
+				tmpmap.put("toroleid",toroleId);
+				tmpmap.put("todeptno",ztreDeptno);
+				tmpmap.put("todeptname",getUserDepartment(userId).get(0).getDetpname());
+				tmpmap.put("checkstatus",0);
 		
 		if(userId==ztreeUserId) {//不能选择自己
 			return R.error("请选择正确的审批人");
@@ -238,33 +288,43 @@ public class ZXJHController extends AbstractController {
 		//状态为0,2,4,6,8的时候(需要修改正确后)只能发送给项目负责人
 		if((stepstatus==0||stepstatus==2||stepstatus==4||stepstatus==6||stepstatus==8)&&ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
 			reportToLeader(id, 1);
+			sendRequstToLeader(tmpmap);
 		} else if (stepstatus == 3) {// 只有当状态为3的时候才能发送给 业务主管部门或者业务经办人
 			// 1:业务主管部门 2:业务经办人
-			int ismiddledept = getismiddledept(ztreeUserId);
+			HashMap getismiddledept = getismiddledept(ztreeUserId);
+			int ismiddledept = (int) getismiddledept.get("ismiddledept"); 
 			if (ismiddledept == 1) {
 				reportToLeader(id, 13);// 业务主管部门
+				sendRequstToLeader(tmpmap);
 			} else if (ismiddledept == 2) {
 				reportToLeader(id, 5);// 业务经办人
+				sendRequstToLeader(tmpmap);
 			} else {
 				return R.error("请选择正确的审批人");
 			}
 		} else if (stepstatus == 15) {// 当状态为15可以发送给业务主管部门、项目负责人、业务经办人
 			// 1:业务主管部门 2:业务经办人
-			int ismiddledept = getismiddledept(ztreeUserId);
+			HashMap getismiddledept = getismiddledept(ztreeUserId);
+			int ismiddledept = (int) getismiddledept.get("ismiddledept"); 
 			if (ismiddledept == 1) {
 				reportToLeader(id, 13);// 业务主管部门
+				sendRequstToLeader(tmpmap);
 			} else if (ismiddledept == 2) {
 				reportToLeader(id, 5);// 业务经办人
+				sendRequstToLeader(tmpmap);
 			} else if (ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
 				reportToLeader(id, 1);// 项目负责人
+				sendRequstToLeader(tmpmap);
 			} else {
 				return R.error("请选择正确的审批人");
 			}
 		} else if (stepstatus == 7) {//状态为7只能发送给业务负责人审核
 			// 1:业务主管部门 2:业务经办人
-			int ismiddledept = getismiddledept(ztreeUserId);
-			if(ismiddledept==2) {
+			HashMap getismiddledept = getismiddledept(ztreeUserId);
+			int ismiddledept = (int) getismiddledept.get("ismiddledept"); 
+			if(ismiddledept==2&&toroleId==6) {
 				reportToLeader(id, 9);
+				sendRequstToLeader(tmpmap);
 			}else {
 				return R.error("请选择正确的审批人");
 			}
@@ -282,9 +342,9 @@ public class ZXJHController extends AbstractController {
 	 * @param ztreeUserId
 	 * @return
 	 */
-	private  int getismiddledept(Integer ztreeUserId) {
+	private  HashMap getismiddledept(Integer ztreeUserId) {
 		HashMap<String, Object> selectIsMiddleDeptMap = userDepartmentService.selectIsMiddleDeptMap(ztreeUserId);
-		return Integer.parseInt(selectIsMiddleDeptMap.get("ismiddledept") + "");
+		return selectIsMiddleDeptMap;
 	}
 	
 	/**
@@ -297,11 +357,46 @@ public class ZXJHController extends AbstractController {
 		example.createCriteria().andUseridEqualTo(userId);
 		return  userDepartmentService.selectByExample(example);
 	}
-	
+	/**
+	 * 发送审批
+	 * @param id
+	 * @param status
+	 */
 	private void reportToLeader(Integer id,Integer status) {
 		ProjectRequestForm record=new ProjectRequestForm();
 		record.setId(id);
 		record.setStepstatus(status);
 		projectRequestFormService.updateByPrimaryKeySelective(record);
+	}
+	/**
+	 * 根据用户id 获取角色id
+	 * @param userId
+	 * @return
+	 */
+	private  Long getRoleIdByUserId(Long userId) {
+		return sysUserRoleService.queryRoleIdList(userId).get(0);
+	}
+	
+	private List<ProjectRequestForm> getProjects(Long userId,List ids,Long roleId) {
+		ProjectRequestFormExample example =new ProjectRequestFormExample();
+		if(roleId==2) {//项目经办人
+			example.createCriteria().andUseridEqualTo(userId);// 根据用户id来过滤
+		}else {
+			example.createCriteria().andIdIn(ids);
+		}
+		return projectRequestFormService.selectSomeByExample(example);
+	}
+	
+	private List<RequestBox> getRequestBox(Integer toUserid) {
+		RequestBoxExample example=new RequestBoxExample();
+		example.createCriteria().andTouseridEqualTo(toUserid);
+		return requestBoxService.selectByExample(example);
+	}
+	
+	private void sendRequstToLeader(HashMap dataMap) {
+		JSONObject jo=new JSONObject(); 
+		           jo.putAll(dataMap);
+		RequestBox javaObject = JSONObject.toJavaObject(jo, RequestBox.class);  
+		requestBoxService.insertSelective(javaObject);
 	}
 }

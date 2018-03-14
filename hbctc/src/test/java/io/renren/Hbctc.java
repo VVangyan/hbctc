@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -20,12 +21,13 @@ import io.renren.modules.hbctc.entity.FileUploadPathExample;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample.Criteria;
+import io.renren.modules.hbctc.entity.RequestBox;
 import io.renren.modules.hbctc.service.BuyItemInfoService;
 import io.renren.modules.hbctc.service.FileUploadPathService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
 import io.renren.modules.hbctc.service.UserDepartmentService;
-import io.renren.modules.sys.controller.AbstractController;
+import io.renren.modules.sys.service.SysUserRoleService;
 
 
 @RunWith(SpringRunner.class)
@@ -42,6 +44,9 @@ public class Hbctc {
 	FileUploadPathService fileUploadPathService;
 	@Autowired  
 	UserDepartmentService userDepartmentService;	
+	
+	@Autowired
+	SysUserRoleService sysUserRoleService;
     @Test
     public void test() {
 		ProjectRequestForm record=new ProjectRequestForm(
@@ -154,4 +159,61 @@ public class Hbctc {
     	HashMap<String, Object> selectIsMiddleDeptMap = userDepartmentService.selectIsMiddleDeptMap(6);
     	System.out.println(selectIsMiddleDeptMap);
     }
+    
+    
+    @Test
+    public void getUserRoleById() {
+    	List<Long> queryRoleIdList = sysUserRoleService.queryRoleIdList(4L);
+    	System.out.println(queryRoleIdList.get(0));
+    }
+    
+   
+    
+    
+    
+   @Test
+   public void testMapToBean() {
+	   
+		HashMap tmpmap=new HashMap();
+				tmpmap.put("fromid",1);
+				tmpmap.put("fromuserid",1);
+				tmpmap.put("fromusername",123);
+				tmpmap.put("fromroleid",1);
+				tmpmap.put("fromdeptno","DEPT");
+				tmpmap.put("fromdeptname","DEPT");
+				tmpmap.put("fromdate",new Date());
+				
+				tmpmap.put("touserid",1);
+				tmpmap.put("tousername","DEPT");
+				tmpmap.put("toroleid",1);
+				tmpmap.put("todeptno","DEPT");
+				tmpmap.put("todeptname","DEPT");
+				tmpmap.put("checkstatus",0);
+	   
+	   
+	   
+	   
+	   
+	   
+	   JSONObject jo=new JSONObject(); 
+       jo.putAll(tmpmap);
+       RequestBox javaObject = JSONObject.toJavaObject(jo, RequestBox.class); 
+      System.out.println(javaObject);
+   }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }

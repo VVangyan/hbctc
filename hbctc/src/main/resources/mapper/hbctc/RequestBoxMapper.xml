@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.renren.modules.hbctc.dao.RequestBoxMapper">
+  <resultMap id="BaseResultMap" type="io.renren.modules.hbctc.entity.RequestBox">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="fromid" jdbcType="INTEGER" property="fromid" />
+    <result column="fromuserid" jdbcType="INTEGER" property="fromuserid" />
+    <result column="fromusername" jdbcType="VARCHAR" property="fromusername" />
+    <result column="fromroleid" jdbcType="INTEGER" property="fromroleid" />
+    <result column="fromdeptno" jdbcType="VARCHAR" property="fromdeptno" />
+    <result column="fromdeptname" jdbcType="VARCHAR" property="fromdeptname" />
+    <result column="fromdate" jdbcType="TIMESTAMP" property="fromdate" />
+    <result column="touserid" jdbcType="INTEGER" property="touserid" />
+    <result column="tousername" jdbcType="VARCHAR" property="tousername" />
+    <result column="toroleid" jdbcType="INTEGER" property="toroleid" />
+    <result column="todeptno" jdbcType="VARCHAR" property="todeptno" />
+    <result column="todeptname" jdbcType="VARCHAR" property="todeptname" />
+    <result column="checkstatus" jdbcType="INTEGER" property="checkstatus" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, fromid, fromuserid, fromusername, fromroleid, fromdeptno, fromdeptname, fromdate, 
+    touserid, tousername, toroleid, todeptno, todeptname, checkstatus
+  </sql>
+  <select id="selectByExample" parameterType="io.renren.modules.hbctc.entity.RequestBoxExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from hbctc_request_box
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from hbctc_request_box
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from hbctc_request_box
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="io.renren.modules.hbctc.entity.RequestBoxExample">
+    delete from hbctc_request_box
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="io.renren.modules.hbctc.entity.RequestBox">
+    insert into hbctc_request_box (id, fromid, fromuserid, 
+      fromusername, fromroleid, fromdeptno, 
+      fromdeptname, fromdate, touserid, 
+      tousername, toroleid, todeptno, 
+      todeptname, checkstatus)
+    values (#{id,jdbcType=INTEGER}, #{fromid,jdbcType=INTEGER}, #{fromuserid,jdbcType=INTEGER}, 
+      #{fromusername,jdbcType=VARCHAR}, #{fromroleid,jdbcType=INTEGER}, #{fromdeptno,jdbcType=VARCHAR}, 
+      #{fromdeptname,jdbcType=VARCHAR}, #{fromdate,jdbcType=TIMESTAMP}, #{touserid,jdbcType=INTEGER}, 
+      #{tousername,jdbcType=VARCHAR}, #{toroleid,jdbcType=INTEGER}, #{todeptno,jdbcType=VARCHAR}, 
+      #{todeptname,jdbcType=VARCHAR}, #{checkstatus,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="io.renren.modules.hbctc.entity.RequestBox">
+    insert into hbctc_request_box
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="fromid != null">
+        fromid,
+      </if>
+      <if test="fromuserid != null">
+        fromuserid,
+      </if>
+      <if test="fromusername != null">
+        fromusername,
+      </if>
+      <if test="fromroleid != null">
+        fromroleid,
+      </if>
+      <if test="fromdeptno != null">
+        fromdeptno,
+      </if>
+      <if test="fromdeptname != null">
+        fromdeptname,
+      </if>
+      <if test="fromdate != null">
+        fromdate,
+      </if>
+      <if test="touserid != null">
+        touserid,
+      </if>
+      <if test="tousername != null">
+        tousername,
+      </if>
+      <if test="toroleid != null">
+        toroleid,
+      </if>
+      <if test="todeptno != null">
+        todeptno,
+      </if>
+      <if test="todeptname != null">
+        todeptname,
+      </if>
+      <if test="checkstatus != null">
+        checkstatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="fromid != null">
+        #{fromid,jdbcType=INTEGER},
+      </if>
+      <if test="fromuserid != null">
+        #{fromuserid,jdbcType=INTEGER},
+      </if>
+      <if test="fromusername != null">
+        #{fromusername,jdbcType=VARCHAR},
+      </if>
+      <if test="fromroleid != null">
+        #{fromroleid,jdbcType=INTEGER},
+      </if>
+      <if test="fromdeptno != null">
+        #{fromdeptno,jdbcType=VARCHAR},
+      </if>
+      <if test="fromdeptname != null">
+        #{fromdeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromdate != null">
+        #{fromdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="touserid != null">
+        #{touserid,jdbcType=INTEGER},
+      </if>
+      <if test="tousername != null">
+        #{tousername,jdbcType=VARCHAR},
+      </if>
+      <if test="toroleid != null">
+        #{toroleid,jdbcType=INTEGER},
+      </if>
+      <if test="todeptno != null">
+        #{todeptno,jdbcType=VARCHAR},
+      </if>
+      <if test="todeptname != null">
+        #{todeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="checkstatus != null">
+        #{checkstatus,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="io.renren.modules.hbctc.entity.RequestBoxExample" resultType="java.lang.Long">
+    select count(*) from hbctc_request_box
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update hbctc_request_box
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.fromid != null">
+        fromid = #{record.fromid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fromuserid != null">
+        fromuserid = #{record.fromuserid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fromusername != null">
+        fromusername = #{record.fromusername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromroleid != null">
+        fromroleid = #{record.fromroleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.fromdeptno != null">
+        fromdeptno = #{record.fromdeptno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromdeptname != null">
+        fromdeptname = #{record.fromdeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fromdate != null">
+        fromdate = #{record.fromdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.touserid != null">
+        touserid = #{record.touserid,jdbcType=INTEGER},
+      </if>
+      <if test="record.tousername != null">
+        tousername = #{record.tousername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.toroleid != null">
+        toroleid = #{record.toroleid,jdbcType=INTEGER},
+      </if>
+      <if test="record.todeptno != null">
+        todeptno = #{record.todeptno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.todeptname != null">
+        todeptname = #{record.todeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.checkstatus != null">
+        checkstatus = #{record.checkstatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update hbctc_request_box
+    set id = #{record.id,jdbcType=INTEGER},
+      fromid = #{record.fromid,jdbcType=INTEGER},
+      fromuserid = #{record.fromuserid,jdbcType=INTEGER},
+      fromusername = #{record.fromusername,jdbcType=VARCHAR},
+      fromroleid = #{record.fromroleid,jdbcType=INTEGER},
+      fromdeptno = #{record.fromdeptno,jdbcType=VARCHAR},
+      fromdeptname = #{record.fromdeptname,jdbcType=VARCHAR},
+      fromdate = #{record.fromdate,jdbcType=TIMESTAMP},
+      touserid = #{record.touserid,jdbcType=INTEGER},
+      tousername = #{record.tousername,jdbcType=VARCHAR},
+      toroleid = #{record.toroleid,jdbcType=INTEGER},
+      todeptno = #{record.todeptno,jdbcType=VARCHAR},
+      todeptname = #{record.todeptname,jdbcType=VARCHAR},
+      checkstatus = #{record.checkstatus,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="io.renren.modules.hbctc.entity.RequestBox">
+    update hbctc_request_box
+    <set>
+      <if test="fromid != null">
+        fromid = #{fromid,jdbcType=INTEGER},
+      </if>
+      <if test="fromuserid != null">
+        fromuserid = #{fromuserid,jdbcType=INTEGER},
+      </if>
+      <if test="fromusername != null">
+        fromusername = #{fromusername,jdbcType=VARCHAR},
+      </if>
+      <if test="fromroleid != null">
+        fromroleid = #{fromroleid,jdbcType=INTEGER},
+      </if>
+      <if test="fromdeptno != null">
+        fromdeptno = #{fromdeptno,jdbcType=VARCHAR},
+      </if>
+      <if test="fromdeptname != null">
+        fromdeptname = #{fromdeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="fromdate != null">
+        fromdate = #{fromdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="touserid != null">
+        touserid = #{touserid,jdbcType=INTEGER},
+      </if>
+      <if test="tousername != null">
+        tousername = #{tousername,jdbcType=VARCHAR},
+      </if>
+      <if test="toroleid != null">
+        toroleid = #{toroleid,jdbcType=INTEGER},
+      </if>
+      <if test="todeptno != null">
+        todeptno = #{todeptno,jdbcType=VARCHAR},
+      </if>
+      <if test="todeptname != null">
+        todeptname = #{todeptname,jdbcType=VARCHAR},
+      </if>
+      <if test="checkstatus != null">
+        checkstatus = #{checkstatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="io.renren.modules.hbctc.entity.RequestBox">
+    update hbctc_request_box
+    set fromid = #{fromid,jdbcType=INTEGER},
+      fromuserid = #{fromuserid,jdbcType=INTEGER},
+      fromusername = #{fromusername,jdbcType=VARCHAR},
+      fromroleid = #{fromroleid,jdbcType=INTEGER},
+      fromdeptno = #{fromdeptno,jdbcType=VARCHAR},
+      fromdeptname = #{fromdeptname,jdbcType=VARCHAR},
+      fromdate = #{fromdate,jdbcType=TIMESTAMP},
+      touserid = #{touserid,jdbcType=INTEGER},
+      tousername = #{tousername,jdbcType=VARCHAR},
+      toroleid = #{toroleid,jdbcType=INTEGER},
+      todeptno = #{todeptno,jdbcType=VARCHAR},
+      todeptname = #{todeptname,jdbcType=VARCHAR},
+      checkstatus = #{checkstatus,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

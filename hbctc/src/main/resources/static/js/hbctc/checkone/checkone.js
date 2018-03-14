@@ -558,13 +558,31 @@ function init(pn){//页面初始化，加载数据
         				stepstatusName="业务经办<br>人审核未通过 "
         			}
         			if(stepstatus==5){
-        				stepstatusName="业务经办<br>人审核通过"
+        				stepstatusName="业务经办<br>人审核中"
         			}
         			if(stepstatus==6){
         				stepstatusName="业务负责<br>人审核未通过 "
         			}
         			if(stepstatus==7){
+        				stepstatusName="业务经办<br>人审核通过"
+        			}
+        			if(stepstatus==8){
+        				stepstatusName="业务主管部门<br>审核未通过"
+        			}
+        			if(stepstatus==9){
+        				stepstatusName="业务负责<br>审核中"
+        			}
+        			if(stepstatus==11){
         				stepstatusName="业务负责<br>人审核通过"
+        			}
+        			if(stepstatus==13){
+        				stepstatusName="业务主管部门<br>审核中"
+        			}
+        			if(stepstatus==15){
+        				stepstatusName="业务主管部门<br>审核通过"
+        			}
+        			if(stepstatus==17){
+        				stepstatusName="结项"
         			}
         			
         			var td8=$("<td></td>").append(stepstatusName)

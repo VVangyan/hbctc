@@ -14,9 +14,12 @@ import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.FileUploadPath;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
+import io.renren.modules.hbctc.entity.RequestBox;
+import io.renren.modules.hbctc.entity.RequestBoxExample;
 import io.renren.modules.hbctc.service.CheckMsgService;
 import io.renren.modules.hbctc.service.FileUploadPathService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
+import io.renren.modules.hbctc.service.RequestBoxService;
 import io.renren.modules.hbctc.util.FileUpload;
 import io.renren.modules.sys.controller.AbstractController;
 
@@ -31,6 +34,9 @@ public class CheckPlanController extends AbstractController {
 	
 	@Autowired
 	private FileUploadPathService fileUploadPathService;
+	
+	@Autowired
+	RequestBoxService requestBoxService;
 	
 	@SysLog("申请审批")
 	@Transactional
@@ -61,6 +67,12 @@ public class CheckPlanController extends AbstractController {
 			record.setId(checkMsg.getPreid());     //preid
 			record.setStepstatus(stepstatus);      //前台传入 stepStatus
 			projectRequestFormService.updateByPrimaryKeySelective(record);
+			
+			RequestBox record2=new RequestBox();
+			record2.setCheckstatus(1);
+			RequestBoxExample example=new RequestBoxExample();
+			example.createCriteria().andFromidEqualTo(checkMsg.getPreid());
+			requestBoxService.updateByExampleSelective(record2, example);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return R.error("操作失败!");

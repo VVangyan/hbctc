@@ -252,6 +252,7 @@ public class ZXJHController extends AbstractController {
 		return selectMapResutlt;
 	}
 	
+	@Transactional
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@PostMapping("/sendCheckData")
 	public R sendCheckData(@RequestBody HashMap checkData){

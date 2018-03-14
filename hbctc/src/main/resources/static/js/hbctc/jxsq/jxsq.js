@@ -988,6 +988,25 @@ function loadDetailData(r){
 				bm.append(uL1)
 				zc.append(uL2)
 
+		}else{
+			var uL1 = $('<ul class="list-group" ></ul>')
+			var uL2 = $('<ul class="list-group" ></ul>')
+				if(num*42>120){
+					bc.css({"height":num*42+"px"})
+					bm.css({"height":num*42+"px"})
+				}else{
+					bc.css({"height":"130px"})
+					bm.css({"height":"130px"})
+				}
+				if(nnm*42>120){
+					zb.css({"height":nnm*42+"px"})
+					zc.css({"height":nnm*42+"px"})
+				}else{
+					zb.css({"height":"130px"})
+					zc.css({"height":"130px"})
+				}
+				bm.append(uL1)
+				zc.append(uL2)
 		}
 	}
 	var agentno=r.agentno
@@ -1078,30 +1097,45 @@ function init(pn){//页面初始化，加载数据
         			
         			var stepstatus=parseInt(resultList[x].stepstatus)
         			stepstatusName=""
-        			if(stepstatus==0){
-        				stepstatusName="待申请"
-        			}
-        			if(stepstatus==1){
-        				stepstatusName="项目负责<br>人审核中"
-        			}
-        			if(stepstatus==2){
-        				stepstatusName="项目负责<br>人审核未通过"
-        			}
-        			if(stepstatus==3){
-        				stepstatusName="项目负责<br>人审核通过"
-        			}
-        			if(stepstatus==4){
-        				stepstatusName="业务经办<br>人审核未通过 "
-        			}
-        			if(stepstatus==5){
-        				stepstatusName="业务经办<br>人审核通过"
-        			}
-        			if(stepstatus==6){
-        				stepstatusName="业务负责<br>人审核未通过 "
-        			}
-        			if(stepstatus==7){
-        				stepstatusName="业务负责<br>人审核通过"
-        			}
+            			if(stepstatus==1){
+            				stepstatusName="项目负责<br>人审核中"
+            			}
+            			if(stepstatus==2){
+            				stepstatusName="项目负责<br>人审核未通过"
+            			}
+            			if(stepstatus==3){
+            				stepstatusName="项目负责<br>人审核通过"
+            			}
+            			if(stepstatus==4){
+            				stepstatusName="业务经办<br>人审核未通过 "
+            			}
+            			if(stepstatus==5){
+            				stepstatusName="业务经办<br>人审核中"
+            			}
+            			if(stepstatus==6){
+            				stepstatusName="业务负责<br>人审核未通过 "
+            			}
+            			if(stepstatus==7){
+            				stepstatusName="业务经办<br>人审核通过"
+            			}
+            			if(stepstatus==8){
+            				stepstatusName="业务主管部门<br>审核未通过"
+            			}
+            			if(stepstatus==9){
+            				stepstatusName="业务负责<br>审核中"
+            			}
+            			if(stepstatus==11){
+            				stepstatusName="业务负责<br>人审核通过"
+            			}
+            			if(stepstatus==13){
+            				stepstatusName="业务主管部门<br>审核中"
+            			}
+            			if(stepstatus==15){
+            				stepstatusName="业务主管部门<br>审核通过"
+            			}
+            			if(stepstatus==17){
+            				stepstatusName="结项"
+            			}
             			
         			var td8=$("<td></td>").append(stepstatusName)
         			

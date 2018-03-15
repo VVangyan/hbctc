@@ -397,7 +397,7 @@ public class ZXJHController extends AbstractController {
 	private void sendRequstToLeader(HashMap dataMap) {
 		JSONObject jo=new JSONObject(); 
 		           jo.putAll(dataMap);
-		RequestBox javaObject = JSONObject.toJavaObject(jo, RequestBox.class);  
+		RequestBox javaObject = JSONObject.toJavaObject(jo, RequestBox.class);  //map to  bean
 		requestBoxService.insertSelective(javaObject);
 	}
 }

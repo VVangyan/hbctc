@@ -190,7 +190,11 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="request"){//申报
-		loadUserDeptModal(id,stepstatus)
+		if(stepstatus==7){
+			loadUserDeptModal(id,stepstatus)
+		}else{
+			alert("当前状态不能审批!")
+		}
 	}
 	if(tag=="plan_YWJBR"){//审批
 		if(stepstatus==5){

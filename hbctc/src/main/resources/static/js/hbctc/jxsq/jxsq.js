@@ -526,12 +526,14 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="request"){//申报
-		//if(stepstatus==0||stepstatus==2){
+		if(stepstatus==0||stepstatus==2||
+		   stepstatus==3||stepstatus==4||
+		   stepstatus==6||stepstatus==8||stepstatus==15){
 			//requestToLeader(id,stepstatus)
 			loadUserDeptModal(id,stepstatus)
-		/*}else{
+		}else{
 			alert("当前状态不能申报!")
-		}*/
+		}
 	}
 	if(tag=="edit"){//编辑
 		//0:待申报 (将数字设为1):【项目负责人审核中】;项目负责人审核通过(将数值设为3):【业务经办人审核中】,业务经办人审核通过(将数值设为5)

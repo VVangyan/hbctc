@@ -541,7 +541,9 @@ $(document).on("click","a[tag!='']",function(){
 		
 		//【业务负责人审核中】业务负责人审核通过7
 		//                   业务负责人审核未通过6
-		if(stepstatus==0||stepstatus==2){
+		if(stepstatus==0||stepstatus==2||
+		   stepstatus==4||stepstatus==6||
+		   stepstatus==8){
 			editRequestTable(id,stepstatus)
 		}else{
 			alert("当前状态不能修改!")

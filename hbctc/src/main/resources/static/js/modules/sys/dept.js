@@ -7,7 +7,7 @@ $(function () {
 			{ label: '部门名', name: 'detpname', width: 75 },
 			{ label: '部门编号', name: 'deptno', width: 90 },
 			{ label: '上级id', name: 'preid', width: 100 },
-			{ label: '主管部门', name: 'ismiddledept', index: "create_time", width: 80}
+			{ label: '主管部门', name: 'ismiddledept', width: 80}
         ],
 		viewrecords: true,
         height: 385,
@@ -46,7 +46,7 @@ var vm = new Vue({
 		title:null,
 		roleList:{},
 		user:{
-			status:1,
+			ismiddledept:null,
 			roleIdList:[]
 		}
 	},
@@ -64,17 +64,15 @@ var vm = new Vue({
 			this.getRoleList();
 		},
 		update: function () {
-			var userId = getSelectedRow();
-			if(userId == null){
+			var deptId = getSelectedRow();
+			if(deptId == null){
 				return ;
 			}
 			
 			vm.showList = false;
             vm.title = "修改";
 			
-			vm.getUser(userId);
-			//获取角色信息
-			this.getRoleList();
+			vm.deptDeptById(deptId);
 		},
 		del: function () {
 			var userIds = getSelectedRows();
@@ -105,7 +103,8 @@ var vm = new Vue({
                 return ;
             }
 
-			var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";
+			//var url = vm.user.userId == null ? "sys/user/save" : "sys/user/update";
+            var url = "addDept";
 			$.ajax({
 				type: "POST",
 			    url: baseURL + url,
@@ -122,45 +121,40 @@ var vm = new Vue({
 				}
 			});
 		},
-		getUser: function(userId){
-			$.get(baseURL + "sys/user/info/"+userId, function(r){
-				vm.user = r.user;
+		deptDeptById: function(deptId){
+			$.get(baseURL + "deptDeptById/"+deptId, function(r){
+				debugger
+				vm.user = r.dept;
 				vm.user.password = null;
-			});
-		},
-		getRoleList: function(){
-			$.get(baseURL + "sys/role/select", function(r){
-				vm.roleList = r.list;
 			});
 		},
 		reload: function () {
 			vm.showList = true;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
+			var detpname=vm.q.detpname
+			var postData={}
+			if(detpname!=null){
+				postData.detpname=detpname
+			}
 			$("#jqGrid").jqGrid('setGridParam',{ 
-                postData:{'detpname': vm.q.detpname},
+				postData,
                 page:page
             }).trigger("reloadGrid");
 		},
         validator: function () {
-            if(isBlank(vm.user.username)){
-                alert("用户名不能为空");
+            if(isBlank(vm.user.detpname)){
+                alert("部门名不能为空");
                 return true;
             }
 
-            if(vm.user.userId == null && isBlank(vm.user.password)){
-                alert("密码不能为空");
+            if(vm.user.deptno == null && isBlank(vm.user.deptno)){
+                alert("部门编码不能为空");
                 return true;
             }
-
-            if(isBlank(vm.user.email)){
-                alert("邮箱不能为空");
-                return true;
+            if(vm.user.ismiddledept == null && isBlank(vm.user.ismiddledept)){
+            	alert("部门类别不能为空");
+            	return true;
             }
-
-            if(!validator.isEmail(vm.user.email)){
-                alert("邮箱格式不正确");
-                return true;
-			}
         }
 	}
 });

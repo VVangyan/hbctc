@@ -297,7 +297,7 @@ public class ZXJHController extends AbstractController {
 			if (ismiddledept == 1) {
 				reportToLeader(id, 13);// 业务主管部门
 				sendRequstToLeader(tmpmap);
-			} else if (ismiddledept == 2) {
+			} else if (ismiddledept == 2&&toroleId==4) {
 				reportToLeader(id, 5);// 业务经办人
 				sendRequstToLeader(tmpmap);
 			} else {

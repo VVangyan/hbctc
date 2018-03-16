@@ -261,7 +261,7 @@ function sendData(checkMsg){
 function uploadFile(checkMsg,isten,btn) {
 	var formData = new FormData();
 		formData.append('checkMsg', JSON.stringify(checkMsg)); 
-	if(isten==1||btn=="plan_pass"){
+	if(isten==1&&btn=="plan_pass"){
 		var files=$('#zbwj')[0].files[0];
 		debugger
 		if(files==undefined){

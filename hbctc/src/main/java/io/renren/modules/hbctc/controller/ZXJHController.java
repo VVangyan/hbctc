@@ -290,15 +290,17 @@ public class ZXJHController extends AbstractController {
 		if((stepstatus==0||stepstatus==2||stepstatus==4||stepstatus==6||stepstatus==8)&&ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
 			reportToLeader(id, 1);
 			sendRequstToLeader(tmpmap);
-		} else if (stepstatus == 3) {// 只有当状态为3的时候才能发送给 业务主管部门或者业务经办人
+		} else if (stepstatus == 3) {// 只有当状态为3的时候才能发送给 业务主管部门或者【业务经办人,改为业务负责人】
 			// 1:业务主管部门 2:业务经办人
 			HashMap getismiddledept = getismiddledept(ztreeUserId);
 			Long ismiddledept = Long.parseLong(getismiddledept.get("ismiddledept")+""); 
 			if (ismiddledept == 1) {
 				reportToLeader(id, 13);// 业务主管部门
 				sendRequstToLeader(tmpmap);
-			} else if (ismiddledept == 2&&toroleId==4) {
-				reportToLeader(id, 5);// 业务经办人
+			//} else if (ismiddledept == 2&&toroleId==4) {
+			} else if (ismiddledept == 2&&toroleId==6) {
+				//reportToLeader(id, 5);// 业务经办人
+				reportToLeader(id, 9);// 业务负责人审核
 				sendRequstToLeader(tmpmap);
 			} else {
 				return R.error("请选择正确的审批人");
@@ -319,12 +321,14 @@ public class ZXJHController extends AbstractController {
 			} else {
 				return R.error("请选择正确的审批人");
 			}
-		} else if (stepstatus == 7) {//状态为7只能发送给业务负责人审核
+		//} else if (stepstatus == 7) {//状态为7只能发送给业务负责人审核
+		} else if (stepstatus == 11) {//状态为11只能发送给业务经办人审核
 			// 1:业务主管部门 2:业务经办人
 			HashMap getismiddledept = getismiddledept(ztreeUserId);
 			Long ismiddledept = Long.parseLong(getismiddledept.get("ismiddledept")+""); 
-			if(ismiddledept==2&&toroleId==6) {//业务负责人审核
-				reportToLeader(id, 9);
+			//if(ismiddledept==2&&toroleId==6) {//业务负责人审核
+			if(ismiddledept==2&&toroleId==4) {//业务经办人审核
+				reportToLeader(id, 5);
 				sendRequstToLeader(tmpmap);
 			}else {
 				return R.error("请选择正确的审批人");

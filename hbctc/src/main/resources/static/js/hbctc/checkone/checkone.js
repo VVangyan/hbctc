@@ -128,10 +128,10 @@ function isOk(buyItemInfos,id){
 //预算项目金额  实时事件
 $("#premoney").bind("input propertychange",function(){
 	var premoney=$(this).val().trim();
-	if(premoney>=100000&&$(".agency_div").length==0){//新增
+	if(premoney>=50000&&$(".agency_div").length==0){//新增
 		$(".modal-body").append(getAgentcTr())
 	}
-	if(premoney<100000&&$(".agency_div").length>0){//移除
+	if(premoney<50000&&$(".agency_div").length>0){//移除
 		$(".agency_div").remove()
 	}
 	console.log(agencyData)
@@ -139,10 +139,10 @@ $("#premoney").bind("input propertychange",function(){
 //预算项目金额  实时事件
 $("#edit_premoney").bind("input propertychange",function(){
 	var premoney=$(this).val().trim();
-	if(premoney>=100000&&$(".agency_div").length==0){//新增
+	if(premoney>=50000&&$(".agency_div").length==0){//新增
 		$(".modal-body").append(getAgentcTrEdit())
 	}
-	if(premoney<100000&&$(".agency_div").length>0){//移除
+	if(premoney<50000&&$(".agency_div").length>0){//移除
 		$(".agency_div").remove()
 	}
 	console.log(agencyData)

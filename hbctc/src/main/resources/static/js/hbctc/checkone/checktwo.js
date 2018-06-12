@@ -197,7 +197,7 @@ $(document).on("click","a[tag!='']",function(){
 		}
 	}
 	if(tag=="plan_YWJBR"){//审批
-		if(stepstatus==5){
+		if(stepstatus==11){
 			checkPlan(id,isten)
 		}else{
 			alert("当前状态不能审批!")

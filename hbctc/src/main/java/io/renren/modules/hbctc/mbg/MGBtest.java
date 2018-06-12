@@ -16,7 +16,7 @@ import org.mybatis.generator.internal.DefaultShellCallback;
  */
 public class MGBtest {
 	public static void main(String[] args) throws Exception {
-		List<String> warnings = new ArrayList<String>();
+/*		List<String> warnings = new ArrayList<String>();
 		boolean overwrite = true;
 		File configFile = new File("mbg.xml");
 		System.out.println("开始生成....");
@@ -25,6 +25,6 @@ public class MGBtest {
 		DefaultShellCallback callback = new DefaultShellCallback(overwrite);
 		MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
 		myBatisGenerator.generate(null);
-		System.out.println("生成完成....");
+		System.out.println("生成完成....");*/
 	}
 }

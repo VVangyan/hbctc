@@ -189,7 +189,7 @@
 			<artifactId>pagehelper</artifactId>
 			<version>5.0.1</version>
 		</dependency>
-		<!--oracle  -->
+		<!--oracle -->
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
@@ -267,6 +267,18 @@
 					</resources>
 				</configuration>
 				<!-- 运行命令 mvn clean package docker:build 打包并生成docker镜像 -->
+			</plugin>
+
+			<!--=============设置项目环境为jdk1.8=============== -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<fork>true</fork>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

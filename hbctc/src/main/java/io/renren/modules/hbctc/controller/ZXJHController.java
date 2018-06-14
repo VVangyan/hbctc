@@ -133,8 +133,17 @@ public class ZXJHController extends AbstractController {
 	@SuppressWarnings("unchecked")
 	@GetMapping("/getReqFormList")
 	public Map<String, Object> getReqFormList(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		
 		Long userId = getUserId();
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		List<ProjectRequestForm> resultList=new ArrayList<ProjectRequestForm>();
+		PageInfo page = new PageInfo(resultList, 10);
+		
+		if(1==userId) {//管理员直接返回
+			resultMap.put("page", page);
+			resultMap.put("resultList", resultList);
+			return resultMap;
+		}
 		
 		System.out.println("pn >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+pn);
 		PageHelper.startPage(pn, 10);
@@ -143,7 +152,7 @@ public class ZXJHController extends AbstractController {
 		
 		Long roleId = getRoleIdByUserId(userId);
 		
-		List<ProjectRequestForm> resultList=new ArrayList<ProjectRequestForm>();
+		
 		
 		
 		List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));
@@ -153,8 +162,7 @@ public class ZXJHController extends AbstractController {
 		}
 		resultList= getProjects(userId,idList,roleId);
 		
-		@SuppressWarnings("rawtypes")
-		PageInfo page = new PageInfo(resultList, 10);
+		
 		resultMap.put("page", page);
 		resultMap.put("resultList", resultList);
 		return resultMap;

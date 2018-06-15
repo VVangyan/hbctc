@@ -195,6 +195,13 @@
 			<artifactId>ojdbc6</artifactId>
 			<version>11.2.0.3</version>
 		</dependency>
+		<!-- http://repo1.maven.org/maven2/com/xuxueli/xxl-excel-core/ -->
+		<dependency>
+			<groupId>com.xuxueli</groupId>
+			<artifactId>xxl-excel</artifactId>
+			<version>1.1.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -316,8 +316,8 @@ $(document).on("click","#add_request",function(){
 			buyItemInfos,
 			totalmoney,
 			others,
-			(totalmoney>100000)? 1:0)
-	if(premoney>=100000){//有代理机构
+			(totalmoney>50000)? 1:0)
+	if(premoney>=50000){//有代理机构
 		projectRequestForm.agentno=$("#agencySelectId").find("option:selected").val();
 	}
 	//
@@ -404,7 +404,7 @@ $(document).on("click","#edit_request",function(){
 			buyItemInfos,
 			totalmoney,
 			others,
-			(premoney>=100000)? 1:0)//是否是超过10w
+			(premoney>=50000)? 1:0)//是否是超过10w
 	
 	if(ids[0].getAttribute("preid")==null){
 		projectRequestForm.id=webpreid
@@ -413,7 +413,7 @@ $(document).on("click","#edit_request",function(){
 	}
 	
 	debugger
-	if(premoney>=100000){//有代理机构
+	if(premoney>=50000){//有代理机构
 		projectRequestForm.agentno=$("#agency_div_edit").find("option:selected").val();
 	}
 	//
@@ -453,13 +453,13 @@ function isOk(buyItemInfos,id){
 	return ok
 };
 
-//预算项目金额  实时事件
+//预算项目金额  实时事件★★★★★★★★★★★★★★★★★★★★★★★
 $("#premoney").bind("input propertychange",function(){
 	var premoney=$(this).val().trim();
-	if(premoney>=100000&&$(".agency_div").length==0){//新增
+	if(premoney>=50000&&$(".agency_div").length==0){//新增
 		$(".modal-body").append(getAgentcTr())
 	}
-	if(premoney<100000&&$(".agency_div").length>0){//移除
+	if(premoney<50000&&$(".agency_div").length>0){//移除
 		$(".agency_div").remove()
 	}
 	console.log(agencyData)
@@ -467,10 +467,10 @@ $("#premoney").bind("input propertychange",function(){
 //预算项目金额  实时事件
 $("#edit_premoney").bind("input propertychange",function(){
 	var premoney=$(this).val().trim();
-	if(premoney>=100000&&$(".agency_div").length==0){//新增
+	if(premoney>=50000&&$(".agency_div").length==0){//新增
 		$(".modal-body").append(getAgentcTrEdit())
 	}
-	if(premoney<100000&&$(".agency_div").length>0){//移除
+	if(premoney<50000&&$(".agency_div").length>0){//移除
 		$(".agency_div").remove()
 	}
 	console.log(agencyData)

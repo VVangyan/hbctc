@@ -7,17 +7,26 @@ $(function () {
 			{ label: '部门名称', name: 'detpname', width: 75 },
 			{ label: '部门编号', name: 'deptno', width: 90 },
 			{ label: '资金来源', name: 'moneyway', width: 100 },
-			{ label: '采购类别', name: 'buyitemtype', width: 80},
-			{ label: '金额', name: 'money', width: 80}
+			/*0.货物 1.服务 2.工程*/
+			{ label: '采购类别' , name: 'buyitemtype', width: 25,align:"center",formatter: function(value, options, row){
+				if(value == "0"){
+					return '<span class="label label-info">货物</span>';
+				}else if(value =="1"){
+					return '<span class="label label-success">服务</span>';
+				}else {
+					return '<span class="label label-primary">工程</span>';
+				}
+			}},
+			{ label: '金额', name: 'money', width: 25}
         ],
 		viewrecords: true,
         height: 385,
         rowNum: 10,
 		rowList : [10,30,50],
-        rownumbers: true, 
+        rownumbers: false, 
         rownumWidth: 25, 
         autowidth:true,
-        multiselect: true,
+        multiselect: false,
         pager: "#jqGridPager",
         jsonReader : {
             root: "page.list",

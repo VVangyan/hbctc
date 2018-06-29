@@ -9,6 +9,7 @@ import com.xuxueli.poi.excel.annotation.ExcelSheet;
 
 @ExcelSheet(name = "资金来源", headColor = HSSFColor.HSSFColorPredefined.LIGHT_GREEN)
 public class FundFrom implements Serializable {
+	
 
 	@ExcelField(name = "部门名称")
 	private String detpname;
@@ -26,6 +27,15 @@ public class FundFrom implements Serializable {
 	private Double money;
 
 	private static final long serialVersionUID = 1L;
+	private Integer id;
+	
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public String getDetpname() {
 		return detpname;

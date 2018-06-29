@@ -29,6 +29,8 @@ import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.BuyItemInfoExample;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.CheckMsgExample;
+import io.renren.modules.hbctc.entity.FundFrom;
+import io.renren.modules.hbctc.entity.FundFromExample;
 import io.renren.modules.hbctc.entity.Numfactory;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
@@ -38,8 +40,10 @@ import io.renren.modules.hbctc.entity.UserDepartment;
 import io.renren.modules.hbctc.entity.UserDepartmentExample;
 import io.renren.modules.hbctc.service.AgencyService;
 import io.renren.modules.hbctc.service.BuyItemInfoService;
+import io.renren.modules.hbctc.service.CapitalSourceService;
 import io.renren.modules.hbctc.service.CheckMsgService;
 import io.renren.modules.hbctc.service.FileUploadPathService;
+import io.renren.modules.hbctc.service.FundFromService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
 import io.renren.modules.hbctc.service.RequestBoxService;
@@ -62,6 +66,9 @@ public class ZXJHController extends AbstractController {
 
 	@Autowired
 	BuyItemInfoService buyItemInfoService;
+	
+	@Autowired
+	CapitalSourceService capitalSourceService;
 
 	@Autowired
 	NumfactoryService numfactoryService;
@@ -86,6 +93,9 @@ public class ZXJHController extends AbstractController {
 	
 	@Autowired
 	RequestBoxService requestBoxService;
+
+	@Autowired
+	FundFromService fundFromService;
 	
 	@SysLog("提交申请")
 	@Transactional
@@ -109,13 +119,14 @@ public class ZXJHController extends AbstractController {
 			projectRequestForm.setStepstatus(0);// 0,1,2,3,4,5,6,7
 			projectRequestForm.setBh1(year);
 			projectRequestForm.setBh2(bh2);
-			projectRequestForm.setIsten(projectRequestForm.getPremoney()>=100000 ? 1:0);
+			projectRequestForm.setIsten(projectRequestForm.getPremoney()>=50000 ? 1:0);
 			projectRequestForm.setUserid(getUserId());// 用户id。 确认身份。
 			projectRequestFormService.insertSelective(projectRequestForm);
 
 			Integer preid = projectRequestForm.getId();
 			System.out.println("preid  :" + preid);
 			buyItemInfoService.batchInsert(projectRequestForm.getBuyItemInfos(), preid);
+			capitalSourceService.batchInsert(projectRequestForm.getCapitalsource(), preid);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return R.error(0, "申请失败");
@@ -350,6 +361,24 @@ public class ZXJHController extends AbstractController {
 		System.out.println("checkData  ："+ checkData);
 		return R.ok("申报成功!");
 	}
+	
+	@GetMapping("/getFounds")
+	public R getFounds() {
+		Long userId = getUserId();
+		if(1==userId) {//管理员直接返回
+			return R.error().put("msg", "F");
+		}
+		String deptno = getUserDepartment(Integer.parseInt(getUserId()+"")).get(0).getDeptno();
+		FundFromExample example=new FundFromExample();
+		example.createCriteria().andDeptnoEqualTo(deptno);
+		List<FundFrom> fundFormList=new ArrayList<FundFrom>();
+		fundFormList= fundFromService.selectByExample(example);
+		return R.ok().put("fundFormList", fundFormList);
+	}
+	
+	
+	
+	
 	/**
 	 * 获取 isMiddleDept
 	 * @param ztreeUserId

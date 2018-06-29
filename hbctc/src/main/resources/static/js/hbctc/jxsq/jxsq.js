@@ -1,4 +1,27 @@
 $(function() {
+	 var fundList=[]
+	 var originalArr=[]
+	 var canShowArr=[]
+	  var vm = new Vue({  
+          el: '#app',  
+          data: {  
+              newPerson: {},  
+              people: []  
+          },  
+          methods:{  
+              createPerson: function(){  
+                  this.people.push(this.newPerson);  
+                  // 添加完newPerson对象后，重置newPerson对象  
+                  this.newPerson = {name: '', age: 0, sex: 'Male'}  
+              },  
+              deletePerson: function(index){  
+                  // 删一个数组元素  
+                  this.people.splice(index,1);  
+              }
+          }, 
+          mounted : function() {//页面初始化后加载
+          }
+      }) 
 /**
  * 分页
  */
@@ -20,6 +43,7 @@ var btn = $("#btn_add_zxjh")
 btn.on("click", function() {
 	showReqModal()
 	getAgency()
+	getFounds()
 });
 function showReqModal(){
 	$("#add_zxjh_Modal").modal({
@@ -30,7 +54,7 @@ function hideReqModal(){
 	$("#add_zxjh_Modal").modal("hide");
 };
 
-//新增
+//新增页面关闭后操作
 $("#add_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
 	if($("input[name!=buyway]").length>0){
 		$("input[name!=buyway]").val("")
@@ -44,13 +68,18 @@ $("#add_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空�
 		row.rowSpan=3
 	}
 	
+	if($("tr[trid=trid]").length>0){//移除tr,重置rowspan为2
+		$("tr[trid=trid]").remove()
+		$("#captialTd").attr("rowspan",2)
+	}
+	
 	$("textarea").val("")
 	$(".agency_div").remove()
 	$("#add_request").show()
 	$(".div_sh").hide()
 });
 
-//详情
+//详情页面关闭后操作
 $("#detail_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
 	if($("input[name=detail_buyway]").length>0){
 		$("input[name=detail_buyway]").removeAttr("checked")
@@ -64,7 +93,7 @@ $("#detail_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清�
 	}
 	$("#agency_div_detail").remove()
 });
-//修改
+//修改页面关闭后操作
 $("#edit_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
 	if($("input[name=edit_buyway]").length>0){
 		$("input[name=edit_buyway]").removeAttr("checked")
@@ -1204,10 +1233,158 @@ var isNum=function(inputNum){
 	var re=/^\d+$/g;
 	if(re.test(inputNum)){
 		return true;
-	}else{
-		return false;
 	}
+	return false;
 };
+	/**
+	 * 新增资金
+	 */
+	var tdNum=1;
+	$(document).on("click","#add_captionl",function(){
+		var captialTd=$("#captialTd")
+		rowspan=captialTd.attr("rowspan")
+		debugger
+		var captialTr=$("#captialTr")
+		
+		var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
+		var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl" title="点击删除栏目" trnum='+tdNum+' ></div></td>')
+		var newInput=$(' <input list="browsers"   type="text" id="moneyway" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空">')
 
+		var newDatalist=$('<datalist id="browsers"></datalist>')
+		var tempArry=[]
+			tempArry=fundList
+		for(var i=0;i<fundList.length;i++){
+			var option='<option value='+fundList[i].moneyway+'  id="inputid" idval='+fundList[i].id+'>'
+			newDatalist.append(option)
+		}
+		debugger
+			
+		
+		var newTd2=$('<td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
+		var newTd3=$('<td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
+		
+		newTd1.append(newInput,newDatalist)
+		
+		newTr.append(newTd1,newTd2,newTd3)
+		
+		captialTd.attr("rowspan",parseInt(rowspan)+1)
+		
+		captialTr.after(newTr)
+		
+		$.parser.parse(newTr);//重新渲染样式
+		tdNum++;
+		
+		
+		
+/*	      <tr   >
+	          <td colspan="5"  id="add_captionl_td1">
+	          
+	           <input list="browsers"  type="text" id="moneyway" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空">
+					<datalist id="browsers">
+					  <option value="Internet Explorer">
+					  <!-- <option v-for="person in people" :value="person.name">{{ person.name }}</option> -->
+					</datalist>
+	          </td>
+	          <td colspan="2"  id="add_captionl_td2">
+	          	<!-- <input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"> -->
+	          </td>
+	          <td colspan="2"  id="add_captionl_td3">
+	          	<!-- <input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"> -->
+	          </td>
+	      </tr>*/
+		
+		
+		
+	});
+	
+	/**
+	 * 删除
+	 */
+	$(document).on("click",".sub_img_captionl",function(){
+		var checkedTr=this;
+		var trnum=checkedTr.getAttribute("trnum")
+		
+		debugger
+		var trs=$("tr").filter("[trnum="+trnum+"]").remove()
+		var captialTd=$("#captialTd")
+		rowspan=captialTd.attr("rowspan")
+		captialTd.attr("rowspan",parseInt(rowspan)-1)
+		tdNum--;
+		changeOptionValue()
+		debugger
+	});
+	
+	function getFounds(){
+		 $.get(baseURL+"getFounds",function(r){
+			  debugger
+			  if(r.msg=="F"){
+				  return false;
+			  }
+			  if(r.fundFormList.length>0){
+				  fundList=r.fundFormList
+				  originalArr=r.fundFormList
+			  }
+		  })
+	}
+	
+	
+	$(document).on("change","#moneyway",function(){
+		changeOptionValue()
+	})
+	
+	function  changeOptionValue(){
+		var moneywayArr=$("input").filter("#moneyway")
+		var tempArry=[]
+		for(var i=0;i<moneywayArr.length;i++){
+			tempArry[i]=moneywayArr[i].value
+		}
+		debugger
+		// array.forEach(function(currentValue, index, arr), thisValue)
+		addOrRemoveItem(tempArry)
+	}
+	
+	
+	function addOrRemoveItem(tempArry){
+		var diffArr= diff(originalArr, tempArry)
+		var canShowArr=canShow(diffArr)
+		debugger
+		fundList=[]//清空
+		fundList=canShowArr
+	}
+	function diff(arr1, arr2) {/**比较不同**/
+		debugger
+		var newArr = [];
+		var arr3 = [];
+		for(var i = 0; i < arr1.length; i++) {
+			if(arr2.indexOf(arr1[i].moneyway) === -1){
+				arr3.push(arr1[i]);	
+			}
+		}
+	/*	var arr4 = [];
+		for(var j = 0; j < arr2.length; j++) {
+			if(arr1.indexOf(arr2[j]) === -1){
+				arr4.push(arr2[j]);
+			}
+		}*/
+		//newArr = arr3.concat(arr4);
+		newArr = arr3
+		return newArr;
+	}
+	
+	function canShow(diff) {/**可以显示**/
+		debugger
+		var canShowArr = []
+		if(diff.length > 0) {
+			originalArr.forEach(function(item1) {
+				diff.forEach(function(item2) {
+					if(item1.moneyway.toLowerCase().indexOf(item2.moneyway) != -1) {
+						canShowArr.push(item1)
+					}
+				})
+			})
+			return canShowArr
+		}
+		return canShowArr
+	}
+	
 })
-

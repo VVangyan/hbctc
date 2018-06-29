@@ -27,7 +27,7 @@
     <script src="../../../plugins/ztree/jquery.ztree.all.min.js"></script>
     <script src="../../../js/common.js"></script>
 </head>
-<body>
+<body  id="app">
 <div class="maindiv">
     <div class="base_div"><!-- base  div-->
         <div class="top_div"><!--top div-->
@@ -108,18 +108,16 @@
 	                            </tr>
 	
 	                            <tr>
-	                                <td rowspan="3" style="line-height: 111px;text-align: center"><b>三</b></td>
+	                                <td rowspan="2" id="captialTd"  @click="add_captionl" style="line-height: 111px;text-align: center"><b>三</b></td>
 	                                <td colspan="9"><b>自主采购资金来源</b></td>
 	                            </tr>
-	                            <tr>
-	                                <td colspan="5" ><b>资金来源</b></td>
+	                            <tr id="captialTr">
+	                                <td colspan="5" >
+	                                 <div class="add_img" id="add_captionl"  title="点击新增资金来源"></div>
+	                                <b>资金来源</b>
+	                                </td>
 	                                <td colspan="2"><b>预算项目金额（元）</b></td>
 	                                <td colspan="2"><b>申请项目金额（元）</b></td>
-	                            </tr>
-	                            <tr>
-	                                <td colspan="5"><input type="text" id="moneyway" style="width: 500px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                                <td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
-	                                <td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
 	                            </tr>
 	                            <tr>
 	                                <td id="rowspan_change" rowspan="3" style="text-align: center">
@@ -530,7 +528,7 @@
     <div id="load_user_dept_modal_div">
         <!--ths 修改模态框（Modal） -->
         <div class="modal fade" id="load_user_dept_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm"  id="app">
+            <div class="modal-dialog modal-sm" >
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">

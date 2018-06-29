@@ -114,6 +114,17 @@ textarea {
 .sub_img_edit:hover {
 	cursor: pointer;
 }
+.sub_img_captionl {
+	width: 25px;
+	height: 25px;
+	background: url("../../../images/hbctc/sub.png");
+	background-size: contain;
+	float: left;
+}
+.sub_img_captionl:hover {
+	cursor: pointer;
+}
+
 
 .id_value {
 	float: right;
@@ -165,7 +176,7 @@ textarea {
 }
 /*
 
- * Ò³Êý°´Å¥ÑùÊ½
+ * Ò³ï¿½ï¿½ï¿½ï¿½Å¥ï¿½ï¿½Ê½
 
  */
 .page_div a {

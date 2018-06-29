@@ -27,6 +27,8 @@ public class ProjectRequestForm implements Serializable {
 
 	private Double questmoney;// 申请项目金额（元）
 
+	List<CapitalSource> capitalsource;// 资金来源
+
 	List<BuyItemInfo> buyItemInfos;// 采购项目需求
 
 	private Double totalmoney;// 合计金额（元）
@@ -38,29 +40,30 @@ public class ProjectRequestForm implements Serializable {
 	private Date updatedate;// 修改时间
 
 	private Integer stepstatus;// 步骤
-	//0:待申报 点击申报 (将数字设为1):【项目负责人审核中】;项目负责人审核通过(将数值设为):【3业务经办人审核中】,业务经办人审核通过(将数值设为5)
-	//                                                 项目负责人审核未通过(将数值设为2)                    4:业务经办人审核未通过  
-	//                                                 业务服务负责人通过 7   业务服务负责人未通过6
+	// 0:待申报 点击申报 (将数字设为1):【项目负责人审核中】;项目负责人审核通过(将数值设为):【3业务经办人审核中】,业务经办人审核通过(将数值设为5)
+	// 项目负责人审核未通过(将数值设为2) 4:业务经办人审核未通过
+	// 业务服务负责人通过 7 业务服务负责人未通过6
 
-	private Integer isten;// 是否是10万以上
+	private Integer isten;// 是否是5万以上
 
 	private Integer bh1;// 编号1
 	private Integer bh2;// 编号2
 
 	private String agentno;// 代理机构编号
-	
+
 	private Long userid;
-	
+
 	private List<CheckMsg> clist;
-	
+
 	public ProjectRequestForm() {
 		super();
 	}
 
 	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
 			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
-			Double questmoney, Double totalmoney, String others, Date createdate, Date updatedate, Integer stepstatus,
-			Integer isten, Integer bh1, Integer bh2, String agentno) {
+			Double questmoney, List<CapitalSource> capitalsource, List<BuyItemInfo> buyItemInfos, Double totalmoney,
+			String others, Date createdate, Date updatedate, Integer stepstatus, Integer isten, Integer bh1,
+			Integer bh2, String agentno, Long userid, List<CheckMsg> clist) {
 		super();
 		this.dept = dept;
 		this.deptpeo = deptpeo;
@@ -72,6 +75,8 @@ public class ProjectRequestForm implements Serializable {
 		this.moneyway = moneyway;
 		this.premoney = premoney;
 		this.questmoney = questmoney;
+		this.capitalsource = capitalsource;
+		this.buyItemInfos = buyItemInfos;
 		this.totalmoney = totalmoney;
 		this.others = others;
 		this.createdate = createdate;
@@ -81,54 +86,8 @@ public class ProjectRequestForm implements Serializable {
 		this.bh1 = bh1;
 		this.bh2 = bh2;
 		this.agentno = agentno;
-	}
-
-	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
-			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
-			Double questmoney, Double totalmoney, String others, Date createdate, Date updatedate, Integer stepstatus,
-			Integer isten, Integer bh1, Integer bh2) {
-		super();
-		this.dept = dept;
-		this.deptpeo = deptpeo;
-		this.deptpeoinfo = deptpeoinfo;
-		this.projectname = projectname;
-		this.projectcontact = projectcontact;
-		this.projectpeoinfo = projectpeoinfo;
-		this.buyway = buyway;
-		this.moneyway = moneyway;
-		this.premoney = premoney;
-		this.questmoney = questmoney;
-		this.totalmoney = totalmoney;
-		this.others = others;
-		this.createdate = createdate;
-		this.updatedate = updatedate;
-		this.stepstatus = stepstatus;
-		this.isten = isten;
-		this.bh1 = bh1;
-		this.bh2 = bh2;
-	}
-
-	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
-			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
-			Double questmoney, Double totalmoney, String others, Date createdate, Date updatedate, Integer stepstatus,
-			Integer isten) {
-		super();
-		this.dept = dept;
-		this.deptpeo = deptpeo;
-		this.deptpeoinfo = deptpeoinfo;
-		this.projectname = projectname;
-		this.projectcontact = projectcontact;
-		this.projectpeoinfo = projectpeoinfo;
-		this.buyway = buyway;
-		this.moneyway = moneyway;
-		this.premoney = premoney;
-		this.questmoney = questmoney;
-		this.totalmoney = totalmoney;
-		this.others = others;
-		this.createdate = createdate;
-		this.updatedate = updatedate;
-		this.stepstatus = stepstatus;
-		this.isten = isten;
+		this.userid = userid;
+		this.clist = clist;
 	}
 
 	public Integer getId() {
@@ -219,6 +178,14 @@ public class ProjectRequestForm implements Serializable {
 		this.questmoney = questmoney;
 	}
 
+	public List<CapitalSource> getCapitalsource() {
+		return capitalsource;
+	}
+
+	public void setCapitalsource(List<CapitalSource> capitalsource) {
+		this.capitalsource = capitalsource;
+	}
+
 	public List<BuyItemInfo> getBuyItemInfos() {
 		return buyItemInfos;
 	}
@@ -299,7 +266,6 @@ public class ProjectRequestForm implements Serializable {
 		this.agentno = agentno;
 	}
 
-	
 	public Long getUserid() {
 		return userid;
 	}
@@ -315,15 +281,5 @@ public class ProjectRequestForm implements Serializable {
 	public void setClist(List<CheckMsg> clist) {
 		this.clist = clist;
 	}
-	
-	@Override
-	public String toString() {
-		return "ProjectRequestForm [id=" + id + ", dept=" + dept + ", deptpeo=" + deptpeo + ", deptpeoinfo="
-				+ deptpeoinfo + ", projectname=" + projectname + ", projectcontact=" + projectcontact
-				+ ", projectpeoinfo=" + projectpeoinfo + ", buyway=" + buyway + ", moneyway=" + moneyway + ", premoney="
-				+ premoney + ", questmoney=" + questmoney + ", buyItemInfos=" + buyItemInfos + ", totalmoney="
-				+ totalmoney + ", others=" + others + ", createdate=" + createdate + ", updatedate=" + updatedate
-				+ ", stepstatus=" + stepstatus + ", isten=" + isten + ", bh1=" + bh1 + ", bh2=" + bh2 + ", agentno="
-				+ agentno + "]";
-	}
+
 }

@@ -47,8 +47,8 @@ public class Hbctc {
 	
 	@Autowired
 	SysUserRoleService sysUserRoleService;
-    @Test
-    public void test() {
+ //   @Test
+/*    public void test() {
 		ProjectRequestForm record=new ProjectRequestForm(
     			"dept", 
     			"deptPeo",
@@ -98,7 +98,7 @@ public class Hbctc {
     			);
     	int batchInsert = buyItemInfoService.batchInsert(buyItemInfos,insertSelective);
     	System.out.println("batchInsert  :"+batchInsert);
-    }
+    }*/
 
     @Autowired
     NumfactoryService numfactoryService;

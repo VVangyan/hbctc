@@ -1248,13 +1248,20 @@ var isNum=function(inputNum){
 		
 		var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
 		var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl" title="点击删除栏目" trnum='+tdNum+' ></div></td>')
-		var newInput=$(' <input list="browsers"   type="text" id="moneyway" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空">')
+		//var newInput=$(' <input list="browsers"   type="text" id="moneyway" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空">')
 
-		var newDatalist=$('<datalist id="browsers"></datalist>')
+/*		var newDatalist=$('<datalist id="browsers"></datalist>')
 		var tempArry=[]
 			tempArry=fundList
 		for(var i=0;i<fundList.length;i++){
 			var option='<option value='+fundList[i].moneyway+'  id="inputid" idval='+fundList[i].id+'>'
+			newDatalist.append(option)
+		}*/
+		var newDatalist=$('<select  class="form-control" style="width:420px" id="moneyway"></select >')
+		var tempArry=[]
+		tempArry=fundList
+		for(var i=0;i<fundList.length;i++){
+			var option='<option   value='+fundList[i].moneyway+' id="inputid" idval='+fundList[i].id+'>'+fundList[i].moneyway+'</option>'
 			newDatalist.append(option)
 		}
 		debugger
@@ -1263,7 +1270,7 @@ var isNum=function(inputNum){
 		var newTd2=$('<td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
 		var newTd3=$('<td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
 		
-		newTd1.append(newInput,newDatalist)
+		newTd1.append(newDatalist)
 		
 		newTr.append(newTd1,newTd2,newTd3)
 		
@@ -1333,7 +1340,8 @@ var isNum=function(inputNum){
 	})
 	
 	function  changeOptionValue(){
-		var moneywayArr=$("input").filter("#moneyway")
+		var moneywayArr=$("select");
+		debugger
 		var tempArry=[]
 		for(var i=0;i<moneywayArr.length;i++){
 			tempArry[i]=moneywayArr[i].value

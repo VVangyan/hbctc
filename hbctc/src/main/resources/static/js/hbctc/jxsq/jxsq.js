@@ -316,21 +316,23 @@ $(document).on("click","#add_request",function(){
 				selects[4].value
 		)
 		
-		/*				buyItemInfo.byintemid=parseInt(inputs.context.id)
-			buyItemInfo.buyitemname=inputs[0].value
-			buyItemInfo.buyitemqty=inputs[1].value
-			buyItemInfo.buyitemunit=selects[1].value 
-			
-			buyItemInfo.buyitemsum=inputs[2].value
-			
-			buyItemInfo.buyitemtype=selects[0].value
-			buyItemInfo.isimport=selects[2].value
-			buyItemInfo.isenergy=selects[3].value
-			buyItemInfo.isenvironment=selects[3].value*/
-		
 		buyItemInfos.push(buyItemInfo)
 		debugger
 	}
+	//////////////////////$$$$$$$$$$$$$$$$%%%%%%%%#$#######################
+	//资金来源
+	var capItems=$("tr[trid='trid']")
+	var  capitalsourceInfos=new Array();
+	for(var i=0;i<capItems.length;i++){
+		var csid=capItems[i].getAttribute("trnum")//资金来源编号
+		var moneyway= capItems[i].children[0].lastChild.value;  //资金来源
+		var premoney= capItems[i].children[1].lastChild.value;  //预算金额
+		var questmoney= capItems[i].children[2].lastChild.value;//申请项目资金
+		var capitalSource=new CapitalSource(csid,moneyway,premoney,questmoney);
+		capitalsourceInfos.push(capitalSource)
+	}
+	debugger
+	
 	var projectRequestForm=new ProjectRequestForm(
 			dept,
 			deptpeo,
@@ -339,9 +341,7 @@ $(document).on("click","#add_request",function(){
 			projectcontact,
 			projectpeoinfo,
 			buyway,
-			moneyway,
-			premoney,
-			questmoney,
+			capitalsourceInfos,
 			buyItemInfos,
 			totalmoney,
 			others,
@@ -352,6 +352,7 @@ $(document).on("click","#add_request",function(){
 	//
 	debugger
 	if(isOk(buyItemInfos,"#formId")){
+	debugger
 		
 	$.ajax({
 			type: "POST",

@@ -27,7 +27,7 @@ public class ProjectRequestForm implements Serializable {
 
 	private Double questmoney;// 申请项目金额（元）
 
-	List<CapitalSource> capitalsource;// 资金来源
+	List<CapitalSource> capitalsourceInfos;// 资金来源
 
 	List<BuyItemInfo> buyItemInfos;// 采购项目需求
 
@@ -58,12 +58,9 @@ public class ProjectRequestForm implements Serializable {
 	public ProjectRequestForm() {
 		super();
 	}
-
 	public ProjectRequestForm(String dept, String deptpeo, String deptpeoinfo, String projectname,
-			String projectcontact, String projectpeoinfo, String buyway, String moneyway, Double premoney,
-			Double questmoney, List<CapitalSource> capitalsource, List<BuyItemInfo> buyItemInfos, Double totalmoney,
-			String others, Date createdate, Date updatedate, Integer stepstatus, Integer isten, Integer bh1,
-			Integer bh2, String agentno, Long userid, List<CheckMsg> clist) {
+			String projectcontact, String projectpeoinfo, String buyway, List<CapitalSource> capitalsourceInfos,
+			List<BuyItemInfo> buyItemInfos, Double totalmoney, String others, Integer isten) {
 		super();
 		this.dept = dept;
 		this.deptpeo = deptpeo;
@@ -72,23 +69,15 @@ public class ProjectRequestForm implements Serializable {
 		this.projectcontact = projectcontact;
 		this.projectpeoinfo = projectpeoinfo;
 		this.buyway = buyway;
-		this.moneyway = moneyway;
-		this.premoney = premoney;
-		this.questmoney = questmoney;
-		this.capitalsource = capitalsource;
+		this.capitalsourceInfos = capitalsourceInfos;
 		this.buyItemInfos = buyItemInfos;
 		this.totalmoney = totalmoney;
 		this.others = others;
-		this.createdate = createdate;
-		this.updatedate = updatedate;
-		this.stepstatus = stepstatus;
 		this.isten = isten;
-		this.bh1 = bh1;
-		this.bh2 = bh2;
-		this.agentno = agentno;
-		this.userid = userid;
-		this.clist = clist;
 	}
+
+
+
 
 	public Integer getId() {
 		return id;
@@ -178,12 +167,12 @@ public class ProjectRequestForm implements Serializable {
 		this.questmoney = questmoney;
 	}
 
-	public List<CapitalSource> getCapitalsource() {
-		return capitalsource;
+	public List<CapitalSource> getCapitalsourceInfos() {
+		return capitalsourceInfos;
 	}
 
-	public void setCapitalsource(List<CapitalSource> capitalsource) {
-		this.capitalsource = capitalsource;
+	public void setCapitalsourceInfos(List<CapitalSource> capitalsourceInfos) {
+		this.capitalsourceInfos = capitalsourceInfos;
 	}
 
 	public List<BuyItemInfo> getBuyItemInfos() {
@@ -282,4 +271,15 @@ public class ProjectRequestForm implements Serializable {
 		this.clist = clist;
 	}
 
+	@Override
+	public String toString() {
+		return "ProjectRequestForm [id=" + id + ", dept=" + dept + ", deptpeo=" + deptpeo + ", deptpeoinfo="
+				+ deptpeoinfo + ", projectname=" + projectname + ", projectcontact=" + projectcontact
+				+ ", projectpeoinfo=" + projectpeoinfo + ", buyway=" + buyway + ", moneyway=" + moneyway + ", premoney="
+				+ premoney + ", questmoney=" + questmoney + ", capitalsourceInfos=" + capitalsourceInfos
+				+ ", buyItemInfos=" + buyItemInfos + ", totalmoney=" + totalmoney + ", others=" + others
+				+ ", createdate=" + createdate + ", updatedate=" + updatedate + ", stepstatus=" + stepstatus
+				+ ", isten=" + isten + ", bh1=" + bh1 + ", bh2=" + bh2 + ", agentno=" + agentno + ", userid=" + userid
+				+ ", clist=" + clist + "]";
+	}
 }

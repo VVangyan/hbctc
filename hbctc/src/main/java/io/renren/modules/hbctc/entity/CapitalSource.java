@@ -25,8 +25,20 @@ public class CapitalSource implements Serializable {
     private Integer preid;
 
     private static final long serialVersionUID = 1L;
+    
+    public CapitalSource() {
+		super();
+	}
+    
+	public CapitalSource(Integer csid, String moneyway, Double premoney, Double questmoney) {
+		super();
+		this.csid = csid;
+		this.moneyway = moneyway;
+		this.premoney = premoney;
+		this.questmoney = questmoney;
+	}
 
-    public Integer getId() {
+	public Integer getId() {
         return id;
     }
 

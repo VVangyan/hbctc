@@ -119,14 +119,18 @@ public class ZXJHController extends AbstractController {
 			projectRequestForm.setStepstatus(0);// 0,1,2,3,4,5,6,7
 			projectRequestForm.setBh1(year);
 			projectRequestForm.setBh2(bh2);
-			projectRequestForm.setIsten(projectRequestForm.getPremoney()>=50000 ? 1:0);
+			int tempMoney=0;
+			for(int i=0;i<projectRequestForm.getCapitalsourceInfos().size();i++) {
+				tempMoney+=projectRequestForm.getCapitalsourceInfos().get(i).getPremoney();
+			}
+			projectRequestForm.setIsten(tempMoney>50000 ? 1:0);
 			projectRequestForm.setUserid(getUserId());// 用户id。 确认身份。
 			projectRequestFormService.insertSelective(projectRequestForm);
 
 			Integer preid = projectRequestForm.getId();
 			System.out.println("preid  :" + preid);
 			buyItemInfoService.batchInsert(projectRequestForm.getBuyItemInfos(), preid);
-			capitalSourceService.batchInsert(projectRequestForm.getCapitalsource(), preid);
+			capitalSourceService.batchInsert(projectRequestForm.getCapitalsourceInfos(), preid);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return R.error(0, "申请失败");

@@ -20,6 +20,8 @@ public interface FundFromService {
 	
 	int insertSelective(FundFrom record);
 
+	List<FundFrom> selectByIds(String idStrs);
+	
 	List<FundFrom> selectByExample(FundFromExample example);
 
 	FundFrom selectByPrimaryKey(Integer id);
@@ -27,6 +29,8 @@ public interface FundFromService {
 	int updateByExampleSelective(@Param("record") FundFrom record, @Param("example") FundFromExample example);
 
 	int updateByExample(@Param("record") FundFrom record, @Param("example") FundFromExample example);
+	
+	int batchUpdate(List<FundFrom> fundList);
 
 	int updateByPrimaryKeySelective(FundFrom record);
 

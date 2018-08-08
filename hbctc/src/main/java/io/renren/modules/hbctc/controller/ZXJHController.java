@@ -6,6 +6,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +31,7 @@ import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.Agency;
 import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.BuyItemInfoExample;
+import io.renren.modules.hbctc.entity.CapitalSource;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.CheckMsgExample;
 import io.renren.modules.hbctc.entity.FundFrom;
@@ -36,6 +41,7 @@ import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 import io.renren.modules.hbctc.entity.RequestBox;
 import io.renren.modules.hbctc.entity.RequestBoxExample;
+import io.renren.modules.hbctc.entity.UsedMoneyRecord;
 import io.renren.modules.hbctc.entity.UserDepartment;
 import io.renren.modules.hbctc.entity.UserDepartmentExample;
 import io.renren.modules.hbctc.service.AgencyService;
@@ -47,6 +53,7 @@ import io.renren.modules.hbctc.service.FundFromService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
 import io.renren.modules.hbctc.service.RequestBoxService;
+import io.renren.modules.hbctc.service.UsedMoneyRecordService;
 import io.renren.modules.hbctc.service.UserDepartmentService;
 import io.renren.modules.sys.controller.AbstractController;
 import io.renren.modules.sys.entity.SysUserEntity;
@@ -97,6 +104,10 @@ public class ZXJHController extends AbstractController {
 	@Autowired
 	FundFromService fundFromService;
 	
+	@Autowired
+	UsedMoneyRecordService usedMoneyRecordService;
+	
+	@SuppressWarnings("unused")
 	@SysLog("提交申请")
 	@Transactional
 	@PostMapping("/project")
@@ -130,7 +141,46 @@ public class ZXJHController extends AbstractController {
 			Integer preid = projectRequestForm.getId();
 			System.out.println("preid  :" + preid);
 			buyItemInfoService.batchInsert(projectRequestForm.getBuyItemInfos(), preid);
-			capitalSourceService.batchInsert(projectRequestForm.getCapitalsourceInfos(), preid);
+			List<CapitalSource> capitalsourceInfos = projectRequestForm.getCapitalsourceInfos();
+			capitalSourceService.batchInsert(capitalsourceInfos, preid);
+			
+			List<Integer> idList=new ArrayList<>();
+			
+			UsedMoneyRecord used=null;
+			List<UsedMoneyRecord> usedList=new ArrayList<>();
+			
+			for(int i=0;i<capitalsourceInfos.size();i++) {
+				
+				Integer csid=capitalsourceInfos.get(i).getCsid();
+				Double premoney=capitalsourceInfos.get(i).getPremoney();
+				
+				idList.add(csid);
+				
+				used=new UsedMoneyRecord(premoney, csid, preid);
+				usedList.add(used);
+			}
+			usedMoneyRecordService.batchInsert(usedList);//记录已经使用的
+			
+			String strs=idList.toString().replace("[", "").replace("]", "");
+			
+			List<FundFrom> selectByIds = fundFromService.selectByIds(strs);
+			List<FundFrom> newFundList=new ArrayList<>();
+			
+			for(int j=0;j<usedList.size();j++) {
+				 Double usedMoney = usedList.get(j).getUsedMoney();
+				 Integer fundfromId = usedList.get(j).getFundfromId();
+				 FundFrom fundFromInDB= selectByIds.stream().filter(f->f.getId()==fundfromId).collect(Collectors.toList()).get(0);
+				 Double money = fundFromInDB.getMoney();
+				 Double newMoney=money-usedMoney;//减去已经用掉的
+				 fundFromInDB.setDeptno(null);
+				 fundFromInDB.setBuyitemtype(null);
+				 fundFromInDB.setDetpname(null);
+				 fundFromInDB.setMoneyway(null);
+				 fundFromInDB.setMoney(newMoney);
+				 newFundList.add(fundFromInDB);
+			}
+			fundFromService.batchUpdate(newFundList);//更新
+			System.out.println(capitalsourceInfos);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return R.error(0, "申请失败");
@@ -374,7 +424,7 @@ public class ZXJHController extends AbstractController {
 		}
 		String deptno = getUserDepartment(Integer.parseInt(getUserId()+"")).get(0).getDeptno();
 		FundFromExample example=new FundFromExample();
-		example.createCriteria().andDeptnoEqualTo(deptno);
+		example.createCriteria().andDeptnoEqualTo(deptno).andMoneyGreaterThan(0.0);
 		List<FundFrom> fundFormList=new ArrayList<FundFrom>();
 		fundFormList= fundFromService.selectByExample(example);
 		return R.ok().put("fundFormList", fundFormList);

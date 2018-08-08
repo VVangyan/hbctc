@@ -89,6 +89,12 @@ public class FundFrom implements Serializable {
 		this.buyitemtype = buyitemtype;
 		this.money = money;
 	}
+	
+	public FundFrom(Double money, Integer id) {
+		super();
+		this.money = money;
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {
@@ -96,6 +102,7 @@ public class FundFrom implements Serializable {
 		sb.append(getClass().getSimpleName());
 		sb.append(" [");
 		sb.append("Hash = ").append(hashCode());
+		sb.append(", id=").append(id);
 		sb.append(", detpname=").append(detpname);
 		sb.append(", deptno=").append(deptno);
 		sb.append(", moneyway=").append(moneyway);

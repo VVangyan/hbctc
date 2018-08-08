@@ -1,9 +1,11 @@
 package io.renren;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,9 +17,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import io.renren.modules.hbctc.dao.FundFromMapper;
 import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.FileUploadPath;
 import io.renren.modules.hbctc.entity.FileUploadPathExample;
+import io.renren.modules.hbctc.entity.FundFrom;
 import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample.Criteria;
@@ -47,6 +51,11 @@ public class Hbctc {
 	
 	@Autowired
 	SysUserRoleService sysUserRoleService;
+	
+	@Autowired
+	FundFromMapper fundFromMapper;
+	
+	
  //   @Test
 /*    public void test() {
 		ProjectRequestForm record=new ProjectRequestForm(
@@ -204,7 +213,16 @@ public class Hbctc {
     
     
     
-    
+    @Test
+    public void testIds() {
+    	List ids=new ArrayList<>(Arrays.asList(123,124,125));
+    	String strs=ids.toString().replace("[", "").replace("]", "");
+    	System.out.println(strs);
+    	List<FundFrom> selectByIds = fundFromMapper.selectByIds(strs);
+    	
+    	FundFrom fundFrom = selectByIds.stream().filter(f->f.getId()==123).collect(Collectors.toList()).get(0);
+    	System.out.println(fundFrom);
+    }
     
     
     

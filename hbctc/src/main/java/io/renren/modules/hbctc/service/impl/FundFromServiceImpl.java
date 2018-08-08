@@ -44,6 +44,11 @@ public class FundFromServiceImpl implements FundFromService {
 	public int insertSelective(FundFrom record) {
 		return fundFromMapper.insertSelective(record);
 	}
+	
+	@Override
+	public List<FundFrom> selectByIds(String idStrs) {
+		return fundFromMapper.selectByIds(idStrs);
+	}
 
 	@Override
 	public List<FundFrom> selectByExample(FundFromExample example) {
@@ -84,6 +89,17 @@ public class FundFromServiceImpl implements FundFromService {
 			mapper.insertSelective((FundFrom) list.get(i));
 		}
 		System.out.println("批量插入完成!");
+		return num;
+	}
+
+	@Override
+	public int batchUpdate(List<FundFrom> fundList) {
+		FundFromMapper mapper = sqlSession.getMapper(FundFromMapper.class);
+		int num = 0;
+		for (int i = 0; i < fundList.size(); i++) {
+			num=mapper.updateByPrimaryKeySelective(fundList.get(i));
+		}
+		System.out.println("批量更新完成!");
 		return num;
 	}
 

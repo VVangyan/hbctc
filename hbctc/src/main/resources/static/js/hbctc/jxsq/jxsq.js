@@ -324,8 +324,11 @@ $(document).on("click","#add_request",function(){
 	var capItems=$("tr[trid='trid']")
 	var  capitalsourceInfos=new Array();
 	for(var i=0;i<capItems.length;i++){
-		var csid=capItems[i].getAttribute("trnum")//资金来源编号
-		var moneyway= capItems[i].children[0].lastChild.value;  //资金来源
+		//var csid=capItems[i].getAttribute("trnum")//资金来源编号
+		//var moneyway= capItems[i].children[0].lastChild.value;  //资金来源
+		var csid=$(capItems[i].children[0]).find("select").find("option:selected").attr("idval")//资金来源编号
+		var moneyway=$(capItems[i].children[0]).find("select").find("option:selected").val()
+		debugger;
 		var premoney= capItems[i].children[1].lastChild.value;  //预算金额
 		var questmoney= capItems[i].children[2].lastChild.value;//申请项目资金
 		var capitalSource=new CapitalSource(csid,moneyway,premoney,questmoney);
@@ -1258,11 +1261,11 @@ var isNum=function(inputNum){
 			var option='<option value='+fundList[i].moneyway+'  id="inputid" idval='+fundList[i].id+'>'
 			newDatalist.append(option)
 		}*/
-		var newDatalist=$('<select  class="form-control" style="width:420px" id="moneyway"></select >')
+		var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway"></select >')
 		var tempArry=[]
 		tempArry=fundList
 		for(var i=0;i<fundList.length;i++){
-			var option='<option   value='+fundList[i].moneyway+' id="inputid" idval='+fundList[i].id+'>'+fundList[i].moneyway+'</option>'
+			var option='<option   value='+fundList[i].moneyway+' id="inputid" idval='+fundList[i].id+'  fundmoney='+fundList[i].money+'>'+fundList[i].moneyway+'</option>'
 			newDatalist.append(option)
 		}
 		debugger
@@ -1271,7 +1274,9 @@ var isNum=function(inputNum){
 		var newTd2=$('<td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
 		var newTd3=$('<td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
 		
-		newTd1.append(newDatalist)
+		//var input1=$('<input type="text" style="height:30px;width:80px;folat:right;"  value="可用资金:"; disabled="disabled">  ')
+		//var input2=$('<input type="text" style="height:30px;width:120px;folat:right"; disabled="disabled">')
+		newTd1.append(newDatalist)//,input1,input2)
 		
 		newTr.append(newTd1,newTd2,newTd3)
 		
@@ -1338,6 +1343,9 @@ var isNum=function(inputNum){
 	
 	$(document).on("change","#moneyway",function(){
 		changeOptionValue()
+		var current=$(this);
+		current.parent()
+		debugger;
 	})
 	
 	function  changeOptionValue(){
@@ -1395,5 +1403,19 @@ var isNum=function(inputNum){
 		}
 		return canShowArr
 	}
+	
+	/*预算项目金额事件*/
+	$(document).on("change","#premoney",function(){
+		var current=$(this);
+		var currentMoney=parseFloat(current.val());//输入的钱
+		var moneywat=current.parent().prev().find("select").find("option:selected").text()//资金来源名称
+		var fundmoney=parseFloat(current.parent().prev().find("select").find("option:selected").attr("fundmoney"))//资金额度
+		debugger
+		if(currentMoney>fundmoney){
+			alert("预算项目金额超过额度！")
+			current.val("")//超过了清空
+			return false
+		}
+	})
 	
 })

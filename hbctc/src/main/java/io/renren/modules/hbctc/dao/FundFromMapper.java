@@ -20,6 +20,8 @@ public interface FundFromMapper {
 	int insertSelective(FundFrom record);
 
 	List<FundFrom> selectByExample(FundFromExample example);
+	
+	List<FundFrom> selectByIds(@Param("idStrs") String idStrs);
 
 	FundFrom selectByPrimaryKey(Integer id);
 

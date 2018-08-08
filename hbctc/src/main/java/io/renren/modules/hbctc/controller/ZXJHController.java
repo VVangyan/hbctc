@@ -424,7 +424,7 @@ public class ZXJHController extends AbstractController {
 		}
 		String deptno = getUserDepartment(Integer.parseInt(getUserId()+"")).get(0).getDeptno();
 		FundFromExample example=new FundFromExample();
-		example.createCriteria().andDeptnoEqualTo(deptno).andMoneyGreaterThan(0.0);
+		example.createCriteria().andDeptnoEqualTo(deptno).andMoneyGreaterThan(0.0);//资金不为0
 		List<FundFrom> fundFormList=new ArrayList<FundFrom>();
 		fundFormList= fundFromService.selectByExample(example);
 		return R.ok().put("fundFormList", fundFormList);

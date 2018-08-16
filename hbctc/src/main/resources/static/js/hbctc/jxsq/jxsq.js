@@ -624,6 +624,47 @@ function loadEditData(r){
 	$("#edit_totalmoney").val(r.totalmoney)//合计金额（元）
 	$("#edit_others").val(r.others)// 其他说明
 	
+	var cList=r.capitalsourceInfos;
+	
+	function createCaptionl (cList){
+		var tdNum=1
+		for(var c=0;c<cList.length;c++){
+			var captialTd_edit=$("#captialTd_edit")
+			rowspan=captialTd_edit.attr("rowspan")
+			debugger
+			var captialTr=$("#captialTr_edit")
+			
+			var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
+			var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl" title="点击删除栏目" trnum='+tdNum+' ></div></td>')
+
+			var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway"></select >')
+			var tempArry=[]
+			tempArry=fundList
+			var option='<option   value='+cList[c].moneyway+' id="inputid" idval='+cList[c].id+' >'+cList[c].moneyway+'</option>'
+			newDatalist.append(option)
+			
+			var newTd2=$('<td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true"   value= '+cList[c].premoney+' missingMessage="不能为空"></td>')
+			var newTd3=$('<td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" value= '+cList[c].questmoney+' missingMessage="不能为空"></td>')
+			
+			newTd1.append(newDatalist)//,input1,input2)
+			
+			newTr.append(newTd1,newTd2,newTd3)
+			
+			captialTd_edit.attr("rowspan",parseInt(rowspan)+1)
+			
+			captialTr.after(newTr)
+			
+			$.parser.parse(newTr);//重新渲染样式
+			tdNum++;
+		}
+		
+	}
+	createCaptionl (cList);
+
+	
+	
+	
+	
 	
 	
 	var items_tr=$("#edit_items_tr_id")

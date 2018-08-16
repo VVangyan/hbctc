@@ -32,6 +32,7 @@ import io.renren.modules.hbctc.entity.Agency;
 import io.renren.modules.hbctc.entity.BuyItemInfo;
 import io.renren.modules.hbctc.entity.BuyItemInfoExample;
 import io.renren.modules.hbctc.entity.CapitalSource;
+import io.renren.modules.hbctc.entity.CapitalSourceExample;
 import io.renren.modules.hbctc.entity.CheckMsg;
 import io.renren.modules.hbctc.entity.CheckMsgExample;
 import io.renren.modules.hbctc.entity.FundFrom;
@@ -250,7 +251,11 @@ public class ZXJHController extends AbstractController {
 						example3.createCriteria().andPreidEqualTo(id);
 		List<CheckMsg> clist = checkMsgService.selectByExample(example3);
 		projectRequestForm.setClist(clist);
-
+		
+		CapitalSourceExample example4=new CapitalSourceExample();
+							 example4.createCriteria().andPreidEqualTo(id);
+		List<CapitalSource> capitalList = capitalSourceService.selectByExample(example4);
+		projectRequestForm.setCapitalsourceInfos(capitalList);
 		return projectRequestForm;
 	}
 	@SysLog("删除清单元素")

@@ -8,14 +8,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @SpringBootApplication
-public class RunMainApplication extends SpringBootServletInitializer {
+public class HbctcMainApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(RunMainApplication.class, args);
+		SpringApplication.run(HbctcMainApplication.class, args);
 	}
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(RunMainApplication.class);
+		return application.sources(HbctcMainApplication.class);
 	}
 }

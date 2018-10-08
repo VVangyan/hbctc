@@ -98,6 +98,12 @@ $("#edit_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空�
 	if($("input[name=edit_buyway]").length>0){
 		$("input[name=edit_buyway]").removeAttr("checked")
 	}
+	
+	
+	if($("tr[trid=trid]").length>0){
+		$("tr[trid=trid]").empty();
+	}
+	
 	if($("tr[editFlag=editFlag]").length>0){//清除tr,重置 rowspan为3，itemId为0
 		$("tr[editFlag=editFlag]").remove()
 		var row = $("#edit_rowspan_change")[0]
@@ -105,6 +111,8 @@ $("#edit_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空�
 		row.rowSpan=3
 	}
 	$("#agency_div_edit").remove()
+	
+	
 		
 });
 var itemId=0
@@ -373,7 +381,7 @@ $(document).on("click","#add_request",function(){
 });
 
 $(document).on("click","#edit_request",function(){
-	
+	debugger
 	var webpreid=$(this).attr("webpreid")
 	var inputsAndSelects=$("tr[editFlag=editFlag]")
 	
@@ -385,9 +393,9 @@ $(document).on("click","#edit_request",function(){
 	var projectpeoinfo=$("#edit_projectpeoinfo").val().trim()//联系方式
 	var buyway=$("input[name='edit_buyway']:checked").val()//采购方式
 	
-	var moneyway=$("#edit_moneyway").val().trim()// 资金来源
-	var premoney=$("#edit_premoney").val().trim()//预算项目金额（元)
-	var questmoney=$("#edit_questmoney").val().trim()//申请项目金额（元）
+	//var moneyway=$("#edit_moneyway").val().trim()// 资金来源
+	//var premoney=$("#edit_premoney").val().trim()//预算项目金额（元)
+	//var questmoney=$("#edit_questmoney").val().trim()//申请项目金额（元）
 	
 	var totalmoney=$("#edit_totalmoney").val().trim()//合计金额（元）
 	
@@ -423,6 +431,25 @@ $(document).on("click","#edit_request",function(){
 		buyItemInfos.push(buyItemInfo)
 		debugger
 	}
+	
+	
+	//资金来源
+	var capItems=$("tr[trid='trid']")
+	var  capitalsourceInfos=new Array();
+	for(var i=0;i<capItems.length;i++){
+		//var csid=capItems[i].getAttribute("trnum")//资金来源编号
+		//var moneyway= capItems[i].children[0].lastChild.value;  //资金来源
+		var csid=$(capItems[i].children[0]).find("select").find("option:selected").attr("idval")//资金来源编号
+		var moneyway=$(capItems[i].children[0]).find("select").find("option:selected").val()
+		debugger;
+		var premoney= capItems[i].children[1].lastChild.value;  //预算金额
+		var questmoney= capItems[i].children[2].lastChild.value;//申请项目资金
+		var capitalSource=new CapitalSource(csid,moneyway,premoney,questmoney);
+		capitalsourceInfos.push(capitalSource)
+	}
+	
+	
+	
 	var projectRequestForm=new ProjectRequestForm(
 			dept,
 			deptpeo,
@@ -431,13 +458,11 @@ $(document).on("click","#edit_request",function(){
 			projectcontact,
 			projectpeoinfo,
 			buyway,
-			moneyway,
-			premoney,
-			questmoney,
+			capitalsourceInfos,
 			buyItemInfos,
 			totalmoney,
 			others,
-			(premoney>=50000)? 1:0)//是否是超过10w
+			(totalmoney>50000)? 1:0)
 	
 	if(ids[0].getAttribute("preid")==null){
 		projectRequestForm.id=webpreid
@@ -635,7 +660,7 @@ function loadEditData(r){
 			var captialTr=$("#captialTr_edit")
 			
 			var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
-			var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl" title="点击删除栏目" trnum='+tdNum+' ></div></td>')
+			var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl_edit" title="点击删除栏目" trnum='+tdNum+' ></div></td>')
 
 			var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway"></select >')
 			var tempArry=[]
@@ -1365,6 +1390,19 @@ var isNum=function(inputNum){
 		captialTd.attr("rowspan",parseInt(rowspan)-1)
 		tdNum--;
 		changeOptionValue()
+		debugger
+	});
+	
+	$(document).on("click",".sub_img_captionl_edit",function(){
+		var checkedTr=this;
+		var trnum=checkedTr.getAttribute("trnum")
+		
+		debugger
+		var trs=$("tr").filter("[trnum="+trnum+"]").remove()
+		var captialTd=$("#captialTd_edit")
+		rowspan=captialTd.attr("rowspan")
+		captialTd.attr("rowspan",parseInt(rowspan)-1)
+		tdNum--;
 		debugger
 	});
 	

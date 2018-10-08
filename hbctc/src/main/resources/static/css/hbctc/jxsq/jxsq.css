@@ -124,6 +124,16 @@ textarea {
 .sub_img_captionl:hover {
 	cursor: pointer;
 }
+.sub_img_captionl_edit {
+	width: 25px;
+	height: 25px;
+	background: url("../../../images/hbctc/sub.png");
+	background-size: contain;
+	float: left;
+}
+.sub_img_captionl_edit:hover {
+	cursor: pointer;
+}
 
 
 .id_value {

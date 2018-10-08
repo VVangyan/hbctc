@@ -101,7 +101,8 @@ $("#edit_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空�
 	
 	
 	if($("tr[trid=trid]").length>0){
-		$("tr[trid=trid]").empty();
+		$("tr[trid=trid]").remove();
+		$("#captialTd_edit").attr({"rowspan":2})
 	}
 	
 	if($("tr[editFlag=editFlag]").length>0){//清除tr,重置 rowspan为3，itemId为0
@@ -442,7 +443,7 @@ $(document).on("click","#edit_request",function(){
 		var csid=$(capItems[i].children[0]).find("select").find("option:selected").attr("idval")//资金来源编号
 		var moneyway=$(capItems[i].children[0]).find("select").find("option:selected").val()
 		debugger;
-		var premoney= capItems[i].children[1].lastChild.value;  //预算金额
+		var premoney= capItems[i].childNodes[1].lastChild.value;  //预算金额
 		var questmoney= capItems[i].children[2].lastChild.value;//申请项目资金
 		var capitalSource=new CapitalSource(csid,moneyway,premoney,questmoney);
 		capitalsourceInfos.push(capitalSource)

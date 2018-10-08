@@ -320,6 +320,10 @@ public class ZXJHController extends AbstractController {
 		projectRequestForm.setUpdatedate(new Date());
 		projectRequestFormService.updateByExampleSimple(projectRequestForm, proExample);
 		
+		
+		List<CapitalSource> capitalsourceInfos = projectRequestForm.getCapitalsourceInfos();
+		
+		System.out.println("capitalsourceInfos "+capitalsourceInfos);
 		return R.ok();
 	}
 	

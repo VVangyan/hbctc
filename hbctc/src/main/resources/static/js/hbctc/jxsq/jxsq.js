@@ -251,7 +251,6 @@ $(document).on("click",".sub_img",function(){
 	$("tr[id="+trid+"]").remove()
 	debugger
 });
-
 //删除item 删除采购项目需求
 $(document).on("click","#sub_img_edit",function(){
 	var checkedTr=this;
@@ -623,6 +622,7 @@ function editRequestTable(id,stepstatus){
 	$("#edit_zxjh_Modal").modal({backdrop:"static"})
 	$("#edit_request").attr({"webpreid":id})
 	getAgency()//获取代理机构
+	getFounds();
 	$.ajax({
 		type: "GET",
 		url:"/getDetails",
@@ -1378,6 +1378,72 @@ var isNum=function(inputNum){
 		
 	});
 	
+	$(document).on("click","#add_captionl_edit",function(){
+		var captialTd=$("#captialTd_edit")
+		rowspan=captialTd.attr("rowspan")
+		debugger
+		var captialTr=$("#captialTr_edit")
+		
+		var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
+		var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl_edit" title="点击删除栏目" trnum='+tdNum+' ></div></td>')
+		//var newInput=$(' <input list="browsers"   type="text" id="moneyway" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空">')
+		
+		/*		var newDatalist=$('<datalist id="browsers"></datalist>')
+		var tempArry=[]
+			tempArry=fundList
+		for(var i=0;i<fundList.length;i++){
+			var option='<option value='+fundList[i].moneyway+'  id="inputid" idval='+fundList[i].id+'>'
+			newDatalist.append(option)
+		}*/
+		var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway"></select >')
+		var tempArry=[]
+		tempArry=fundList
+		for(var i=0;i<fundList.length;i++){
+			var option='<option   value='+fundList[i].moneyway+' id="inputid" idval='+fundList[i].id+'  fundmoney='+fundList[i].money+'>'+fundList[i].moneyway+'</option>'
+			newDatalist.append(option)
+		}
+		debugger
+		
+		
+		var newTd2=$('<td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
+		var newTd3=$('<td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>')
+		
+		//var input1=$('<input type="text" style="height:30px;width:80px;folat:right;"  value="可用资金:"; disabled="disabled">  ')
+		//var input2=$('<input type="text" style="height:30px;width:120px;folat:right"; disabled="disabled">')
+		newTd1.append(newDatalist)//,input1,input2)
+		
+		newTr.append(newTd1,newTd2,newTd3)
+		
+		captialTd.attr("rowspan",parseInt(rowspan)+1)
+		
+		captialTr.after(newTr)
+		
+		$.parser.parse(newTr);//重新渲染样式
+		tdNum++;
+		
+		
+		
+		/*	      <tr   >
+	          <td colspan="5"  id="add_captionl_td1">
+	          
+	           <input list="browsers"  type="text" id="moneyway" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空">
+					<datalist id="browsers">
+					  <option value="Internet Explorer">
+					  <!-- <option v-for="person in people" :value="person.name">{{ person.name }}</option> -->
+					</datalist>
+	          </td>
+	          <td colspan="2"  id="add_captionl_td2">
+	          	<!-- <input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"> -->
+	          </td>
+	          <td colspan="2"  id="add_captionl_td3">
+	          	<!-- <input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"> -->
+	          </td>
+	      </tr>*/
+		
+		
+		
+	});
+	
 	/**
 	 * 删除
 	 */
@@ -1409,16 +1475,22 @@ var isNum=function(inputNum){
 		var trnum=checkedTr.getAttribute("trnum")
 		var hasid=checkedTr.getAttribute("hasid")
 		
-		confirm("确定要删除选中的记录？",function(){
-			$.ajax({
-				type: "DELETE",
-				url:"/deleteCapitalSourceById/"+hasid,
-				success:function(r){
-					alert(r.msg)
-					changeTV(trnum)
-				}
+		debugger
+		if(hasid==null){
+			changeTV(trnum)
+		}else{
+			confirm("确定要删除选中的记录？",function(){
+				$.ajax({
+					type: "DELETE",
+					url:"/deleteCapitalSourceById/"+hasid,
+					success:function(r){
+						alert(r.msg)
+						changeTV(trnum)
+					}
+				})
 			})
-		})
+		}
+		
 	});
 	
 	function getFounds(){

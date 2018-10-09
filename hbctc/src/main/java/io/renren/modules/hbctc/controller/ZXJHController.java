@@ -306,8 +306,8 @@ public class ZXJHController extends AbstractController {
 		Integer preid = projectRequestForm.getId();
 		BuyItemInfoExample example=new BuyItemInfoExample();
 		example.createCriteria().andPreidEqualTo(preid);
-		long countByExample = buyItemInfoService.countByExample(example);
-		if(countByExample>0) {
+		long buyCount = buyItemInfoService.countByExample(example);
+		if(buyCount>0) {
 			//更新item
 			buyItemInfoService.batchUpdate(buyItemInfos, preid);
 		}else {//若没有一条记录说明全部删光了。
@@ -322,6 +322,18 @@ public class ZXJHController extends AbstractController {
 		
 		
 		List<CapitalSource> capitalsourceInfos = projectRequestForm.getCapitalsourceInfos();
+		
+		CapitalSourceExample cs=new CapitalSourceExample();
+		cs.createCriteria().andPreidEqualTo(preid);
+		
+		long capCount = capitalSourceService.countByExample(cs);
+		if(capCount>0) {
+			capitalSourceService.batchUpdate(capitalsourceInfos, preid);
+		}else{
+			if(!capitalsourceInfos.isEmpty()) {
+				capitalSourceService.batchInsert(capitalsourceInfos, preid);
+			}
+		}
 		
 		System.out.println("capitalsourceInfos "+capitalsourceInfos);
 		return R.ok();

@@ -19,7 +19,7 @@ public class CapitalSourceServiceImpl extends CapitalSourceService {
 
 	@Autowired
 	private CapitalSourceMapper capitalSourceMapper;
-	
+
 	@Autowired
 	SqlSessionTemplate sqlSessionTemplate;
 
@@ -92,6 +92,40 @@ public class CapitalSourceServiceImpl extends CapitalSourceService {
 					record.get(i).setPreid(preid);// 设置preid
 					record.get(i).setId(null);// 设置id为null
 					status = mapper.insertSelective(record.get(i));
+				}
+			}
+			// 手动提交，提交后无法回滚
+			session.commit();
+			// 清理缓存，防止溢出
+			session.clearCache();
+		} catch (Exception e) {
+			// 没有提交的数据可以回滚
+			session.rollback();
+			e.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+		return status;
+	}
+
+	@Override
+	public int batchUpdate(List<CapitalSource> record, int preid) {
+		// 如果自动提交设置为true,将无法控制提交的条数，改为最后统一提交，可能导致内存溢出
+		SqlSession session = null;
+		int status = 0;
+		try {
+			session = sqlSessionTemplate.getSqlSessionFactory().openSession(ExecutorType.BATCH, false);
+			CapitalSourceMapper mapper = session.getMapper(CapitalSourceMapper.class);
+			if (record != null) {
+				for (int i = 0; i < record.size(); i++) {
+					CapitalSource capitalSource = record.get(i);
+					capitalSource.setMoneyway(null);
+					capitalSource.setPreid(null);// 设置preid
+					capitalSource.setId(capitalSource.getCsid());// 设置id为null
+					capitalSource.setCsid(null);
+					status = mapper.updateByPrimaryKeySelective(capitalSource);
 				}
 			}
 			// 手动提交，提交后无法回滚

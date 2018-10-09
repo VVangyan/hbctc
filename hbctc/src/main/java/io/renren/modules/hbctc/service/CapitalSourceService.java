@@ -17,6 +17,8 @@ public abstract class CapitalSourceService {
 	public	abstract int insert(CapitalSource record);
 	
 	public	abstract int batchInsert(List<CapitalSource> record,int preid);
+	
+	public	abstract int batchUpdate(List<CapitalSource> record,int preid);
 
 	public	abstract int insertSelective(CapitalSource record);
 

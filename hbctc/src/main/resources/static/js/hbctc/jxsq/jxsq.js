@@ -251,7 +251,8 @@ $(document).on("click",".sub_img",function(){
 	$("tr[id="+trid+"]").remove()
 	debugger
 });
-//删除item
+
+//删除item 删除采购项目需求
 $(document).on("click","#sub_img_edit",function(){
 	var checkedTr=this;
 	var preid=checkedTr.getAttribute("preid")
@@ -661,7 +662,7 @@ function loadEditData(r){
 			var captialTr=$("#captialTr_edit")
 			
 			var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
-			var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl_edit" title="点击删除栏目" trnum='+tdNum+' ></div></td>')
+			var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl_edit" title="点击删除栏目"   hasid='+cList[c].id+'  trnum='+tdNum+' ></div></td>')
 
 			var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway"></select >')
 			var tempArry=[]
@@ -1394,17 +1395,30 @@ var isNum=function(inputNum){
 		debugger
 	});
 	
-	$(document).on("click",".sub_img_captionl_edit",function(){
-		var checkedTr=this;
-		var trnum=checkedTr.getAttribute("trnum")
-		
-		debugger
+	function changeTV(trnum){
 		var trs=$("tr").filter("[trnum="+trnum+"]").remove()
 		var captialTd=$("#captialTd_edit")
 		rowspan=captialTd.attr("rowspan")
 		captialTd.attr("rowspan",parseInt(rowspan)-1)
 		tdNum--;
-		debugger
+	}
+	
+	//删除自主采购资金来源
+	$(document).on("click",".sub_img_captionl_edit",function(){
+		var checkedTr=this;
+		var trnum=checkedTr.getAttribute("trnum")
+		var hasid=checkedTr.getAttribute("hasid")
+		
+		confirm("确定要删除选中的记录？",function(){
+			$.ajax({
+				type: "DELETE",
+				url:"/deleteCapitalSourceById/"+hasid,
+				success:function(r){
+					alert(r.msg)
+					changeTV(trnum)
+				}
+			})
+		})
 	});
 	
 	function getFounds(){

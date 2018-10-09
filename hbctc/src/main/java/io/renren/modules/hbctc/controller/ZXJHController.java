@@ -285,13 +285,21 @@ public class ZXJHController extends AbstractController {
 		return R.error(1, "当前状态下不能申报!");
 	}
 	
-	@SysLog("删除申报表")
+	@SysLog("删除采购项目需求")
 	@Transactional
 	@DeleteMapping("/deleteByItemInfoById/{id}/{preid}")
 	public R deleteByItemInfoById(@PathVariable("id") Integer id,@PathVariable("preid") Integer preid) {
 		BuyItemInfoExample example=new BuyItemInfoExample();
 		example.createCriteria().andPreidEqualTo(preid).andByintemidEqualTo(id);
 		buyItemInfoService.deleteByExample(example);
+		return R.ok("删除成功!");
+	}
+	
+	@SysLog("删除自主采购资金来源")
+	@Transactional
+	@DeleteMapping("/deleteCapitalSourceById/{id}")
+	public R deleteCapitalSourceById(@PathVariable("id") Integer id) {
+		capitalSourceService.deleteByPrimaryKey(id);
 		return R.ok("删除成功!");
 	}
 	
@@ -338,7 +346,7 @@ public class ZXJHController extends AbstractController {
 		System.out.println("capitalsourceInfos "+capitalsourceInfos);
 		return R.ok();
 	}
-	
+
 	@GetMapping("/getMapResult")
 	public List<HashMap<Object,Object>> getMapResult(){
 		List<HashMap<Object, Object>> selectMapResutlt = userDepartmentService.selectMapResutl();

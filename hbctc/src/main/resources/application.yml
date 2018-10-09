@@ -50,3 +50,8 @@ renren:
         expire: 604800
         header: token
 
+#打印sql        
+logging:
+  level:
+    io.renren.modules.hbctc.dao: debug        
+

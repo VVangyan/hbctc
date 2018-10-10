@@ -85,6 +85,11 @@ $("#detail_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清�
 		$("input[name=detail_buyway]").removeAttr("checked")
 	}
 	
+	if($("tr[trid=trid]").length>0){
+		$("tr[trid=trid]").remove();
+		$("#captialTd_detail").attr({"rowspan":2})
+	}
+	
 	if($("tr[detailFlag=detailFlag]").length>0){//清除tr,重置 rowspan为3，itemId为0
 		$("tr[detailFlag=detailFlag]").remove()
 		var row = $("#detail_rowspan_change")[0]
@@ -928,7 +933,7 @@ var vm=new Vue({
 function showDetail(id){
 	$("#detail_zxjh_Modal").modal({backdrop:"static"})
 	getAgency()//获取代理机构
-	
+	getFounds();
 	$("div[id=detail_zxjh_Modal] input ").attr("disabled", true);
 	$("div[id=detail_zxjh_Modal] textarea ").attr("disabled", true);
 	$.ajax({
@@ -975,6 +980,48 @@ function loadDetailData(r){
 	$("#detail_questmoney").val(r.questmoney)//申请项目金额（元）
 	$("#detail_totalmoney").val(r.totalmoney)//合计金额（元）
 	$("#detail_others").val(r.others)// 其他说明
+	
+	
+	
+	/****生成自主采购资金来源  start****/
+	var cList=r.capitalsourceInfos;
+	function createCaptionl (cList){
+		var tdNum=1
+		for(var c=0;c<cList.length;c++){
+			var captialTd_edit=$("#captialTd_detail")
+			rowspan=captialTd_edit.attr("rowspan")
+			debugger
+			var captialTr=$("#captialTr_detail")
+			
+			var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
+			var newTd1=$('<td colspan="5" tdNum='+tdNum+'></td>')
+
+			var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway" disabled="disabled"></select >')
+			var tempArry=[]
+			tempArry=fundList
+			var option='<option   value='+cList[c].moneyway+' id="inputid" idval='+cList[c].id+' >'+cList[c].moneyway+'</option>'
+			newDatalist.append(option)
+			
+			var newTd2=$('<td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true"   value= '+cList[c].premoney+' missingMessage="不能为空"  readonly="readonly"></td>')
+			var newTd3=$('<td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" value= '+cList[c].questmoney+' missingMessage="不能为空" readonly="readonly"></td>')
+			
+			newTd1.append(newDatalist)//,input1,input2)
+			
+			newTr.append(newTd1,newTd2,newTd3)
+			
+			captialTd_edit.attr("rowspan",parseInt(rowspan)+1)
+			
+			captialTr.after(newTr)
+			
+			$.parser.parse(newTr);//重新渲染样式
+			tdNum++;
+		}
+		
+	}
+	createCaptionl (cList);
+	/****生成自主采购资金来源  end****/
+	
+	
 	
 	
 	
@@ -1137,7 +1184,13 @@ function loadDetailData(r){
 				.append(baseSelect))
 				return 	divs
 	};
-}
+	
+	//去除禁用时候灰色
+	var divs=$("#detail_zxjh_modal_div");
+		divs.find("input").css({"background-color": "white"});
+		divs.find("textarea").css({"background-color": "white"});
+		divs.find("select").css({"background-color": "white"});
+};
 
 
 

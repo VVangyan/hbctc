@@ -1,42 +1,138 @@
 $(function() {
+	var baseURL="/"
+	$("#jqGrid").jqGrid({
+	    url: baseURL + 'getReqList',
+	    datatype: "json",
+	    colModel: [			
+			{ label: '编号', name: 'id', index: "id", width: 40, key: true },
+			{ label: '项目申报部门', name: 'dept', width: 150 },
+			{ label: '部门负责人', name: 'deptpeo',  width: 100},
+			{ label: '联系方式', name: 'deptpeoinfo',  width: 100},
+			{ label: '项目名称', name: 'projectname',  width: 120},
+			{ label: '项目联系人	', name: 'projectcontact', width: 100},
+			{ label: '联系方式', name: 'projectpeoinfo',  width: 130},
+			{ label: '状态', name: 'stepstatus', width: 170,formatter : function(value, options, row) {
+				var stepstatusName=null;
+				if(value==0){
+					stepstatusName="初始状态"
+				}
+    			if(value==1){
+    				stepstatusName="项目负责<br>人审核中"
+    			}
+    			if(value==2){
+    				stepstatusName="项目负责<br>人审核未通过"
+    			}
+    			if(value==3){
+    				stepstatusName="项目负责<br>人审核通过"
+    			}
+    			if(value==4){
+    				stepstatusName="业务负责<br>人审核未通过 "
+    			}
+    			if(value==5){
+    				stepstatusName="业务负责<br>人审核中"
+    			}
+    			if(value==6){
+    				stepstatusName="业务经办<br>人审核未通过 "
+    			}
+    			if(value==7){
+    				stepstatusName="业务负责<br>人审核通过"
+    			}
+    			if(value==8){
+    				stepstatusName="业务主管部门<br>审核未通过"
+    			}
+    			if(value==9){
+    				stepstatusName="业务经办<br>人审核中"
+    			}
+    			if(value==11){
+    				stepstatusName="业务经办<br>人审核通过"
+    			}
+    			if(value==13){
+    				stepstatusName="业务主管部门<br>审核中"
+    			}
+    			if(value==15){
+    				stepstatusName="业务主管部门<br>审核通过"
+    			}
+    			if(value==17){
+    				stepstatusName="结项"
+    			}
+				return stepstatusName;
+            }},
+			{ label: '操作', name: 'stepstatus', width: 170,formatter : function(value, options, row) {
+					var a1="<a id="+row.id+" stepstatus="+row.stepstatus+"  tag='detail' title='详情'>详情</a>";
+					var a2="<a id="+row.id+" stepstatus="+row.stepstatus+"  tag='request'   style='padding-left:5px' title='申报'>申报</a>";
+					var a3="<a id="+row.id+" stepstatus="+row.stepstatus+" tag='edit'   style='padding-left:5px' title='编辑'>编辑</a>";
+					var a4="<a id="+row.id+" stepstatus="+row.stepstatus+" tag='delete' style='padding-left:5px' title='删除'>删除</a>";
+					return a1+a2+a3+a4;
+                }
+			}
+	    ],
+	    viewrecords: true,
+        height: 385,
+        rowNum: 10,
+		rowList : [10,30,50],
+        rownumbers: false, 
+        rownumWidth: 30, 
+        autowidth:true,
+        multiselect: false,
+        pager: "#jqGridPager",
+	    jsonReader : {
+	        root: "page.list",
+	        page: "page.currPage",
+	        total: "page.totalPage",
+	        records: "page.totalCount"
+	    },
+	    prmNames : {
+	        page:"page", 
+	        rows:"limit", 
+	        order: "order"
+	    },
+	    gridComplete:function(){
+	    	//隐藏grid底部滚动条
+	    	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+	    }
+	});	 
+	
+	
 	 var fundList=[]
 	 var originalArr=[]
 	 var canShowArr=[]
 	  var vm = new Vue({  
-          el: '#app',  
+          el: '#rrapp',  
           data: {  
-              newPerson: {},  
+              showList: true,
               people: []  
           },  
           methods:{  
-              createPerson: function(){  
-                  this.people.push(this.newPerson);  
-                  // 添加完newPerson对象后，重置newPerson对象  
-                  this.newPerson = {name: '', age: 0, sex: 'Male'}  
-              },  
-              deletePerson: function(index){  
-                  // 删一个数组元素  
-                  this.people.splice(index,1);  
-              }
+	    		reload : function() {
+	    			vm.showList = true;
+	    			var page = $("#jqGrid").jqGrid('getGridParam','page');
+	    			$("#jqGrid").jqGrid('setGridParam',{ 
+	                    page:page
+	                }).trigger("reloadGrid");
+	    		},
+	          	query:function(){
+	        	  alert(111)
+	          	}
           }, 
           mounted : function() {//页面初始化后加载
           }
       }) 
+	 
 /**
  * 分页
  */
-var paginationConf = {
-		currentPage : 1,   //当前第几页
-		totalItems : 0,    //共有多少
-		itemsPerPage : 10, //每页显示记录条数
-		pagesLength : 15,
-		perPageOptions : [ 10 ],
-		rememberPerPage : 'perPageItems',
-		onChange : function() {
-			//showTopicList(this.currentPage, this.totalItems);
-			init(this.currentPage)
-		}
-};
+//var paginationConf = {
+//		currentPage : 1,   //当前第几页
+//		totalItems : 0,    //共有多少
+//		itemsPerPage : 10, //每页显示记录条数
+//		pagesLength : 15,
+//		perPageOptions : [ 10 ],
+//		rememberPerPage : 'perPageItems',
+//		onChange : function() {
+//			//showTopicList(this.currentPage, this.totalItems);
+//			init(this.currentPage)
+//		}
+//};
 
 // alert(1)
 var btn = $("#btn_add_zxjh")
@@ -379,8 +475,9 @@ $(document).on("click","#add_request",function(){
 			success: function(r){
 				debugger;
 				hideReqModal()
-				alert("申请成功!")
-				init(paginationConf.currentPage);
+				alert("申请成功!",function(){
+					location.reload() 
+				});
 			}
 		});
 	}
@@ -492,8 +589,9 @@ $(document).on("click","#edit_request",function(){
 				debugger;
 				$("#edit_zxjh_Modal").modal('hide')
 				$("#agency_div_edit").remove()
-				init(paginationConf.currentPage);
-				alert("修改成功!")
+				alert("修改成功!",function(){
+					location.reload();
+				})
 			}
 		});
 	}
@@ -885,7 +983,7 @@ var setting = {
         radioType: "all"   //对所有节点设置单选
     }
 };
-var vm=new Vue({
+vm=new Vue({
 	el: '#app',
 	data: {
 		message: 'Runoob!',
@@ -923,7 +1021,7 @@ var vm=new Vue({
 			    success: function(r){
 			    	$("#load_user_dept_Modal").modal("hide")
 			    	alert(r.msg)
-			    	init(paginationConf.currentPage)
+			    	//init(paginationConf.currentPage)
 			    }
 			});
 		}
@@ -955,8 +1053,9 @@ function delItem(id,stepstatus){
 			type: "DELETE",
 			url:"/delItemById/"+id+"/"+stepstatus,
 			success:function(r){
-				alert(r.msg)
-				init(paginationConf.currentPage);
+				alert(r.msg,function(){
+					location.reload() 
+				});
 			}
 		})
 	})
@@ -1324,7 +1423,7 @@ function init(pn){//页面初始化，加载数据
         }
     });
 }
-init(paginationConf.currentPage);
+//init(paginationConf.currentPage);
 	
 	
 /**

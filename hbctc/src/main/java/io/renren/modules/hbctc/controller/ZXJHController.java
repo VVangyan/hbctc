@@ -11,6 +11,7 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +29,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import io.renren.common.annotation.SysLog;
+import io.renren.common.utils.Constant;
+import io.renren.common.utils.PageUtils;
+import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.Agency;
 import io.renren.modules.hbctc.entity.BuyItemInfo;
@@ -233,6 +238,38 @@ public class ZXJHController extends AbstractController {
 		resultMap.put("resultList", resultList);
 		return resultMap;
 	}
+	
+	
+	
+	@GetMapping("/getReqList")
+	public R list(@RequestParam Map<String, Object> params){
+		Long userId = getUserId();
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		List<ProjectRequestForm> resultList=new ArrayList<ProjectRequestForm>();
+		
+		Integer pn = Integer.parseInt(params.get("page") + "");
+		
+		if(1==userId) {//管理员直接返回
+			return R.error();
+		}
+		System.out.println("pn >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> : "+pn);
+		PageHelper.startPage(pn, 10);
+		String deptno = getUserDepartment(Integer.parseInt(getUserId()+"")).get(0).getDeptno();
+		Long roleId = getRoleIdByUserId(userId);
+		List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));
+		List idList=new ArrayList<>();
+		for (RequestBox r : requestBox) {
+			idList.add(r.getFromid());
+		}
+		resultList= getProjects(userId,idList,roleId);
+		PageInfo page = new PageInfo(resultList, 10);
+		return R.ok().put("page", page);
+	}
+	
+	
+	
+	
+	
 	
 	@SysLog("获取详情")
 	@Transactional

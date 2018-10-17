@@ -48,6 +48,7 @@ import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 import io.renren.modules.hbctc.entity.RequestBox;
 import io.renren.modules.hbctc.entity.RequestBoxExample;
 import io.renren.modules.hbctc.entity.UsedMoneyRecord;
+import io.renren.modules.hbctc.entity.UsedMoneyRecordExample;
 import io.renren.modules.hbctc.entity.UserDepartment;
 import io.renren.modules.hbctc.entity.UserDepartmentExample;
 import io.renren.modules.hbctc.service.AgencyService;
@@ -159,10 +160,10 @@ public class ZXJHController extends AbstractController {
 				
 				Integer csid=capitalsourceInfos.get(i).getCsid();
 				Double premoney=capitalsourceInfos.get(i).getPremoney();
-				
+				Integer capitalSourceId = capitalsourceInfos.get(i).getId();
 				idList.add(csid);
 				
-				used=new UsedMoneyRecord(premoney, csid, preid);
+				used=new UsedMoneyRecord(premoney, csid, preid,capitalSourceId);
 				usedList.add(used);
 			}
 			usedMoneyRecordService.batchInsert(usedList);//记录已经使用的
@@ -173,11 +174,11 @@ public class ZXJHController extends AbstractController {
 			List<FundFrom> newFundList=new ArrayList<>();
 			
 			for(int j=0;j<usedList.size();j++) {
-				 Double usedMoney = usedList.get(j).getUsedMoney();
-				 Integer fundfromId = usedList.get(j).getFundfromId();
-				 FundFrom fundFromInDB= selectByIds.stream().filter(f->f.getId()==fundfromId).collect(Collectors.toList()).get(0);
+				 Integer csid = capitalsourceInfos.get(j).getCsid();
+				 Double premoney = capitalsourceInfos.get(j).getPremoney();
+				 FundFrom fundFromInDB= selectByIds.stream().filter(f->f.getId()==csid).collect(Collectors.toList()).get(0);
 				 Double money = fundFromInDB.getMoney();
-				 Double newMoney=money-usedMoney;//减去已经用掉的
+				 Double newMoney=money-premoney;//减去已经用掉的
 				 fundFromInDB.setDeptno(null);
 				 fundFromInDB.setBuyitemtype(null);
 				 fundFromInDB.setDetpname(null);
@@ -334,9 +335,32 @@ public class ZXJHController extends AbstractController {
 	
 	@SysLog("删除自主采购资金来源")
 	@Transactional
-	@DeleteMapping("/deleteCapitalSourceById/{id}")
-	public R deleteCapitalSourceById(@PathVariable("id") Integer id) {
+	@DeleteMapping("/deleteCapitalSourceById/{id}/{csid}")
+	public R deleteCapitalSourceById(@PathVariable("id") Integer id,@PathVariable("csid") Integer csid,
+			@PathVariable("projectid") Integer projectid) {
+		
+		//1.查查已经使用的钱
+		CapitalSource cs = capitalSourceService.selectByPrimaryKey(id);
+		Double premoney = cs.getPremoney();
+		
+		//2.查出当前可用资金
+		FundFrom fundForm = fundFromService.selectByPrimaryKey(csid);
+		Double newMoney = (fundForm.getMoney()+premoney);
+		//3.将已用的钱加回去
+		fundForm.setMoney(newMoney);
+		System.out.println("newMoney csid:"+csid+",, "+newMoney);
+		fundForm.setId(csid);
+		fundForm.setBuyitemtype(null);
+		fundForm.setDeptno(null);
+		fundForm.setDetpname(null);
+		fundForm.setMoneyway(null);
+		fundFromService.updateByPrimaryKeySelective(fundForm);
+		//4.删除已用记录
 		capitalSourceService.deleteByPrimaryKey(id);
+		
+		UsedMoneyRecordExample example=new UsedMoneyRecordExample();
+		example.createCriteria().andProjectIdEqualTo(projectid).andFundfromIdEqualTo(csid);
+		usedMoneyRecordService.deleteByExample(example);
 		return R.ok("删除成功!");
 	}
 	
@@ -372,8 +396,25 @@ public class ZXJHController extends AbstractController {
 		cs.createCriteria().andPreidEqualTo(preid);
 		
 		long capCount = capitalSourceService.countByExample(cs);
+		
 		if(capCount>0) {
-			capitalSourceService.batchUpdate(capitalsourceInfos, preid);
+			
+			CapitalSourceExample ocs=new CapitalSourceExample();
+			ocs.createCriteria().andPreidEqualTo(preid);
+			List<CapitalSource> olist = capitalSourceService.selectByExample(ocs);
+			
+			for(int k=0;k<capitalsourceInfos.size();k++) {
+				Double premoney = capitalsourceInfos.get(k).getPremoney();
+				Integer id = capitalsourceInfos.get(k).getId();
+				Integer csid = capitalsourceInfos.get(k).getCsid();
+				Integer preid2 = capitalsourceInfos.get(k).getPreid();
+				
+				System.out.println("premoney:"+premoney+"  id:"+id+"  csid:"+csid+" preid:"+preid);
+			}
+			
+			//capitalSourceService.batchUpdate(capitalsourceInfos, preid);
+			
+			
 		}else{
 			if(!capitalsourceInfos.isEmpty()) {
 				capitalSourceService.batchInsert(capitalsourceInfos, preid);

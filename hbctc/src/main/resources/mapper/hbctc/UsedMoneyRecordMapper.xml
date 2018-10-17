@@ -6,6 +6,8 @@
     <result column="used_money" jdbcType="DOUBLE" property="usedMoney" />
     <result column="fundfrom_id" jdbcType="INTEGER" property="fundfromId" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
+    <result column="capital_source_id" jdbcType="INTEGER" property="capitalSourceId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -66,7 +68,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, used_money, fundfrom_id, project_id
+    id, used_money, fundfrom_id, project_id, capital_source_id, create_time
   </sql>
   <select id="selectByExample" parameterType="io.renren.modules.hbctc.entity.UsedMoneyRecordExample" resultMap="BaseResultMap">
     select
@@ -100,16 +102,15 @@
   </delete>
   <insert id="insert" parameterType="io.renren.modules.hbctc.entity.UsedMoneyRecord">
     insert into hbctc_usedmoney_record (id, used_money, fundfrom_id, 
-      project_id)
+      project_id, capital_source_id, create_time
+      )
     values (#{id,jdbcType=INTEGER}, #{usedMoney,jdbcType=DOUBLE}, #{fundfromId,jdbcType=INTEGER}, 
-      #{projectId,jdbcType=INTEGER})
+      #{projectId,jdbcType=INTEGER}, #{capitalSourceId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="io.renren.modules.hbctc.entity.UsedMoneyRecord">
     insert into hbctc_usedmoney_record
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="usedMoney != null">
         used_money,
       </if>
@@ -118,6 +119,12 @@
       </if>
       <if test="projectId != null">
         project_id,
+      </if>
+      <if test="capitalSourceId != null">
+        capital_source_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -132,6 +139,12 @@
       </if>
       <if test="projectId != null">
         #{projectId,jdbcType=INTEGER},
+      </if>
+      <if test="capitalSourceId != null">
+        #{capitalSourceId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -156,6 +169,12 @@
       <if test="record.projectId != null">
         project_id = #{record.projectId,jdbcType=INTEGER},
       </if>
+      <if test="record.capitalSourceId != null">
+        capital_source_id = #{record.capitalSourceId,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
@@ -166,7 +185,9 @@
     set id = #{record.id,jdbcType=INTEGER},
       used_money = #{record.usedMoney,jdbcType=DOUBLE},
       fundfrom_id = #{record.fundfromId,jdbcType=INTEGER},
-      project_id = #{record.projectId,jdbcType=INTEGER}
+      project_id = #{record.projectId,jdbcType=INTEGER},
+      capital_source_id = #{record.capitalSourceId,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
@@ -183,6 +204,12 @@
       <if test="projectId != null">
         project_id = #{projectId,jdbcType=INTEGER},
       </if>
+      <if test="capitalSourceId != null">
+        capital_source_id = #{capitalSourceId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -190,7 +217,9 @@
     update hbctc_usedmoney_record
     set used_money = #{usedMoney,jdbcType=DOUBLE},
       fundfrom_id = #{fundfromId,jdbcType=INTEGER},
-      project_id = #{projectId,jdbcType=INTEGER}
+      project_id = #{projectId,jdbcType=INTEGER},
+      capital_source_id = #{capitalSourceId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

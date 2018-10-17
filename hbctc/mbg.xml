@@ -28,7 +28,7 @@
 		<!--配置数据库连接 -->
 		<jdbcConnection 
 			driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://localhost:3306/fastkaifa" 
+			connectionURL="jdbc:mysql://localhost:3306/hbctc" 
 			userId="root"
 			password="123456">
 		</jdbcConnection>

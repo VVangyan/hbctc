@@ -2,6 +2,7 @@ package io.renren.modules.hbctc.entity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UsedMoneyRecordExample implements Serializable {
@@ -344,6 +345,126 @@ public class UsedMoneyRecordExample implements Serializable {
 
         public Criteria andProjectIdNotBetween(Integer value1, Integer value2) {
             addCriterion("project_id not between", value1, value2, "projectId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdIsNull() {
+            addCriterion("capital_source_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdIsNotNull() {
+            addCriterion("capital_source_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdEqualTo(Integer value) {
+            addCriterion("capital_source_id =", value, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdNotEqualTo(Integer value) {
+            addCriterion("capital_source_id <>", value, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdGreaterThan(Integer value) {
+            addCriterion("capital_source_id >", value, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("capital_source_id >=", value, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdLessThan(Integer value) {
+            addCriterion("capital_source_id <", value, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdLessThanOrEqualTo(Integer value) {
+            addCriterion("capital_source_id <=", value, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdIn(List<Integer> values) {
+            addCriterion("capital_source_id in", values, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdNotIn(List<Integer> values) {
+            addCriterion("capital_source_id not in", values, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdBetween(Integer value1, Integer value2) {
+            addCriterion("capital_source_id between", value1, value2, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCapitalSourceIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("capital_source_id not between", value1, value2, "capitalSourceId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNull() {
+            addCriterion("create_time is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIsNotNull() {
+            addCriterion("create_time is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeEqualTo(Date value) {
+            addCriterion("create_time =", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotEqualTo(Date value) {
+            addCriterion("create_time <>", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThan(Date value) {
+            addCriterion("create_time >", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeGreaterThanOrEqualTo(Date value) {
+            addCriterion("create_time >=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThan(Date value) {
+            addCriterion("create_time <", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeLessThanOrEqualTo(Date value) {
+            addCriterion("create_time <=", value, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeIn(List<Date> values) {
+            addCriterion("create_time in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotIn(List<Date> values) {
+            addCriterion("create_time not in", values, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeBetween(Date value1, Date value2) {
+            addCriterion("create_time between", value1, value2, "createTime");
+            return (Criteria) this;
+        }
+
+        public Criteria andCreateTimeNotBetween(Date value1, Date value2) {
+            addCriterion("create_time not between", value1, value2, "createTime");
             return (Criteria) this;
         }
     }

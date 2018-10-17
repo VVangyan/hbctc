@@ -765,7 +765,7 @@ function loadEditData(r){
 			var captialTr=$("#captialTr_edit")
 			
 			var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
-			var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl_edit" title="点击删除栏目"   hasid='+cList[c].id+'  trnum='+tdNum+' ></div></td>')
+			var newTd1=$('<td colspan="5" tdNum='+tdNum+'><div class="sub_img_captionl_edit" title="点击删除栏目"   hasid='+cList[c].id+'  trnum='+tdNum+'  csid='+cList[c].csid+'  projectid='+cList[c].preid+'  ></div></td>')
 
 			var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway"></select >')
 			var tempArry=[]
@@ -1626,7 +1626,8 @@ var isNum=function(inputNum){
 		var checkedTr=this;
 		var trnum=checkedTr.getAttribute("trnum")
 		var hasid=checkedTr.getAttribute("hasid")
-		
+		var csid=checkedTr.getAttribute("csid")
+		var projectid=checkedTr.getAttribute("projectid")
 		debugger
 		if(hasid==null){
 			changeTV(trnum)
@@ -1634,7 +1635,7 @@ var isNum=function(inputNum){
 			confirm("确定要删除选中的记录？",function(){
 				$.ajax({
 					type: "DELETE",
-					url:"/deleteCapitalSourceById/"+hasid,
+					url:"/deleteCapitalSourceById/"+hasid+"/"+csid+"/"+projectid,
 					success:function(r){
 						alert(r.msg)
 						changeTV(trnum)

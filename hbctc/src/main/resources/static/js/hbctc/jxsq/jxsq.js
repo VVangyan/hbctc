@@ -23,31 +23,31 @@ $(function() {
     				stepstatusName="项目负责人审核中"
     			}
     			if(value==2){
-    				stepstatusName="项目负责人审核未通过"
+    				stepstatusName="项目负责人审核未过"
     			}
     			if(value==3){
     				stepstatusName="项目负责人审核通过"
     			}
     			if(value==4){
-    				stepstatusName="业务负责人审核未通过 "
+    				stepstatusName="业务经办人审核未过 "
     			}
-    			if(value==5){
-    				stepstatusName="业务负责人审核中"
-    			}
+//    			if(value==5){
+//    				stepstatusName="业务经办人审核中"
+//    			}
     			if(value==6){
-    				stepstatusName="业务负责人审核未通过 "//
+    				stepstatusName="业务负责人审核未过 "//
     			}
     			if(value==7){
-    				stepstatusName="业务负责人审核通过"
+    				stepstatusName="业务经办人审核通过"
     			}
     			if(value==8){
-    				stepstatusName="业务主管部门审核未通过"
+    				stepstatusName="业务主管部门审核未过"
     			}
     			if(value==9){
     				stepstatusName="业务负责人审核中";//
     			}
     			if(value==11){
-    				stepstatusName="业务负责人审核通过"//
+    				stepstatusName="业务经办人审核中"//业务负责人审核通过
     			}
     			if(value==13){
     				stepstatusName="业务主管部门审核中"
@@ -55,8 +55,8 @@ $(function() {
     			if(value==15){
     				stepstatusName="业务主管部门审核通过"
     			}
-    			if(value==17){
-    				stepstatusName="结项"
+    			if(value==7){
+    				stepstatusName="审核结束"
     			}
 				return stepstatusName;
             }},

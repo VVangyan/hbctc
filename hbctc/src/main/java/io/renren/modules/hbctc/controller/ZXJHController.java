@@ -520,19 +520,19 @@ public class ZXJHController extends AbstractController {
 		}
 		//状态为0,2,4,6,8的时候(需要修改正确后)只能发送给项目负责人
 		if((stepstatus==0||stepstatus==2||stepstatus==4||stepstatus==6||stepstatus==8)&&ztreDeptno.equalsIgnoreCase(getUserDepartment(userId).get(0).getDeptno())) {
-			reportToLeader(id, 1);
+			reportToLeader(id, 1);// 【1】项目负责人审核中
 			sendRequstToLeader(tmpmap);
 		} else if (stepstatus == 3) {// 只有当状态为3的时候才能发送给 业务主管部门或者【业务经办人,改为业务负责人】
 			// 1:业务主管部门 2:业务经办人
 			HashMap getismiddledept = getismiddledept(ztreeUserId);
 			Long ismiddledept = Long.parseLong(getismiddledept.get("ismiddledept")+""); 
 			if (ismiddledept == 1) {
-				reportToLeader(id, 13);// 业务主管部门
+				reportToLeader(id, 13);// 业务主管部门审核中
 				sendRequstToLeader(tmpmap);
 			//} else if (ismiddledept == 2&&toroleId==4) {
 			} else if (ismiddledept == 2&&toroleId==6) {
 				//reportToLeader(id, 5);// 业务经办人
-				reportToLeader(id, 9);// 业务负责人审核
+				reportToLeader(id, 9);// 业务负责人审核中
 				sendRequstToLeader(tmpmap);
 			} else {
 				return R.error("请选择正确的审批人");

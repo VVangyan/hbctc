@@ -1,19 +1,152 @@
 $(function() {
-/**
- * 分页
- */
-var paginationConf = {
-		currentPage : 1,   //当前第几页
-		totalItems : 0,    //共有多少
-		itemsPerPage : 10, //每页显示记录条数
-		pagesLength : 15,
-		perPageOptions : [ 10 ],
-		rememberPerPage : 'perPageItems',
-		onChange : function() {
-			//showTopicList(this.currentPage, this.totalItems);
-			init(this.currentPage)
+	var fundList=[];
+	var originalArr=[];
+	var canShowArr=[];
+	var baseURL="/";
+	$("#jqGrid").jqGrid({
+	    url: baseURL + 'getReqList',
+	    datatype: "json",
+	    colModel: [			
+			{ label: '编号', name: 'id', index: "id", width: 40, key: true },
+			{ label: '项目申报部门', name: 'dept', width: 150 },
+			{ label: '部门负责人', name: 'deptpeo',  width: 100},
+			{ label: '联系方式', name: 'deptpeoinfo',  width: 100},
+			{ label: '项目名称', name: 'projectname',  width: 120},
+			{ label: '项目联系人	', name: 'projectcontact', width: 100},
+			{ label: '联系方式', name: 'projectpeoinfo',  width: 130},
+			{ label: '状态', name: 'stepstatus', width: 170,formatter : function(value, options, row) {
+				var stepstatusName=null;
+				if(value==0){
+					stepstatusName="初始状态"
+				}
+    			if(value==1){
+    				stepstatusName="项目负责人审核中"
+    			}
+    			if(value==2){
+    				stepstatusName="项目负责人审核未过"
+    			}
+    			if(value==3){
+    				stepstatusName="项目负责人审核通过"
+    			}
+    			if(value==4){
+    				stepstatusName="业务经办人审核未过 "
+    			}
+//    			if(value==5){
+//    				stepstatusName="业务经办人审核中"
+//    			}
+    			if(value==6){
+    				stepstatusName="业务负责人审核未过 "//
+    			}
+    			if(value==7){
+    				stepstatusName="业务经办人审核通过"
+    			}
+    			if(value==8){
+    				stepstatusName="业务主管部门审核未过"
+    			}
+    			if(value==9){
+    				stepstatusName="业务负责人审核中";//
+    			}
+    			if(value==11){
+    				stepstatusName="业务经办人审核中"//业务负责人审核通过
+    			}
+    			if(value==13){
+    				stepstatusName="业务主管部门审核中"
+    			}
+    			if(value==15){
+    				stepstatusName="业务主管部门审核通过"
+    			}
+    			if(value==7){
+    				stepstatusName="审核结束"
+    			}
+				return stepstatusName;
+            }},
+			{ label: '操作', name: 'stepstatus', width: 170,formatter : function(value, options, row) {
+					var a1="<a id="+row.id+" stepstatus="+row.stepstatus+"  tag='detail' title='详情'>详情</a>";
+					var a2="<a id="+row.id+" stepstatus="+row.stepstatus+"  tag='plan_YWJBR'   style='padding-left:5px'>审批</a>";
+					return a1+a2;
+                }
+			}
+	    ],
+	    viewrecords: true,
+        height: 385,
+        rowNum: 10,
+		rowList : [10,30,50],
+        rownumbers: false, 
+        rownumWidth: 30, 
+        autowidth:true,
+        multiselect: false,
+        pager: "#jqGridPager",
+	    jsonReader : {
+	        root: "page.list",
+	        page: "page.currPage",
+	        total: "page.totalPage",
+	        records: "page.totalCount"
+	    },
+	    prmNames : {
+	        page:"page", 
+	        rows:"limit", 
+	        order: "order"
+	    },
+	    gridComplete:function(){
+	    	//隐藏grid底部滚动条
+	    	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+	    }
+	});	 
+	var vm=new Vue({
+		el: '#rrapp',
+		data: {
+			message: 'Runoob!',
+			stepstatus:null,
+			id:null,
+			showList: true,
+	        people: []  
+		},
+		methods: {
+			reload : function() {
+				vm.showList = true;
+				var page = $("#jqGrid").jqGrid('getGridParam','page');
+				$("#jqGrid").jqGrid('setGridParam',{ 
+	                page:page
+	            }).trigger("reloadGrid");
+			},
+			addToSend: function() {
+				debugger
+				var treeObj = $.fn.zTree.getZTreeObj("tree");
+	            var nodes = treeObj.getCheckedNodes(true);
+	            var stepstatus=this.stepstatus;
+	            var id=parseInt(this.id);
+	            debugger
+	            if(nodes.length>0&&nodes[0].preid!="-1"){
+	            	var ztreDeptno=nodes[0].preid//detpno  
+	            	var ztreUserid=nodes[0].userid//userid 
+	            	var checkData={}
+		            	checkData.ztreDeptno=ztreDeptno
+		            	checkData.ztreUserid=ztreUserid
+		            	checkData.stepstatus=stepstatus
+		            	checkData.id=id//当前选择记录的id
+		            	vm.sendCheckData(checkData)
+	            }else{
+	            	alert("请选择发送人")
+	            }
+	            debugger
+			},
+			sendCheckData:function(checkData){
+				var url="sendCheckData"
+				$.ajax({
+					type: "POST",
+				    url: baseURL + url,
+	                contentType: "application/json",
+				    data: JSON.stringify(checkData),
+				    success: function(r){
+				    	$("#load_user_dept_Modal").modal("hide");
+				    	alert(r.msg,function(){
+								location.reload() 
+				    	})
+				    }
+				});
+			}
 		}
-};
+	});	
 
 // alert(1)
 var btn = $("#btn_add_zxjh")
@@ -31,10 +164,15 @@ function hideReqModal(){
 };
 
 
-//详情
+//详情页面关闭后操作
 $("#detail_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
 	if($("input[name=detail_buyway]").length>0){
 		$("input[name=detail_buyway]").removeAttr("checked")
+	}
+	
+	if($("tr[trid=trid]").length>0){
+		$("tr[trid=trid]").remove();
+		$("#captialTd_detail").attr({"rowspan":2})
 	}
 	
 	if($("tr[detailFlag=detailFlag]").length>0){//清除tr,重置 rowspan为3，itemId为0
@@ -189,7 +327,7 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="plan_YWJBR"){//审批
-		if(stepstatus==11){
+		if(stepstatus==9){
 			checkPlan(id)
 		}else{
 			alert("当前状态不能审批!")
@@ -270,7 +408,7 @@ $("#planStatus_div button").on("click",function(){
 	if(isOk("#checkPlan__formId")){
 		checkMsg.msg=$("#check_Msg").val().trim()
 		//2018年02月22日 17:42:03
-		checkMsg.checkdate=$("#ymd01").val().trim()
+		//checkMsg.checkdate=$("#ymd01").val().trim()
 		checkMsg.preid=preid
 		checkMsg.id=planStatus
 		checkMsg.checkby=3
@@ -312,8 +450,9 @@ function uploadFile(checkMsg) {
 			contentType : false,
 			success : function(r) {
 				$("#checkPlan_Modal").modal("hide")
-				alert(r.msg)
-				init(paginationConf.currentPage)
+				alert(r.msg,function(){
+					location.reload();
+				})
 			}
 		});
 }
@@ -662,7 +801,7 @@ function init(pn){//页面初始化，加载数据
         }
     });
 }
-init(paginationConf.currentPage);
+//init(paginationConf.currentPage);
 	
 	
 /**

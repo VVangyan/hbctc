@@ -5,52 +5,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
-    <link rel="stylesheet" href="../../../plugins/ztree/css/metroStyle/metroStyle.css">
-    <link rel="stylesheet" href="../../../css/main.css">
-    <script src="../../../libs/jquery.min.js"></script>
-    <script src="../../../plugins/layer/layer.js"></script>
-    <script src="../../../libs/bootstrap.min.js"></script>
-    <script src="../../../libs/vue.min.js"></script>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+    <link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <script src="../../libs/jquery.min.js"></script>
+    <script src="../../plugins/layer/layer.js"></script>
+    <script src="../../libs/bootstrap.min.js"></script>
+    <script src="../../libs/vue.min.js"></script>
     <!--弹出框jquery-confirm  start -->
-	<link href="../../../libs/jquery-confirm/jquery-confirm.css" rel="stylesheet">
-	<script  src="../../../libs/jquery-confirm/jquery-confirm.min.js"></script>
-	<script  src="../../../libs/jquery-confirm/jquery-confirm.js"></script>
+	<link href="../../libs/jquery-confirm/jquery-confirm.css" rel="stylesheet">
+	<script  src="../../libs/jquery-confirm/jquery-confirm.min.js"></script>
+	<script  src="../../libs/jquery-confirm/jquery-confirm.js"></script>
 	<!--弹出框jquery-confirm  end -->
     
     
     
-    <script src="../../../plugins/jqgrid/grid.locale-cn.js"></script>
-    <script src="../../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
-    <script src="../../../plugins/ztree/jquery.ztree.all.min.js"></script>
-    <script src="../../../js/common.js"></script>
+    <script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+    <script src="../../js/common.js"></script>
 </head>
 <body>
-<div class="maindiv">
-    <div class="base_div"><!-- base  div-->
-        <div class="down_div"><!--down div-->
-            <table class="table">
-                <thead>
-                <tr>
-                    <th width="5%">编号</th>
-                    <th width="10%">项目申报部门</th>
-                    <th width="10%">部门负责人</th>
-                    <th width="10%">联系方式</th>
-                    <th width="20%">项目名称</th>
-                    <th width="10%">项目联系人</th>
-                    <th width="10%">联系方式</th>
-                    <th width="10%">状态</th>
-                    <th width="15%">操作</th>
-                </tr>
-                </thead>
-                <tbody  id="tbodyId">
-                </tbody>
-            </table>
-        </div>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+	    <table id="jqGrid"  ></table>
+	    <div id="jqGridPager"></div>
     </div>
-    <div class="bottom_div"  id="bottom_div"></div>
+    
+</div>
+
     
 	<!--详情  -->
     <div id="detail_zxjh_modal_div">
@@ -74,24 +59,24 @@
 	                        <table class="table table-bordered"  id="detail_table">
 	                            <tr>
 	                                <td  colspan="2" width="20%"><b>项目申报部门</b> </td>
-	                                <td colspan="8"><input type="text" id="detail_dept" style="width: 682px"   class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="8"><input type="text" id="detail_dept" style="width: 682px"   class="easyui-validatebox" readonly="readonly" ></td>
 	                            </tr>
 	                            <tr>
 	                                <td  colspan="2" width="20%"><b>项目申报部门<br>负责人</b></td>
-	                                <td width="20%"><input type="text" id="detail_deptpeo" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td width="20%"><input type="text" id="detail_deptpeo" style="width: 150px" class="easyui-validatebox"  readonly="readonly"></td>
 	                                <td ><b>联系方式</b></td>
-	                                <td colspan="6" width="50%"><input type="text" id="detail_deptpeoinfo" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="6" width="50%"><input type="text" id="detail_deptpeoinfo" style="width: 400px" class="easyui-validatebox" readonly="readonly" ></td>
 	                            </tr>
 	                            <tr>
 	                                <td rowspan="2" style="text-align: center;line-height: 74px"><b>一</b></td>
 	                                <td><b>项目名称</b></td>
-	                                <td colspan="8"><input type="text" id="detail_projectname" style="width: 682px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="8"><input type="text" id="detail_projectname" style="width: 682px" class="easyui-validatebox" readonly="readonly"></td>
 	                            </tr>
 	                            <tr>
 	                                <td><b>项目联系人</b></td>
-	                                <td><input type="text" id="detail_projectcontact" style="width: 150px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td><input type="text" id="detail_projectcontact" style="width: 150px" class="easyui-validatebox" ></td>
 	                                <td><b>联系方式</b></td>
-	                                <td colspan="6"><input type="text" id="detail_projectpeoinfo" style="width: 400px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="6"><input type="text" id="detail_projectpeoinfo" style="width: 400px" class="easyui-validatebox" ></td>
 	                            </tr>
 	                            <tr>
 	                                <td style="text-align: center"><b>二</b></td>
@@ -105,18 +90,15 @@
 	                            </tr>
 	
 	                            <tr>
-	                                <td rowspan="3" style="line-height: 111px;text-align: center"><b>三</b></td>
+	                                <td rowspan="2" id="captialTd_detail" style="line-height: 111px;text-align: center"><b>三</b></td>
 	                                <td colspan="9"><b>自主采购资金来源</b></td>
 	                            </tr>
-	                            <tr>
-	                                <td colspan="5" ><b>资金来源</b></td>
-	                                <td colspan="2"><b>预算项目金额（元）</b></td>
-	                                <td colspan="2"><b>申请项目金额（元）</b></td>
-	                            </tr>
-	                            <tr>
-	                                <td colspan="5"><input type="text" id="detail_moneyway" style="width: 500px" class="easyui-validatebox" required="true" missingMessage="不能为空"></td>
-	                                <td colspan="2"><input type="text" id="detail_premoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
-	                                <td colspan="2"><input type="text" id="detail_questmoney" style="width: 100px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
+	                            <tr id="captialTr_detail">
+	                                 <td colspan="5"  >
+	                                	<b>资金来源</b>
+	                                </td>
+	                                <td colspan="2" ><b>预算项目金额（元）</b></td>
+	                                <td colspan="2" ><b>申请项目金额（元）</b></td>
 	                            </tr>
 	                            <tr>
 	                                <td id="detail_rowspan_change" rowspan="3" style="text-align: center">
@@ -143,7 +125,7 @@
 	                            </tr>
 	                            <tr>
 	                                <td colspan="6"><b>合计金额（元）</b></td>
-	                                <td colspan="3"><input type="text" id="detail_totalmoney" style="width: 170px" class="easyui-numberbox" required="true" missingMessage="不能为空"></td>
+	                                <td colspan="3"><input type="text" id="detail_totalmoney" style="width: 170px" class="easyui-numberbox" readonly="readonly"></td>
 	                            </tr>
 	                           <tr>
 	                                <td>
@@ -151,7 +133,7 @@
 							                                    说明</b>
 	                                </td>
 	                                <td colspan="9">
-	                                	<textarea rows="4" style="width: 800px;" id="detail_others" class="easyui-validatebox" required="true" missingMessage="不能为空"></textarea>
+	                                	<textarea rows="4" style="width: 800px;" id="detail_others" class="easyui-validatebox" readonly="readonly" ></textarea>
 	                                </td>
 	                            </tr>
 	                        </table>
@@ -176,7 +158,7 @@
 	                    </div>
                     </form>
                     <div class="down_text" >
-                    	<b>抄送：</b>监察室、计划财务处。<br>
+                    	<!-- <b>抄送：</b>监察室、计划财务处。<br> -->
                     	<b>备注:</b>
                     	<ol>
                     		<li>进口设备需在“一上”阶段向省财政厅报备，否则不得购置；</li>
@@ -203,16 +185,16 @@
                             &times;
                         </button>
                         <h5 class="modal-title" id="myModalLabel">
-                                 	项目负责人审核
+                                 	业务经办人审核
                         </h5>
                     </div>
                     <form  id="checkPlan__formId">
 						<div class="modal-body"  id="modal_body_div"  >
 						说明:<textarea rows="3" class="easyui-validatebox" style="width: 523px" required="true" missingMessage="不能为空" id="check_Msg"></textarea>
 						</div>
-						<div class="jeinpbox" style="padding-left: 17px;">
+						<!-- <div class="jeinpbox" style="padding-left: 17px;">
 						 日期:<input type="text" class="jeinput easyui-validatebox" id="ymd01" placeholder="" required="true" missingMessage="不能为空" style="width: 523px;text-align: center;">
-						</div>
+						</div> -->
 						<div style="width: 580px;height: 80px;padding-top: 53px"  id="zbwj_div">
 					    	<div style="float: left;width: 120px;padding-left: 17px">
 					    		选择招标文件:
@@ -223,8 +205,8 @@
 					  	</div>
                     </form>
                     <div class="modal-footer" style="text-align: center;" id="planStatus_div">
-                        <button type="button" class="btn btn-default"  planStatus="4" id="plan_fail" >审批未过</button>
-                        <button type="button" class="btn btn-primary"  planStatus="7" id="plan_pass" >审批通过</button>
+                        <button type="button" class="btn btn-danger"  planStatus="4" id="plan_fail" >审批未过</button>
+                        <button type="button" class="btn btn-success"  planStatus="7" id="plan_pass" >审批通过</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
@@ -252,24 +234,23 @@
 						</div>
                     </form>
                     <div class="modal-footer" style="text-align: center;">
-                        <button type="button" class="btn btn-primary" @click="addToSend"  :stepstatus="stepstatus"  :id="id">确定</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-danger" @click="addToSend"  :stepstatus="stepstatus"  :id="id">确定</button>
+                        <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal -->
         </div>
     </div>
-</div>
-<link rel="stylesheet" href="../../../css/hbctc/jxsq/jxsq.css">
-<script src="../../../js/hbctc/jxsq/BuyItemInfo.js"></script>
-<script src="../../../js/hbctc/jxsq/ProjectRequestForm.js"></script>
-<script src="../../../js/hbctc/checkone/checktwo.js"></script>
+<link rel="stylesheet" href="../../css/hbctc/jxsq/jxsq.css">
+<script src="../../js/hbctc/jxsq/BuyItemInfo.js"></script>
+<script src="../../js/hbctc/jxsq/ProjectRequestForm.js"></script>
+<script src="../../js/hbctc/checkone/checktwo.js"></script>
 <!-- jdate -->
-<link type="text/css" rel="stylesheet" href="../../../libs/jedate-6.0.2/skin/jedate.css">
-<link type="text/css" rel="stylesheet" href="../../../libs/ezui/easyui.css">
-<link type="text/css" rel="stylesheet" href="../../../libs/ezui/icon.css">
-<script type="text/javascript" src="../../../libs/jedate-6.0.2/jquery.jedate.js"></script>
-<script type="text/javascript" src="../../../libs/ezui/jquery.easyui.min.js"></script>
-<script src="../../../js/paging.js"></script>
+<link type="text/css" rel="stylesheet" href="../../libs/jedate-6.0.2/skin/jedate.css">
+<link type="text/css" rel="stylesheet" href="../../libs/ezui/easyui.css">
+<link type="text/css" rel="stylesheet" href="../../libs/ezui/icon.css">
+<script type="text/javascript" src="../../libs/jedate-6.0.2/jquery.jedate.js"></script>
+<script type="text/javascript" src="../../libs/ezui/jquery.easyui.min.js"></script>
+<script src="../../js/paging.js"></script>
 </body>
 </html>

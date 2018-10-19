@@ -1,4 +1,157 @@
 $(function() {
+	
+	var fundList=[];
+	var originalArr=[];
+	var canShowArr=[];
+	var baseURL="/";
+	$("#jqGrid").jqGrid({
+	    url: baseURL + 'getReqList',
+	    datatype: "json",
+	    colModel: [			
+			{ label: '编号', name: 'id', index: "id", width: 40, key: true },
+			{ label: '项目申报部门', name: 'dept', width: 150 },
+			{ label: '部门负责人', name: 'deptpeo',  width: 100},
+			{ label: '联系方式', name: 'deptpeoinfo',  width: 100},
+			{ label: '项目名称', name: 'projectname',  width: 120},
+			{ label: '项目联系人	', name: 'projectcontact', width: 100},
+			{ label: '联系方式', name: 'projectpeoinfo',  width: 130},
+			{ label: '状态', name: 'stepstatus', width: 170,formatter : function(value, options, row) {
+				var stepstatusName=null;
+				if(value==0){
+					stepstatusName="初始状态"
+				}
+    			if(value==1){
+    				stepstatusName="项目负责人审核中"
+    			}
+    			if(value==2){
+    				stepstatusName="项目负责人审核未过"
+    			}
+    			if(value==3){
+    				stepstatusName="项目负责人审核通过"
+    			}
+    			if(value==4){
+    				stepstatusName="业务经办人审核未过 "
+    			}
+//    			if(value==5){
+//    				stepstatusName="业务经办人审核中"
+//    			}
+    			if(value==6){
+    				stepstatusName="业务负责人审核未过 "//
+    			}
+    			if(value==7){
+    				stepstatusName="业务经办人审核通过"
+    			}
+    			if(value==8){
+    				stepstatusName="业务主管部门审核未过"
+    			}
+    			if(value==9){
+    				stepstatusName="业务负责人审核中";//
+    			}
+    			if(value==11){
+    				stepstatusName="业务经办人审核中"//业务负责人审核通过
+    			}
+    			if(value==13){
+    				stepstatusName="业务主管部门审核中"
+    			}
+    			if(value==15){
+    				stepstatusName="业务主管部门审核通过"
+    			}
+    			if(value==7){
+    				stepstatusName="审核结束"
+    			}
+				return stepstatusName;
+            }},
+			{ label: '操作', name: 'stepstatus', width: 170,formatter : function(value, options, row) {
+					var a1="<a id="+row.id+" stepstatus="+row.stepstatus+"  tag='detail' title='详情'>详情</a>";
+					var a2="<a id="+row.id+" stepstatus="+row.stepstatus+"  tag='plan_YWJBR'  isten="+row.isten+" style='padding-left:5px'>审批</a>"
+					return a1+a2;
+					
+					
+                }
+			}
+	    ],
+	    viewrecords: true,
+        height: 385,
+        rowNum: 10,
+		rowList : [10,30,50],
+        rownumbers: false, 
+        rownumWidth: 30, 
+        autowidth:true,
+        multiselect: false,
+        pager: "#jqGridPager",
+	    jsonReader : {
+	        root: "page.list",
+	        page: "page.currPage",
+	        total: "page.totalPage",
+	        records: "page.totalCount"
+	    },
+	    prmNames : {
+	        page:"page", 
+	        rows:"limit", 
+	        order: "order"
+	    },
+	    gridComplete:function(){
+	    	//隐藏grid底部滚动条
+	    	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
+	    }
+	});	 
+	var vm=new Vue({
+		el: '#rrapp',
+		data: {
+			message: 'Runoob!',
+			stepstatus:null,
+			id:null,
+			showList: true,
+	        people: []  
+		},
+		methods: {
+			reload : function() {
+				vm.showList = true;
+				var page = $("#jqGrid").jqGrid('getGridParam','page');
+				$("#jqGrid").jqGrid('setGridParam',{ 
+	                page:page
+	            }).trigger("reloadGrid");
+			},
+			addToSend: function() {
+				debugger
+				var treeObj = $.fn.zTree.getZTreeObj("tree");
+	            var nodes = treeObj.getCheckedNodes(true);
+	            var stepstatus=this.stepstatus;
+	            var id=parseInt(this.id);
+	            debugger
+	            if(nodes.length>0&&nodes[0].preid!="-1"){
+	            	var ztreDeptno=nodes[0].preid//detpno  
+	            	var ztreUserid=nodes[0].userid//userid 
+	            	var checkData={}
+		            	checkData.ztreDeptno=ztreDeptno
+		            	checkData.ztreUserid=ztreUserid
+		            	checkData.stepstatus=stepstatus
+		            	checkData.id=id//当前选择记录的id
+		            	vm.sendCheckData(checkData)
+	            }else{
+	            	alert("请选择发送人")
+	            }
+	            debugger
+			},
+			sendCheckData:function(checkData){
+				var url="sendCheckData"
+				$.ajax({
+					type: "POST",
+				    url: baseURL + url,
+	                contentType: "application/json",
+				    data: JSON.stringify(checkData),
+				    success: function(r){
+				    	$("#load_user_dept_Modal").modal("hide");
+				    	alert(r.msg,function(){
+								location.reload() 
+				    	})
+				    }
+				});
+			}
+		}
+	});	
+	
+		
 /**
  * 分页
  */
@@ -31,10 +184,15 @@ function hideReqModal(){
 };
 
 
-//详情
+//详情页面关闭后操作
 $("#detail_zxjh_Modal").on("hidden.bs.modal", function() {//关闭页面后清空数据。
 	if($("input[name=detail_buyway]").length>0){
 		$("input[name=detail_buyway]").removeAttr("checked")
+	}
+	
+	if($("tr[trid=trid]").length>0){
+		$("tr[trid=trid]").remove();
+		$("#captialTd_detail").attr({"rowspan":2})
 	}
 	
 	if($("tr[detailFlag=detailFlag]").length>0){//清除tr,重置 rowspan为3，itemId为0
@@ -228,7 +386,7 @@ $("#planStatus_div button").on("click",function(){
 	if(isOk("#checkPlan__formId")){
 		checkMsg.msg=$("#check_Msg").val().trim()
 		//2018年02月22日 17:42:03
-		checkMsg.checkdate=$("#ymd01").val().trim()
+		//checkMsg.checkdate=$("#ymd01").val().trim()
 		checkMsg.preid=preid
 		checkMsg.id=planStatus
 		checkMsg.checkby=2
@@ -250,9 +408,10 @@ function sendData(checkMsg){
 		data: JSON.stringify(checkMsg),
 		success:function(r){
 			$("#checkPlan_Modal").modal("hide")
-			alert(r.msg)
-			debugger
-			init(paginationConf.currentPage)
+			
+			alert(r.msg,function(){
+				location.reload();
+			})
 		}
 	})
 }
@@ -280,8 +439,9 @@ function uploadFile(checkMsg,isten,btn) {
 		contentType : false,
 		success : function(r) {
 			$("#checkPlan_Modal").modal("hide")
-			alert(r.msg)
-			init(paginationConf.currentPage)
+			alert(r.msg,function(){
+				location.reload();
+			})
 		}
 	});
 }
@@ -372,8 +532,9 @@ var vm=new Vue({
 			    data: JSON.stringify(checkData),
 			    success: function(r){
 			    	$("#load_user_dept_Modal").modal("hide")
-			    	alert(r.msg)
-			    	init(paginationConf.currentPage)
+			    	alert(r.msg,function(){
+						location.reload();
+					})
 			    }
 			});
 		}
@@ -406,18 +567,9 @@ function showDetail(id){
 	})
 }
 
-
-
 //加载详情数据。
 function loadDetailData(r){
-	var  bc=$(".bmshc")
-	var  bm=$("#bmshyj")
-	var  zb=$(".zcbshc")
-	var  zc=$("#zcbspyj")
-		 bc.removeClass("height")
-		 bm.text("")
-		 zb.removeClass("height")
-		 zc.text("")	
+	debugger
 	$("#detail_bh1").val(r.bh1)//项目申报部门
 	$("#detail_bh2").val(r.bh2)//项目申报部门
 	$("#detail_dept").val(r.dept)//项目申报部门
@@ -435,6 +587,48 @@ function loadDetailData(r){
 	
 	
 	
+	/****生成自主采购资金来源  start****/
+	var cList=r.capitalsourceInfos;
+	function createCaptionl (cList){
+		var tdNum=1
+		for(var c=0;c<cList.length;c++){
+			var captialTd_edit=$("#captialTd_detail")
+			rowspan=captialTd_edit.attr("rowspan")
+			debugger
+			var captialTr=$("#captialTr_detail")
+			
+			var newTr=$('<tr trnum='+tdNum+'  trid="trid"></tr>')
+			var newTd1=$('<td colspan="5" tdNum='+tdNum+'></td>')
+
+			var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway" disabled="disabled"></select >')
+			var tempArry=[]
+			tempArry=fundList
+			var option='<option   value='+cList[c].moneyway+' id="inputid" idval='+cList[c].id+' >'+cList[c].moneyway+'</option>'
+			newDatalist.append(option)
+			
+			var newTd2=$('<td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true"   value= '+cList[c].premoney+' missingMessage="不能为空"  readonly="readonly"></td>')
+			var newTd3=$('<td colspan="2"><input type="text" id="questmoney" style="width: 100px" class="easyui-numberbox" required="true" value= '+cList[c].questmoney+' missingMessage="不能为空" readonly="readonly"></td>')
+			
+			newTd1.append(newDatalist)//,input1,input2)
+			
+			newTr.append(newTd1,newTd2,newTd3)
+			
+			captialTd_edit.attr("rowspan",parseInt(rowspan)+1)
+			
+			captialTr.after(newTr)
+			
+			$.parser.parse(newTr);//重新渲染样式
+			tdNum++;
+		}
+		
+	}
+	createCaptionl (cList);
+	/****生成自主采购资金来源  end****/
+	
+	
+	
+	
+	
 	
 	var items_tr=$("#detail_items_tr_id")
 	var buyItemInfos=r.buyItemInfos
@@ -449,6 +643,14 @@ function loadDetailData(r){
 	}
 
 	for(var i=0;i<buyItemInfos.length;i++){
+		var  bc=$(".bmshc")
+		var  bm=$("#bmshyj")
+		var  zb=$(".zcbshc")
+		var  zc=$("#zcbspyj")
+			 bc.removeClass("height")
+			 bm.text("")
+			 zb.removeClass("height")
+			 zc.text("")
 		
 		var  tr1=$('<tr detailFlag="detailFlag"></tr>')
 		var  td1=$('<td>'+buyItemInfos[i]["byintemid"]+'</td>')
@@ -494,47 +696,56 @@ function loadDetailData(r){
 		   .append(td7)
 		   .append(td8)
 		   .append(td9)
-     $.parser.parse(tr1);//重新渲染样式
-	addRowSpanAndToTr().after(tr1)
+	     $.parser.parse(tr1);//重新渲染样式
+		 addRowSpanAndToTr().after(tr1)
 	
-	 var clist=r.clist
-	 var num=0
-	 var nnm=0
-	 if (clist.length > 0) {
-			var uL1 = $('<ul class="list-group" ></ul>')
-			var uL2 = $('<ul class="list-group" ></ul>')
-			for (var i = 0; i < clist.length; i++) {
-				var checkby = clist[i].checkby
-				var msg = clist[i].msg
-				var checkdate = clist[i].checkdate
-				if (checkby == 1) {
-					uL1.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
-					num+=1
-				} else {
-					nnm+=1
-					uL2.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+		 
+		 
+/*		 <ul class="list-group">
+		  <li class="list-group-item">Cras justo odio</li>
+		  <li class="list-group-item">Dapibus ac facilisis in</li>
+		  <li class="list-group-item">Morbi leo risus</li>
+		  <li class="list-group-item">Porta ac consectetur ac</li>
+		  <li class="list-group-item">Vestibulum at eros</li>
+		</ul>*/
+		 var clist=r.clist
+		 var num=0
+		 var nnm=0
+		 if (clist.length > 0) {
+				var uL1 = $('<ul class="list-group" ></ul>')
+				var uL2 = $('<ul class="list-group" ></ul>')
+				for (var i = 0; i < clist.length; i++) {
+					var checkby = clist[i].checkby
+					var msg = clist[i].msg
+					var checkdate = clist[i].checkdate
+					if (checkby == 1) {
+						uL1.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+						num+=1
+					} else {
+						nnm+=1
+						uL2.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+					}
 				}
-			}
-			
-			if(num*42>120){
-				bc.css({"height":num*42+"px"})
-				bm.css({"height":num*42+"px"})
-			}else{
-				bc.css({"height":"130px"})
-				bm.css({"height":"130px"})
-			}
-			if(nnm*42>120){
-				zb.css({"height":nnm*42+"px"})
-				zc.css({"height":nnm*42+"px"})
-			}else{
-				zb.css({"height":"130px"})
-				zc.css({"height":"130px"})
-			}
-			
-			bm.append(uL1)
-			zc.append(uL2)
+				
+				if(num*42>120){
+					bc.css({"height":num*42+"px"})
+					bm.css({"height":num*42+"px"})
+				}else{
+					bc.css({"height":"130px"})
+					bm.css({"height":"130px"})
+				}
+				if(nnm*42>120){
+					zb.css({"height":nnm*42+"px"})
+					zc.css({"height":nnm*42+"px"})
+				}else{
+					zb.css({"height":"130px"})
+					zc.css({"height":"130px"})
+				}
+				
+				bm.append(uL1)
+				zc.append(uL2)
 
-	}else{
+		}else{
 			var uL1 = $('<ul class="list-group" ></ul>')
 			var uL2 = $('<ul class="list-group" ></ul>')
 				if(num*42>120){
@@ -554,7 +765,6 @@ function loadDetailData(r){
 				bm.append(uL1)
 				zc.append(uL2)
 		}
-	
 	}
 	var agentno=r.agentno
 	if(agentno!=null){
@@ -578,7 +788,185 @@ function loadDetailData(r){
 				.append(baseSelect))
 				return 	divs
 	};
-}
+	
+	//去除禁用时候灰色
+	var divs=$("#detail_zxjh_modal_div");
+		divs.find("input").css({"background-color": "white"});
+		divs.find("textarea").css({"background-color": "white"});
+		divs.find("select").css({"background-color": "white"});
+};
+
+//加载详情数据。
+//function loadDetailData(r){
+//	var  bc=$(".bmshc")
+//	var  bm=$("#bmshyj")
+//	var  zb=$(".zcbshc")
+//	var  zc=$("#zcbspyj")
+//		 bc.removeClass("height")
+//		 bm.text("")
+//		 zb.removeClass("height")
+//		 zc.text("")	
+//	$("#detail_bh1").val(r.bh1)//项目申报部门
+//	$("#detail_bh2").val(r.bh2)//项目申报部门
+//	$("#detail_dept").val(r.dept)//项目申报部门
+//	$("#detail_deptpeo").val(r.deptpeo)//项目申报部门负责人
+//	$("#detail_deptpeoinfo").val(r.deptpeoinfo)//联系方式
+//	$("#detail_projectname").val(r.projectname)//项目名称
+//	$("#detail_projectcontact").val(r.projectcontact)//项目联系人
+//	$("#detail_projectpeoinfo").val(r.projectpeoinfo)//联系方式
+//	$("input[name=detail_buyway][value="+r.buyway+"]").prop("checked", true); //采购方式
+//	$("#detail_moneyway").val(r.moneyway)// 资金来源
+//	$("#detail_premoney").val(r.premoney)//预算项目金额（元)
+//	$("#detail_questmoney").val(r.questmoney)//申请项目金额（元）
+//	$("#detail_totalmoney").val(r.totalmoney)//合计金额（元）
+//	$("#detail_others").val(r.others)// 其他说明
+//	
+//	
+//	
+//	
+//	var items_tr=$("#detail_items_tr_id")
+//	var buyItemInfos=r.buyItemInfos
+//
+//	function  addRowSpanAndToTr(){
+//		var num=$("table[id=detail_table] tr").length
+//			num=num-3
+//		var row = $("#detail_rowspan_change")[0]
+//		    row.rowSpan=parseInt(row.rowSpan)+1    
+//		var toTr=$("table[id=detail_table] tr:eq("+num+")")
+//		return toTr
+//	}
+//
+//	for(var i=0;i<buyItemInfos.length;i++){
+//		
+//		var  tr1=$('<tr detailFlag="detailFlag"></tr>')
+//		var  td1=$('<td>'+buyItemInfos[i]["byintemid"]+'</td>')
+//		
+//		var buyItemTypeName=""
+//		if(parseInt(buyItemInfos[i]["buyitemtype"])==0){//0.货物 1.服务 2.工程
+//			buyItemTypeName="货物"
+//		}
+//		if(parseInt(buyItemInfos[i]["buyitemtype"])==1){//0.货物 1.服务 2.工程
+//			buyItemTypeName="服务"
+//		}
+//		if(parseInt(buyItemInfos[i]["buyitemtype"])==2){//0.货物 1.服务 2.工程
+//			buyItemTypeName="工程"
+//		}
+//		var  td2=$('<td><input type="text"  style="width: 150px" class="easyui-validatebox" disabled="disabled"  value='+buyItemInfos[i]["buyitemname"]+' ></td>')
+//		
+//		var buyItemUnitName=""
+//		if(parseInt(buyItemInfos[i]["buyitemunit"])==0){//0.套 1.台 2.个
+//			buyItemUnitName="套"
+//		}
+//		if(parseInt(buyItemInfos[i]["buyitemunit"])==1){//0.套 1.台 2.个
+//			buyItemUnitName="台"
+//		}
+//		if(parseInt(buyItemInfos[i]["buyitemunit"])==2){//0.套 1.台 2.个
+//			buyItemUnitName="个"
+//		}
+//		
+//		var  td3=$('<td><select  disabled="disabled"  id="buyItemType"><option value="0">'+buyItemTypeName+'</option></select></td>')
+//		
+//		var td4=$('<td><input type="text" id="buyItemQty" class="easyui-numberbox" disabled="disabled"  value='+buyItemInfos[i]["buyitemqty"]+'></td>')
+//		var td5=$('<td><select disabled="disabled"  id="buyItemUnit"><option  value="0">'+buyItemUnitName+'</option></select></td>')
+//		var td6=$('<td><input type="text" id="buyItemSum" style="width: 100px" class="easyui-numberbox"  disabled="disabled"  value='+buyItemInfos[i]["buyitemsum"]+'></td>')
+//		var td7=$('<td><select disabled="disabled"  id="isImport"><option value="1">'+((parseInt(buyItemInfos[i].isimport)==1 )? '是':'否')+'</option></select></td>')
+//		var td8=$('<td><select disabled="disabled" id="isEnergy"><option value="1">'+((parseInt(buyItemInfos[i].isenergy)==1)? '是':'否')+'</option></select></td>')
+//		var td9=$('<td><select disabled="disabled" id="isEnvironment"><option value="1">'+((parseInt(buyItemInfos[i].isenvironment)==1)? '是':'否')+'</option></select></td>')
+//		
+//		tr1.append(td1)
+//		   .append(td2)
+//		   .append(td3)
+//		   .append(td4)
+//		   .append(td5)
+//		   .append(td6)
+//		   .append(td7)
+//		   .append(td8)
+//		   .append(td9)
+//     $.parser.parse(tr1);//重新渲染样式
+//	addRowSpanAndToTr().after(tr1)
+//	
+//	 var clist=r.clist
+//	 var num=0
+//	 var nnm=0
+//	 if (clist.length > 0) {
+//			var uL1 = $('<ul class="list-group" ></ul>')
+//			var uL2 = $('<ul class="list-group" ></ul>')
+//			for (var i = 0; i < clist.length; i++) {
+//				var checkby = clist[i].checkby
+//				var msg = clist[i].msg
+//				var checkdate = clist[i].checkdate
+//				if (checkby == 1) {
+//					uL1.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+//					num+=1
+//				} else {
+//					nnm+=1
+//					uL2.append($(' <li class="list-group-item"></li>').append(msg).append(",").append(checkdate))
+//				}
+//			}
+//			
+//			if(num*42>120){
+//				bc.css({"height":num*42+"px"})
+//				bm.css({"height":num*42+"px"})
+//			}else{
+//				bc.css({"height":"130px"})
+//				bm.css({"height":"130px"})
+//			}
+//			if(nnm*42>120){
+//				zb.css({"height":nnm*42+"px"})
+//				zc.css({"height":nnm*42+"px"})
+//			}else{
+//				zb.css({"height":"130px"})
+//				zc.css({"height":"130px"})
+//			}
+//			
+//			bm.append(uL1)
+//			zc.append(uL2)
+//
+//	}else{
+//			var uL1 = $('<ul class="list-group" ></ul>')
+//			var uL2 = $('<ul class="list-group" ></ul>')
+//				if(num*42>120){
+//					bc.css({"height":num*42+"px"})
+//					bm.css({"height":num*42+"px"})
+//				}else{
+//					bc.css({"height":"130px"})
+//					bm.css({"height":"130px"})
+//				}
+//				if(nnm*42>120){
+//					zb.css({"height":nnm*42+"px"})
+//					zc.css({"height":nnm*42+"px"})
+//				}else{
+//					zb.css({"height":"130px"})
+//					zc.css({"height":"130px"})
+//				}
+//				bm.append(uL1)
+//				zc.append(uL2)
+//		}
+//	
+//	}
+//	var agentno=r.agentno
+//	if(agentno!=null){
+//		$("#detail_table").after(getAgentcTrDetail())
+//	}
+//	
+//	//生成agentcTr
+//	function getAgentcTrDetail(){
+//		var  baseSelect=$('<select id="agencySelectId" disabled="disabled"></select>')
+//		if(agencyData.length>0){
+//			for(var i=0;i<agencyData.length;i++){
+//				if(agentno==agencyData[i].agentno){
+//					var agency=agencyData[i].agency
+//					baseSelect.append($("<option value="+agentno+">"+agency+"</option>"))
+//					break
+//				}
+//			}
+//		}
+//		var divs=$('<div  class="agency_div"  id="agency_div_detail"><div class="agency_div_left"><b>代理机构</b></div></div>')
+//		.append($('<div class="agency_div_right"></div>')
+//				.append(baseSelect))
+//				return 	divs
+//	};
+//}
 
 // 点击显示（YYYY年MM月DD日 hh:mm:ss）格式
 $("#ymd01").jeDate({
@@ -716,7 +1104,7 @@ function init(pn){//页面初始化，加载数据
         }
     });
 }
-init(paginationConf.currentPage);
+//init(paginationConf.currentPage);
 	
 	
 /**

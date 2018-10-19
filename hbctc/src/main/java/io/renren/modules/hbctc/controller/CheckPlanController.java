@@ -1,5 +1,7 @@
 package io.renren.modules.hbctc.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +51,7 @@ public class CheckPlanController extends AbstractController {
 		checkMsg.setUserid((int)userid);
 		Integer stepstatus=checkMsg.getId();
 		checkMsg.setId(null);
+		checkMsg.setCheckdate(new Date());
 		System.out.println("checkMsg  :"+checkMsg);
 		try {
 			

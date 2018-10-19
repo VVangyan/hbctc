@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -47,6 +48,7 @@ import io.renren.modules.hbctc.entity.ProjectRequestForm;
 import io.renren.modules.hbctc.entity.ProjectRequestFormExample;
 import io.renren.modules.hbctc.entity.RequestBox;
 import io.renren.modules.hbctc.entity.RequestBoxExample;
+import io.renren.modules.hbctc.entity.UpdateMoneyRecord;
 import io.renren.modules.hbctc.entity.UsedMoneyRecord;
 import io.renren.modules.hbctc.entity.UsedMoneyRecordExample;
 import io.renren.modules.hbctc.entity.UserDepartment;
@@ -60,6 +62,7 @@ import io.renren.modules.hbctc.service.FundFromService;
 import io.renren.modules.hbctc.service.NumfactoryService;
 import io.renren.modules.hbctc.service.ProjectRequestFormService;
 import io.renren.modules.hbctc.service.RequestBoxService;
+import io.renren.modules.hbctc.service.UpdateMoneyRecordService;
 import io.renren.modules.hbctc.service.UsedMoneyRecordService;
 import io.renren.modules.hbctc.service.UserDepartmentService;
 import io.renren.modules.sys.controller.AbstractController;
@@ -76,43 +79,46 @@ import io.renren.modules.sys.service.SysUserService;
 public class ZXJHController extends AbstractController {
 
 	@Autowired
-	ProjectRequestFormService projectRequestFormService;
+	private ProjectRequestFormService projectRequestFormService;
 
 	@Autowired
-	BuyItemInfoService buyItemInfoService;
+	private BuyItemInfoService buyItemInfoService;
 	
 	@Autowired
-	CapitalSourceService capitalSourceService;
+	private CapitalSourceService capitalSourceService;
 
 	@Autowired
-	NumfactoryService numfactoryService;
+	private NumfactoryService numfactoryService;
 
 	@Autowired
-	AgencyService agencyService;
+	private AgencyService agencyService;
 	
 	@Autowired  
-	FileUploadPathService fileUploadPathService;
+	private FileUploadPathService fileUploadPathService;
 	
 	@Autowired
-	CheckMsgService checkMsgService;
+	private CheckMsgService checkMsgService;
 	
 	@Autowired
-	UserDepartmentService userDepartmentService;
+	private UserDepartmentService userDepartmentService;
 	
 	@Autowired
-	SysUserRoleService sysUserRoleService;	
+	private SysUserRoleService sysUserRoleService;	
 	
 	@Autowired
-	SysUserService sysUserService;	
+	private SysUserService sysUserService;	
 	
 	@Autowired
-	RequestBoxService requestBoxService;
+	private RequestBoxService requestBoxService;
 
 	@Autowired
-	FundFromService fundFromService;
+	private FundFromService fundFromService;
 	
 	@Autowired
-	UsedMoneyRecordService usedMoneyRecordService;
+	private UsedMoneyRecordService usedMoneyRecordService;
+
+	@Autowired
+	private UpdateMoneyRecordService updateMoneyRecordService;
 	
 	@SuppressWarnings("unused")
 	@SysLog("提交申请")
@@ -202,7 +208,7 @@ public class ZXJHController extends AbstractController {
 		return agencys;
 	}
 	@SysLog("获取报表数据")
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@GetMapping("/getReqFormList")
 	public Map<String, Object> getReqFormList(@RequestParam(value = "pn", defaultValue = "1") Integer pn) {
 		
@@ -225,16 +231,18 @@ public class ZXJHController extends AbstractController {
 		Long roleId = getRoleIdByUserId(userId);
 		
 		
-		
-		
-		List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));
-		List idList=new ArrayList<>();
-		for (RequestBox r : requestBox) {
-			idList.add(r.getFromid());
+		if(roleId==4) {//业务经办人,查询stepStatus 为11【即,业务负责人审核通过了的】
+			ProjectRequestFormExample example=new ProjectRequestFormExample();
+			example.createCriteria().andStepstatusEqualTo(11);
+			resultList = projectRequestFormService.selectByExample(example);
+		}else {//其它用户则普通的
+			List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));
+			List idList=new ArrayList<>();
+			for (RequestBox r : requestBox) {
+				idList.add(r.getFromid());
+			}
+			resultList= getProjects(userId,idList,roleId);
 		}
-		resultList= getProjects(userId,idList,roleId);
-		
-		
 		resultMap.put("page", page);
 		resultMap.put("resultList", resultList);
 		return resultMap;
@@ -257,12 +265,18 @@ public class ZXJHController extends AbstractController {
 		PageHelper.startPage(pn, 10);
 		String deptno = getUserDepartment(Integer.parseInt(getUserId()+"")).get(0).getDeptno();
 		Long roleId = getRoleIdByUserId(userId);
-		List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));
-		List idList=new ArrayList<>();
-		for (RequestBox r : requestBox) {
-			idList.add(r.getFromid());
+		if(roleId==4) {//业务经办人,查询stepStatus 为11【即,业务负责人审核通过了的】
+			ProjectRequestFormExample example=new ProjectRequestFormExample();
+			example.createCriteria().andStepstatusEqualTo(11);
+			resultList = projectRequestFormService.selectByExample(example);
+		}else {//其它用户则普通的
+			List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));
+			List idList=new ArrayList<>();
+			for (RequestBox r : requestBox) {
+				idList.add(r.getFromid());
+			}
+			resultList= getProjects(userId,idList,roleId);
 		}
-		resultList= getProjects(userId,idList,roleId);
 		PageInfo page = new PageInfo(resultList, 10);
 		return R.ok().put("page", page);
 	}
@@ -369,7 +383,7 @@ public class ZXJHController extends AbstractController {
 	@PostMapping("/updatePorject")
 	public R updatePorject(@RequestBody ProjectRequestForm projectRequestForm) {
 		List<BuyItemInfo> buyItemInfos = projectRequestForm.getBuyItemInfos();
-		
+		UpdateMoneyRecord uprecord=null;
 		System.out.println("buyItemInfos  :  "+buyItemInfos);
 		System.out.println("  <<<<<<<<<::  "+projectRequestForm);
 		Integer preid = projectRequestForm.getId();
@@ -396,23 +410,61 @@ public class ZXJHController extends AbstractController {
 		cs.createCriteria().andPreidEqualTo(preid);
 		
 		long capCount = capitalSourceService.countByExample(cs);
-		
+		FundFrom record=new FundFrom();
 		if(capCount>0) {
 			
 			CapitalSourceExample ocs=new CapitalSourceExample();
 			ocs.createCriteria().andPreidEqualTo(preid);
 			List<CapitalSource> olist = capitalSourceService.selectByExample(ocs);
 			
+			System.out.println("olist :"+olist);
+			
+			
 			for(int k=0;k<capitalsourceInfos.size();k++) {
 				Double premoney = capitalsourceInfos.get(k).getPremoney();
 				Integer id = capitalsourceInfos.get(k).getId();
 				Integer csid = capitalsourceInfos.get(k).getCsid();
-				Integer preid2 = capitalsourceInfos.get(k).getPreid();
 				
+				Integer ocsid = olist.get(k).getCsid();
+				Integer oid = olist.get(k).getId();
+				
+				CapitalSource oCS = olist.stream().filter(f->f.getId()==csid).collect(Collectors.toList()).get(0);
+				
+				System.out.println("capitalSource2:"+oCS);
+				
+				Integer oCsId = oCS.getCsid();
+				Double oPremoney = oCS.getPremoney();
+				
+				FundFrom fd = fundFromService.selectByPrimaryKey(oCsId);
+				
+				if(premoney>fd.getMoney()) {
+					//超支了
+					return R.error().put("msg", "修改失败! 预算项目金额错误!");
+				}
+				//修改预算表的金额 start
+				if(premoney>oPremoney) {
+					//比原来的预算金额大,需要在预算表里面减去两者的差额
+					record.setMoney(fd.getMoney()-(premoney-oPremoney));
+					record.setId(oCsId);
+					fundFromService.updateByPrimaryKeySelective(record);
+					uprecord=new UpdateMoneyRecord(oPremoney, premoney, oCsId, preid, getUser().getUserId(), getUser().getUsername());
+					updateMoneyRecordService.insertSelective(uprecord);//插入修改记录
+				}
+				if(premoney<oPremoney){
+					//比原来的预算金额小,需要在预算表里面加上两者的差额
+					record.setMoney(fd.getMoney()+(oPremoney-premoney));
+					record.setId(oCsId);
+					uprecord=new UpdateMoneyRecord();
+					fundFromService.updateByPrimaryKeySelective(record);
+					uprecord=new UpdateMoneyRecord(oPremoney, premoney, oCsId, preid, getUser().getUserId(), getUser().getUsername());
+					updateMoneyRecordService.insertSelective(uprecord);//插入修改记录
+				}
+				//修改预算表的金额  end
 				System.out.println("premoney:"+premoney+"  id:"+id+"  csid:"+csid+" preid:"+preid);
+				System.out.println("ocsid:"+ocsid+" oid:	"+oid);
 			}
 			
-			//capitalSourceService.batchUpdate(capitalsourceInfos, preid);
+			capitalSourceService.batchUpdate(capitalsourceInfos, preid);
 			
 			
 		}else{
@@ -422,7 +474,7 @@ public class ZXJHController extends AbstractController {
 		}
 		
 		System.out.println("capitalsourceInfos "+capitalsourceInfos);
-		return R.ok();
+		return R.ok().put("msg", "修改成功!");
 	}
 
 	@GetMapping("/getMapResult")
@@ -442,7 +494,7 @@ public class ZXJHController extends AbstractController {
 		Integer stepstatus=  Integer.parseInt(checkData.get("stepstatus")+"");
 		Integer id = Integer.parseInt(checkData.get("id")+"");
 		String fromusername = getUser().getUsername();
-		Long fromroleid = getRoleIdByUserId(Long.parseLong(userId+""));//接收人的 roleid
+		Long fromroleid = getRoleIdByUserId(Long.parseLong(userId+""));//发送人的 roleid
 		Long toroleId = getRoleIdByUserId(Long.parseLong(ztreeUserId+""));//接收人的 roleid
 		
 		SysUserEntity queryObject = sysUserService.queryObject(Long.parseLong(ztreeUserId+""));

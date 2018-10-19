@@ -70,8 +70,9 @@
 		<table tableName="hbctc_request_box" domainObjectName="RequestBox"></table> 
 		<table tableName="hbctc_fundfrom" domainObjectName="FundFrom"></table> 
 		<table tableName="hbctc_capital_source" domainObjectName="CapitalSource"></table> 
-		-->
 		<table tableName="hbctc_usedmoney_record" domainObjectName="UsedMoneyRecord"></table> 
+		-->
+		<table tableName="hbctc_updatemoney_record" domainObjectName="UpdateMoneyRecord"></table> 
 
 	</context>
 </generatorConfiguration>

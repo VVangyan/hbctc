@@ -5,29 +5,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <link rel="stylesheet" href="../../../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../../css/font-awesome.min.css">
-    <link rel="stylesheet" href="../../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
-    <link rel="stylesheet" href="../../../plugins/ztree/css/metroStyle/metroStyle.css">
-    <link rel="stylesheet" href="../../../css/main.css">
-    <script src="../../../libs/jquery.min.js"></script>
-    <script src="../../../plugins/layer/layer.js"></script>
-    <script src="../../../libs/bootstrap.min.js"></script>
-    <script src="../../../libs/vue.min.js"></script>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/font-awesome.min.css">
+    <link rel="stylesheet" href="../../plugins/jqgrid/ui.jqgrid-bootstrap.css">
+    <link rel="stylesheet" href="../../plugins/ztree/css/metroStyle/metroStyle.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <script src="../../libs/jquery.min.js"></script>
+    <script src="../../plugins/layer/layer.js"></script>
+    <script src="../../libs/bootstrap.min.js"></script>
+    <script src="../../libs/vue.min.js"></script>
     <!--弹出框jquery-confirm  start -->
-	<link href="../../../libs/jquery-confirm/jquery-confirm.css" rel="stylesheet">
-	<script  src="../../../libs/jquery-confirm/jquery-confirm.min.js"></script>
-	<script  src="../../../libs/jquery-confirm/jquery-confirm.js"></script>
+	<link href="../../libs/jquery-confirm/jquery-confirm.css" rel="stylesheet">
+	<script  src="../../libs/jquery-confirm/jquery-confirm.min.js"></script>
+	<script  src="../../libs/jquery-confirm/jquery-confirm.js"></script>
 	<!--弹出框jquery-confirm  end -->
     
     
     
-    <script src="../../../plugins/jqgrid/grid.locale-cn.js"></script>
-    <script src="../../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
-    <script src="../../../plugins/ztree/jquery.ztree.all.min.js"></script>
-    <script src="../../../js/common.js"></script>
+    <script src="../../plugins/jqgrid/grid.locale-cn.js"></script>
+    <script src="../../plugins/jqgrid/jquery.jqGrid.min.js"></script>
+    <script src="../../plugins/ztree/jquery.ztree.all.min.js"></script>
+    <script src="../../js/common.js"></script>
+    
+    
+	<link rel="stylesheet" href="../../css/hbctc/jxsq/jxsq.css">
+	<script src="../../js/hbctc/jxsq/BuyItemInfo.js"></script>
+	<script src="../../js/hbctc/jxsq/ProjectRequestForm.js"></script>
+	<script src="../../js/hbctc/jxsq/CapitalSource.js"></script>
+	<!-- jdate -->
+	<link type="text/css" rel="stylesheet" href="../../libs/jedate-6.0.2/skin/jedate.css">
+	<link type="text/css" rel="stylesheet" href="../../libs/ezui/easyui.css">
+	<link type="text/css" rel="stylesheet" href="../../libs/ezui/icon.css">
+	<script type="text/javascript" src="../../libs/jedate-6.0.2/jquery.jedate.js"></script>
+	<script type="text/javascript" src="../../libs/ezui/jquery.easyui.min.js"></script>
 </head>
-<body>
+<body >
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
 		<div class="grid-btn">
@@ -36,10 +48,37 @@
 	    <table id="jqGrid"  ></table>
 	    <div id="jqGridPager"></div>
     </div>
-</div>
 
+	<!--加载用户组织  -->
+    <div id="load_user_dept_modal_div">
+        <!--ths 修改模态框（Modal） -->
+        <div class="modal fade" id="load_user_dept_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-sm" >
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h5 class="modal-title" id="myModalLabel">
+                               	选择用户
+                        </h5>
+                    </div>
+                    <form  id="load_user_dept_formId">
+               			<div  style="margin: 0 auto;overflow: scroll;overflow-x:hidden;height: 200px">
+							<ul id="tree" class="ztree">
+							</ul>
+						</div>
+                    </form>
+                    <div class="modal-footer" style="text-align: center;">
+                        <button type="button" class="btn btn-primary" @click="addToSend"  :stepstatus="stepstatus"  :id="id">确定</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+    </div>
+ </div> 
 
-<div class="maindiv">
 	<!-- 申请弹出框 -->
     <div id="add_zxjh_modal_div">
         <!--ths 修改模态框（Modal） -->
@@ -508,47 +547,7 @@
             </div><!-- /.modal -->
         </div>
     </div>
-    
-	<!--加载用户组织  -->
-    <div id="load_user_dept_modal_div">
-        <!--ths 修改模态框（Modal） -->
-        <div class="modal fade" id="load_user_dept_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-sm" >
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
-                        <h5 class="modal-title" id="myModalLabel">
-                               	选择用户
-                        </h5>
-                    </div>
-                    <form  id="load_user_dept_formId">
-               			<div  style="margin: 0 auto;overflow: scroll;overflow-x:hidden;height: 200px">
-							<ul id="tree" class="ztree">
-							</ul>
-						</div>
-                    </form>
-                    <div class="modal-footer" style="text-align: center;">
-                        <button type="button" class="btn btn-primary" @click="addToSend"  :stepstatus="stepstatus"  :id="id">确定</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    </div>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal -->
-        </div>
-    </div>
-</div>
-<link rel="stylesheet" href="../../../css/hbctc/jxsq/jxsq.css">
-<script src="../../../js/hbctc/jxsq/BuyItemInfo.js"></script>
-<script src="../../../js/hbctc/jxsq/ProjectRequestForm.js"></script>
-<script src="../../../js/hbctc/jxsq/CapitalSource.js"></script>
-<!-- jdate -->
-<link type="text/css" rel="stylesheet" href="../../../libs/jedate-6.0.2/skin/jedate.css">
-<link type="text/css" rel="stylesheet" href="../../../libs/ezui/easyui.css">
-<link type="text/css" rel="stylesheet" href="../../../libs/ezui/icon.css">
-<script type="text/javascript" src="../../../libs/jedate-6.0.2/jquery.jedate.js"></script>
-<script type="text/javascript" src="../../../libs/ezui/jquery.easyui.min.js"></script>
-<script src="../../../js/paging.js"></script>
-<script src="../../../js/hbctc/jxsq/jxsq.js"></script>
+
+<script src="../../js/hbctc/jxsq/jxsq.js"></script>
 </body>
 </html>

@@ -1,5 +1,8 @@
 $(function() {
-	var baseURL="/"
+	var fundList=[];
+	var originalArr=[];
+	var canShowArr=[];
+	var baseURL="/";
 	$("#jqGrid").jqGrid({
 	    url: baseURL + 'getReqList',
 	    datatype: "json",
@@ -17,40 +20,40 @@ $(function() {
 					stepstatusName="初始状态"
 				}
     			if(value==1){
-    				stepstatusName="项目负责<br>人审核中"
+    				stepstatusName="项目负责人审核中"
     			}
     			if(value==2){
-    				stepstatusName="项目负责<br>人审核未通过"
+    				stepstatusName="项目负责人审核未通过"
     			}
     			if(value==3){
-    				stepstatusName="项目负责<br>人审核通过"
+    				stepstatusName="项目负责人审核通过"
     			}
     			if(value==4){
-    				stepstatusName="业务负责<br>人审核未通过 "
+    				stepstatusName="业务负责人审核未通过 "
     			}
     			if(value==5){
-    				stepstatusName="业务负责<br>人审核中"
+    				stepstatusName="业务负责人审核中"
     			}
     			if(value==6){
-    				stepstatusName="业务经办<br>人审核未通过 "
+    				stepstatusName="业务负责人审核未通过 "//
     			}
     			if(value==7){
-    				stepstatusName="业务负责<br>人审核通过"
+    				stepstatusName="业务负责人审核通过"
     			}
     			if(value==8){
-    				stepstatusName="业务主管部门<br>审核未通过"
+    				stepstatusName="业务主管部门审核未通过"
     			}
     			if(value==9){
-    				stepstatusName="业务经办<br>人审核中"
+    				stepstatusName="业务负责人审核中";//
     			}
     			if(value==11){
-    				stepstatusName="业务经办<br>人审核通过"
+    				stepstatusName="业务负责人审核通过"//
     			}
     			if(value==13){
-    				stepstatusName="业务主管部门<br>审核中"
+    				stepstatusName="业务主管部门审核中"
     			}
     			if(value==15){
-    				stepstatusName="业务主管部门<br>审核通过"
+    				stepstatusName="业务主管部门审核通过"
     			}
     			if(value==17){
     				stepstatusName="结项"
@@ -91,50 +94,64 @@ $(function() {
 	    	$("#jqGrid").closest(".ui-jqgrid-bdiv").css({ "overflow-x" : "hidden" }); 
 	    }
 	});	 
+	var vm=new Vue({
+		el: '#rrapp',
+		data: {
+			message: 'Runoob!',
+			stepstatus:null,
+			id:null,
+			showList: true,
+	        people: []  
+		},
+		methods: {
+			reload : function() {
+				vm.showList = true;
+				var page = $("#jqGrid").jqGrid('getGridParam','page');
+				$("#jqGrid").jqGrid('setGridParam',{ 
+	                page:page
+	            }).trigger("reloadGrid");
+			},
+			addToSend: function() {
+				debugger
+				var treeObj = $.fn.zTree.getZTreeObj("tree");
+	            var nodes = treeObj.getCheckedNodes(true);
+	            var stepstatus=this.stepstatus;
+	            var id=parseInt(this.id);
+	            debugger
+	            if(nodes.length>0&&nodes[0].preid!="-1"){
+	            	var ztreDeptno=nodes[0].preid//detpno  
+	            	var ztreUserid=nodes[0].userid//userid 
+	            	var checkData={}
+		            	checkData.ztreDeptno=ztreDeptno
+		            	checkData.ztreUserid=ztreUserid
+		            	checkData.stepstatus=stepstatus
+		            	checkData.id=id//当前选择记录的id
+		            	vm.sendCheckData(checkData)
+	            }else{
+	            	alert("请选择发送人")
+	            }
+	            debugger
+			},
+			sendCheckData:function(checkData){
+				var url="sendCheckData"
+				$.ajax({
+					type: "POST",
+				    url: baseURL + url,
+	                contentType: "application/json",
+				    data: JSON.stringify(checkData),
+				    success: function(r){
+				    	$("#load_user_dept_Modal").modal("hide");
+				    	alert(r.msg,function(){
+								location.reload() 
+				    	})
+				    }
+				});
+			}
+		}
+	});	
 	
-	
-	 var fundList=[]
-	 var originalArr=[]
-	 var canShowArr=[]
-	  var vm = new Vue({  
-          el: '#rrapp',  
-          data: {  
-              showList: true,
-              people: []  
-          },  
-          methods:{  
-	    		reload : function() {
-	    			vm.showList = true;
-	    			var page = $("#jqGrid").jqGrid('getGridParam','page');
-	    			$("#jqGrid").jqGrid('setGridParam',{ 
-	                    page:page
-	                }).trigger("reloadGrid");
-	    		},
-	          	query:function(){
-	        	  alert(111)
-	          	}
-          }, 
-          mounted : function() {//页面初始化后加载
-          }
-      }) 
-	 
-/**
- * 分页
- */
-//var paginationConf = {
-//		currentPage : 1,   //当前第几页
-//		totalItems : 0,    //共有多少
-//		itemsPerPage : 10, //每页显示记录条数
-//		pagesLength : 15,
-//		perPageOptions : [ 10 ],
-//		rememberPerPage : 'perPageItems',
-//		onChange : function() {
-//			//showTopicList(this.currentPage, this.totalItems);
-//			init(this.currentPage)
-//		}
-//};
 
-// alert(1)
+	 
 var btn = $("#btn_add_zxjh")
 btn.on("click", function() {
 	showReqModal()
@@ -589,7 +606,7 @@ $(document).on("click","#edit_request",function(){
 				debugger;
 				$("#edit_zxjh_Modal").modal('hide')
 				$("#agency_div_edit").remove()
-				alert("修改成功!",function(){
+				alert(r.msg,function(){
 					location.reload();
 				})
 			}
@@ -940,8 +957,9 @@ var requestToLeader=function(id,stepstatus){
 			type: "POST",
 			url:"/requestToLeader/"+id+"/"+stepstatus,
 			success:function(r){
-				alert(r.msg)
-				init(paginationConf.currentPage);
+				alert(r.msg,function(){
+					location.reload() 
+				});
 			}
 		})
 	})
@@ -983,50 +1001,7 @@ var setting = {
         radioType: "all"   //对所有节点设置单选
     }
 };
-vm=new Vue({
-	el: '#app',
-	data: {
-		message: 'Runoob!',
-		stepstatus:null,
-		id:null
-	},
-	methods: {
-		addToSend: function() {
-			var treeObj = $.fn.zTree.getZTreeObj("tree");
-            var nodes = treeObj.getCheckedNodes(true);
-            var stepstatus=this.stepstatus;
-            var id=parseInt(this.id);
-            debugger
-            if(nodes.length>0&&nodes[0].preid!="-1"){
-            	var ztreDeptno=nodes[0].preid//detpno  
-            	var ztreUserid=nodes[0].userid//userid 
-            	var checkData={}
-	            	checkData.ztreDeptno=ztreDeptno
-	            	checkData.ztreUserid=ztreUserid
-	            	checkData.stepstatus=stepstatus
-	            	checkData.id=id//当前选择记录的id
-	            	vm.sendCheckData(checkData)
-            }else{
-            	alert("请选择发送人")
-            }
-            debugger
-		},
-		sendCheckData:function(checkData){
-			var url="sendCheckData"
-			$.ajax({
-				type: "POST",
-			    url: baseURL + url,
-                contentType: "application/json",
-			    data: JSON.stringify(checkData),
-			    success: function(r){
-			    	$("#load_user_dept_Modal").modal("hide")
-			    	alert(r.msg)
-			    	//init(paginationConf.currentPage)
-			    }
-			});
-		}
-	}
-})
+
 
 function showDetail(id){
 	$("#detail_zxjh_Modal").modal({backdrop:"static"})
@@ -1294,135 +1269,135 @@ function loadDetailData(r){
 
 
 
-function init(pn){//页面初始化，加载数据
-	var  tbodyid=$("#tbodyId")
-		 tbodyid.text("")
-    $.ajax({
-        type: "GET",
-        url: "/getReqFormList",
-        data:{pn:pn},
-        success: function(r){
-        	var resultList=r.resultList
-        	if(resultList.length>0){
-        		var bottom_div=$("#bottom_div");
-    			bottom_div.text("");//清空
-    			/**
-    			 * 分页
-    			 */
-    			var pageDiv=$("<div></div>");
-    				pageDiv.attr("id","page");
-    				pageDiv.addClass("page_div");
-    				pageDiv.appendTo(bottom_div);
-    			//每页显示多少条记录	
-    			var pageSize=paginationConf.itemsPerPage;
-    			//总记录数
-    			var totalRecord=parseInt(r.page.total);
-    			//获取总页数
-    			var totalPage = parseInt(r.page.pages)
-    			
-    				//分页
-    				$("#page").paging({
-    					totalPage: totalPage,
-    					totalSize: totalRecord,
-    					pageNo: paginationConf.currentPage,
-    					callback: function(num) {
-    						//获取点击的id
-    						var clickid = jconfirm.lastClicked[0].id;
-    						//查询拦截过滤
-    						if(paginationConf.currentPage<=1&&(clickid=="firstPage"||clickid=="prePage")){
-    							return false;
-    						}else if(paginationConf.currentPage>=totalPage&&(clickid=="nextPage"||clickid=="lastPage")){
-    							return false;
-    						}else{
-    							/*alert(num);*/
-    							paginationConf.currentPage=num;
-    							//alert(totalItems,currentPage);
-    							paginationConf.onChange();
-    						}
-    					}
-    				});
-        		
-        		for(x in resultList){
-        			var baseTrList=$("<tr></tr>")
-        			var td1=$("<td></td>").append(resultList[x].id)
-        			var td2=$("<td></td>").append(resultList[x].dept)
-        			var td3=$("<td></td>").append(resultList[x].deptpeo)
-        			var td4=$("<td></td>").append(resultList[x].deptpeoinfo)
-        			var td5=$("<td></td>").append(resultList[x].projectname)
-        			var td6=$("<td></td>").append(resultList[x].projectcontact)
-        			var td7=$("<td></td>").append(resultList[x].projectpeoinfo)
-        			
-        			
-        			var stepstatus=parseInt(resultList[x].stepstatus)
-        			stepstatusName=""
-        				if(stepstatus==0){
-        					stepstatusName="初始状态"
-        				}
-            			if(stepstatus==1){
-            				stepstatusName="项目负责<br>人审核中"
-            			}
-            			if(stepstatus==2){
-            				stepstatusName="项目负责<br>人审核未通过"
-            			}
-            			if(stepstatus==3){
-            				stepstatusName="项目负责<br>人审核通过"
-            			}
-            			if(stepstatus==4){
-            				stepstatusName="业务负责<br>人审核未通过 "
-            			}
-            			if(stepstatus==5){
-            				stepstatusName="业务负责<br>人审核中"
-            			}
-            			if(stepstatus==6){
-            				stepstatusName="业务经办<br>人审核未通过 "
-            			}
-            			if(stepstatus==7){
-            				stepstatusName="业务负责<br>人审核通过"
-            			}
-            			if(stepstatus==8){
-            				stepstatusName="业务主管部门<br>审核未通过"
-            			}
-            			if(stepstatus==9){
-            				stepstatusName="业务经办<br>人审核中"
-            			}
-            			if(stepstatus==11){
-            				stepstatusName="业务经办<br>人审核通过"
-            			}
-            			if(stepstatus==13){
-            				stepstatusName="业务主管部门<br>审核中"
-            			}
-            			if(stepstatus==15){
-            				stepstatusName="业务主管部门<br>审核通过"
-            			}
-            			if(stepstatus==17){
-            				stepstatusName="结项"
-            			}
-            			
-        			var td8=$("<td></td>").append(stepstatusName)
-        			
-        			
-        			var td9=$("<td></td>").append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='detail'>详情</a>"))					  
-					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='request'   style='padding-left:5px'>申报</a>"))
-					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+" tag='edit'   style='padding-left:5px'>编辑</a>"))
-					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+" tag='delete' style='padding-left:5px'>删除</a>"))
-        								  
-        			baseTrList.append(td1)
-        					  .append(td2)
-        					  .append(td3)
-        					  .append(td4)
-        					  .append(td5)
-        					  .append(td6)
-        					  .append(td7)
-        					  .append(td8)
-        					  .append(td9)
-        					  baseTrList.appendTo(tbodyid)
-        		}
-        	}else{
-        		tbodyid.html("<h4 style='text-algin:center;width:100px;'>暂无数据。</h4>")
-        	}
-        }
-    });
-}
+//function init(pn){//页面初始化，加载数据
+//	var  tbodyid=$("#tbodyId")
+//		 tbodyid.text("")
+//    $.ajax({
+//        type: "GET",
+//        url: "/getReqFormList",
+//        data:{pn:pn},
+//        success: function(r){
+//        	var resultList=r.resultList
+//        	if(resultList.length>0){
+//        		var bottom_div=$("#bottom_div");
+//    			bottom_div.text("");//清空
+//    			/**
+//    			 * 分页
+//    			 */
+//    			var pageDiv=$("<div></div>");
+//    				pageDiv.attr("id","page");
+//    				pageDiv.addClass("page_div");
+//    				pageDiv.appendTo(bottom_div);
+//    			//每页显示多少条记录	
+//    			var pageSize=paginationConf.itemsPerPage;
+//    			//总记录数
+//    			var totalRecord=parseInt(r.page.total);
+//    			//获取总页数
+//    			var totalPage = parseInt(r.page.pages)
+//    			
+//    				//分页
+//    				$("#page").paging({
+//    					totalPage: totalPage,
+//    					totalSize: totalRecord,
+//    					pageNo: paginationConf.currentPage,
+//    					callback: function(num) {
+//    						//获取点击的id
+//    						var clickid = jconfirm.lastClicked[0].id;
+//    						//查询拦截过滤
+//    						if(paginationConf.currentPage<=1&&(clickid=="firstPage"||clickid=="prePage")){
+//    							return false;
+//    						}else if(paginationConf.currentPage>=totalPage&&(clickid=="nextPage"||clickid=="lastPage")){
+//    							return false;
+//    						}else{
+//    							/*alert(num);*/
+//    							paginationConf.currentPage=num;
+//    							//alert(totalItems,currentPage);
+//    							paginationConf.onChange();
+//    						}
+//    					}
+//    				});
+//        		
+//        		for(x in resultList){
+//        			var baseTrList=$("<tr></tr>")
+//        			var td1=$("<td></td>").append(resultList[x].id)
+//        			var td2=$("<td></td>").append(resultList[x].dept)
+//        			var td3=$("<td></td>").append(resultList[x].deptpeo)
+//        			var td4=$("<td></td>").append(resultList[x].deptpeoinfo)
+//        			var td5=$("<td></td>").append(resultList[x].projectname)
+//        			var td6=$("<td></td>").append(resultList[x].projectcontact)
+//        			var td7=$("<td></td>").append(resultList[x].projectpeoinfo)
+//        			
+//        			
+//        			var stepstatus=parseInt(resultList[x].stepstatus)
+//        			stepstatusName=""
+//        				if(stepstatus==0){
+//        					stepstatusName="初始状态"
+//        				}
+//            			if(stepstatus==1){
+//            				stepstatusName="项目负责人审核中"
+//            			}
+//            			if(stepstatus==2){
+//            				stepstatusName="项目负责人审核未通过"
+//            			}
+//            			if(stepstatus==3){
+//            				stepstatusName="项目负责人审核通过"
+//            			}
+//            			if(stepstatus==4){
+//            				stepstatusName="业务负责人审核未通过 "
+//            			}
+//            			if(stepstatus==5){
+//            				stepstatusName="业务负责人审核中"
+//            			}
+//            			if(stepstatus==6){
+//            				stepstatusName="业务经办人审核未通过 "
+//            			}
+//            			if(stepstatus==7){
+//            				stepstatusName="业务负责人审核通过"
+//            			}
+//            			if(stepstatus==8){
+//            				stepstatusName="业务主管部门审核未通过"
+//            			}
+//            			if(stepstatus==9){
+//            				stepstatusName="业务经办人审核中"
+//            			}
+//            			if(stepstatus==11){
+//            				stepstatusName="业务经办人审核通过"
+//            			}
+//            			if(stepstatus==13){
+//            				stepstatusName="业务主管部门审核中"
+//            			}
+//            			if(stepstatus==15){
+//            				stepstatusName="业务主管部门审核通过"
+//            			}
+//            			if(stepstatus==17){
+//            				stepstatusName="结项"
+//            			}
+//            			
+//        			var td8=$("<td></td>").append(stepstatusName)
+//        			
+//        			
+//        			var td9=$("<td></td>").append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='detail'>详情</a>"))					  
+//					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+"  tag='request'   style='padding-left:5px'>申报</a>"))
+//					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+" tag='edit'   style='padding-left:5px'>编辑</a>"))
+//					        			  .append($("<a id="+resultList[x].id+" stepstatus="+stepstatus+" tag='delete' style='padding-left:5px'>删除</a>"))
+//        								  
+//        			baseTrList.append(td1)
+//        					  .append(td2)
+//        					  .append(td3)
+//        					  .append(td4)
+//        					  .append(td5)
+//        					  .append(td6)
+//        					  .append(td7)
+//        					  .append(td8)
+//        					  .append(td9)
+//        					  baseTrList.appendTo(tbodyid)
+//        		}
+//        	}else{
+//        		tbodyid.html("<h4 style='text-algin:center;width:100px;'>暂无数据。</h4>")
+//        	}
+//        }
+//    });
+//}
 //init(paginationConf.currentPage);
 	
 	

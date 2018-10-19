@@ -189,7 +189,7 @@ $(document).on("click","a[tag!='']",function(){
 		debugger
 	}
 	if(tag=="plan_YWJBR"){//审批
-		if(stepstatus==9){
+		if(stepstatus==11){
 			checkPlan(id)
 		}else{
 			alert("当前状态不能审批!")

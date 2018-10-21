@@ -492,7 +492,7 @@ $(document).on("click","#add_request",function(){
 			success: function(r){
 				debugger;
 				hideReqModal()
-				alert("申请成功!",function(){
+				alert(r.msg,function(){
 					location.reload() 
 				});
 			}
@@ -1457,6 +1457,7 @@ var isNum=function(inputNum){
 			newDatalist.append(option)
 		}*/
 		var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway"></select >')
+		
 		var tempArry=[]
 		tempArry=fundList
 		for(var i=0;i<fundList.length;i++){
@@ -1612,8 +1613,10 @@ var isNum=function(inputNum){
 					type: "DELETE",
 					url:"/deleteCapitalSourceById/"+hasid+"/"+csid+"/"+projectid,
 					success:function(r){
-						alert(r.msg)
-						changeTV(trnum)
+						alert(r.msg,function(){
+							changeTV(trnum)
+						})
+						
 					}
 				})
 			})

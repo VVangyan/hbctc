@@ -3,8 +3,12 @@ package io.renren;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
+import java.util.IntSummaryStatistics;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.junit.Test;
@@ -227,7 +231,20 @@ public class Hbctc {
     
     
     
-    
+    @Test
+    public void testGroupBy() {
+    	//数据库中的
+		List<FundFrom> dbFundList = fundFromMapper.selectByExample(null);
+		
+		
+		Map<Integer, DoubleSummaryStatistics> collect = dbFundList.stream().collect(Collectors.groupingBy(FundFrom::getId,Collectors.summarizingDouble(FundFrom::getMoney)));
+		
+		Set<Integer> keySet = collect.keySet();
+		for (Integer integer : keySet) {
+			System.out.println(integer);
+		}
+		
+    }
     
     
     

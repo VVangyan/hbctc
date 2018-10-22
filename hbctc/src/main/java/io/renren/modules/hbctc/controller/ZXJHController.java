@@ -401,12 +401,19 @@ public class ZXJHController extends AbstractController {
 		Integer preid = projectRequestForm.getId();
 		BuyItemInfoExample example=new BuyItemInfoExample();
 		example.createCriteria().andPreidEqualTo(preid);
+		
+		List<BuyItemInfo>  hasBuyIdList= buyItemInfos.parallelStream().filter(f->f.getPreid()!=null).collect(Collectors.toList());
+		List<BuyItemInfo>  noBuyIdList= buyItemInfos.parallelStream().filter(f->f.getPreid()==null).collect(Collectors.toList());
+
+		
 		long buyCount = buyItemInfoService.countByExample(example);
+		
+		if(!noBuyIdList.isEmpty()&&noBuyIdList.size()>0) {
+			buyItemInfoService.batchInsert(noBuyIdList, preid);
+		}
 		if(buyCount>0) {
 			//更新item
-			buyItemInfoService.batchUpdate(buyItemInfos, preid);
-		}else {//若没有一条记录说明全部删光了。
-			buyItemInfoService.batchInsert(buyItemInfos, preid);
+			buyItemInfoService.batchUpdate(hasBuyIdList, preid);
 		}
 
 		//更新project
@@ -435,7 +442,7 @@ public class ZXJHController extends AbstractController {
 		}
 		
 		if(noIdList.size()>0&&!noIdList.isEmpty()) {
-			boolean flag = checkUpdateFundFromMoney(noIdList);
+			boolean flag = checkFundFromMoney(noIdList);
 			if(!flag) {//项目预算金额超支
 				return R.error().put("msg", "申请失败!项目预算金额填写不正确!");
 			}
@@ -714,7 +721,7 @@ public class ZXJHController extends AbstractController {
 		//数据库中的
 		List<FundFrom> selectByExample = fundFromService.selectByExample(c);
 		//分组求和
-		Map<Integer, DoubleSummaryStatistics> uollect = uCsList.parallelStream().collect(Collectors.groupingBy(CapitalSource::getCsid,Collectors.summarizingDouble(CapitalSource::getPremoney)));
+		Map<Integer, DoubleSummaryStatistics> uollect = uCsList.parallelStream().collect(Collectors.groupingBy(CapitalSource::getId,Collectors.summarizingDouble(CapitalSource::getPremoney)));
 		for(int i=0;i<selectByExample.size();i++) {
 			Double dbmoney = selectByExample.get(i).getMoney();
 			double sum = uollect.get(selectByExample.get(i).getId()).getSum();

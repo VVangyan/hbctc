@@ -535,6 +535,13 @@ $(document).on("click","#edit_request",function(){
 		//ids[0].getAttribute("preid")
 		debugger
 		//var buyItemInfo=new Object()
+		var preid=null
+		if(ids[i].attributes.preid==undefined){
+			preid=null
+		}else{
+			 preid=ids[i].attributes.preid.value	
+		}
+		
 		var buyItemInfo=new BuyItemInfo(
 				parseInt(inputs.context.id),
 				inputs[0].value,
@@ -548,6 +555,7 @@ $(document).on("click","#edit_request",function(){
 				selects[4].value
 		)
 		buyItemInfo.id=ids[i].getAttribute("checkedtrid")
+		buyItemInfo.preid=preid
 		buyItemInfos.push(buyItemInfo)
 		debugger
 	}

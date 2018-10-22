@@ -395,6 +395,7 @@ public class ZXJHController extends AbstractController {
 	public R updatePorject(@RequestBody ProjectRequestForm projectRequestForm) {
 		List<BuyItemInfo> buyItemInfos = projectRequestForm.getBuyItemInfos();
 		UpdateMoneyRecord uprecord=null;
+		
 		System.out.println("buyItemInfos  :  "+buyItemInfos);
 		System.out.println("  <<<<<<<<<::  "+projectRequestForm);
 		Integer preid = projectRequestForm.getId();
@@ -419,7 +420,30 @@ public class ZXJHController extends AbstractController {
 
 		CapitalSourceExample cs=new CapitalSourceExample();
 		cs.createCriteria().andPreidEqualTo(preid);
+		
+		//有id的
+		List<CapitalSource> hasIdList = capitalsourceInfos.parallelStream().filter(f->f.getId()!=null).collect(Collectors.toList());
+		
+		//没有id的
+		List<CapitalSource> noIdList = capitalsourceInfos.parallelStream().filter(f->f.getId()==null).collect(Collectors.toList());
+		
+		if(hasIdList.size()>0&&!hasIdList.isEmpty()) {
+			boolean flag = checkUpdateFundFromMoney(hasIdList);
+			if(!flag) {//项目预算金额超支
+				return R.error().put("msg", "申请失败!项目预算金额填写不正确!");
+			}
+		}
+		
+		if(noIdList.size()>0&&!noIdList.isEmpty()) {
+			boolean flag = checkUpdateFundFromMoney(noIdList);
+			if(!flag) {//项目预算金额超支
+				return R.error().put("msg", "申请失败!项目预算金额填写不正确!");
+			}
+			capitalSourceService.batchInsert(noIdList, preid);
+		}
+		
 
+		
 		long capCount = capitalSourceService.countByExample(cs);
 		FundFrom record=new FundFrom();
 		if(capCount>0) {
@@ -430,16 +454,15 @@ public class ZXJHController extends AbstractController {
 
 			System.out.println("olist :"+olist);
 
-
-			for(int k=0;k<capitalsourceInfos.size();k++) {
-				Double premoney = capitalsourceInfos.get(k).getPremoney();
-				Integer id = capitalsourceInfos.get(k).getId();
-				Integer csid = capitalsourceInfos.get(k).getCsid();
+			for(int k=0;k<hasIdList.size();k++) {
+				Double premoney = hasIdList.get(k).getPremoney();
+				Integer id = hasIdList.get(k).getId();
+				Integer csid = hasIdList.get(k).getCsid();
 
 				Integer ocsid = olist.get(k).getCsid();
 				Integer oid = olist.get(k).getId();
 
-				CapitalSource oCS = olist.stream().filter(f->f.getId()==csid).collect(Collectors.toList()).get(0);
+				CapitalSource oCS = olist.parallelStream().filter(f->f.getId()==csid).collect(Collectors.toList()).get(0);
 
 				System.out.println("capitalSource2:"+oCS);
 
@@ -448,7 +471,7 @@ public class ZXJHController extends AbstractController {
 
 				FundFrom fd = fundFromService.selectByPrimaryKey(oCsId);
 
-				if(premoney>fd.getMoney()) {
+				if(premoney>(fd.getMoney()+oPremoney)) {
 					//超支了
 					return R.error().put("msg", "修改失败! 预算项目金额错误!");
 				}
@@ -474,17 +497,10 @@ public class ZXJHController extends AbstractController {
 				System.out.println("premoney:"+premoney+"  id:"+id+"  csid:"+csid+" preid:"+preid);
 				System.out.println("ocsid:"+ocsid+" oid:	"+oid);
 			}
-
-			capitalSourceService.batchUpdate(capitalsourceInfos, preid);
-
-
-		}else{
-			if(!capitalsourceInfos.isEmpty()) {
-				capitalSourceService.batchInsert(capitalsourceInfos, preid);
-			}
+			capitalSourceService.batchUpdate(hasIdList, preid);
 		}
 
-		System.out.println("capitalsourceInfos "+capitalsourceInfos);
+		System.out.println("hasIdList "+hasIdList);
 		return R.ok().put("msg", "修改成功!");
 	}
 
@@ -676,6 +692,23 @@ public class ZXJHController extends AbstractController {
 	 */
 	private boolean checkFundFromMoney(List<CapitalSource> uCsList) {
 		List<Integer> idList = uCsList.parallelStream().map(CapitalSource::getCsid).collect(Collectors.toList());
+		FundFromExample c=new FundFromExample();
+		c.createCriteria().andIdIn(idList);
+		//数据库中的
+		List<FundFrom> selectByExample = fundFromService.selectByExample(c);
+		//分组求和
+		Map<Integer, DoubleSummaryStatistics> uollect = uCsList.parallelStream().collect(Collectors.groupingBy(CapitalSource::getCsid,Collectors.summarizingDouble(CapitalSource::getPremoney)));
+		for(int i=0;i<selectByExample.size();i++) {
+			Double dbmoney = selectByExample.get(i).getMoney();
+			double sum = uollect.get(selectByExample.get(i).getId()).getSum();
+			if(sum>dbmoney) {//前台穿入的錢超過預算的錢
+				return false;
+			}
+		}
+		return true; 
+	}
+	private boolean checkUpdateFundFromMoney(List<CapitalSource> uCsList) {
+		List<Integer> idList = uCsList.parallelStream().map(CapitalSource::getId).collect(Collectors.toList());
 		FundFromExample c=new FundFromExample();
 		c.createCriteria().andIdIn(idList);
 		//数据库中的

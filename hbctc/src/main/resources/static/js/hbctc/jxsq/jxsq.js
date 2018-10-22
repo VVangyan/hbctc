@@ -564,7 +564,11 @@ $(document).on("click","#edit_request",function(){
 		debugger;
 		var premoney= capItems[i].childNodes[1].lastChild.value;  //预算金额
 		var questmoney= capItems[i].children[2].lastChild.value;//申请项目资金
+		
+		//hasid 如果不为undefined ,说明数据库中存在该数据
+		var id=$(capItems[i].children[0]).find("select").find("option:selected").attr("hasid")
 		var capitalSource=new CapitalSource(csid,moneyway,premoney,questmoney);
+			capitalSource.id=id
 		capitalsourceInfos.push(capitalSource)
 	}
 	
@@ -787,7 +791,7 @@ function loadEditData(r){
 			var newDatalist=$('<select  class="form-control" style="width:400px;float:left;" id="moneyway"></select >')
 			var tempArry=[]
 			tempArry=fundList
-			var option='<option   value='+cList[c].moneyway+' id="inputid" idval='+cList[c].id+' >'+cList[c].moneyway+'</option>'
+			var option='<option   value='+cList[c].moneyway+' id="inputid"  hasid='+cList[c].id+' idval='+cList[c].id+' >'+cList[c].moneyway+'</option>'
 			newDatalist.append(option)
 			
 			var newTd2=$('<td colspan="2"><input type="text" id="premoney" style="width: 170px" class="easyui-numberbox" required="true"   value= '+cList[c].premoney+' missingMessage="不能为空"></td>')

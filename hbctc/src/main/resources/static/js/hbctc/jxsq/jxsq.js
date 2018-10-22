@@ -644,17 +644,7 @@ function isOk(buyItemInfos,id){
 	return ok
 };
 
-//预算项目金额  实时事件★★★★★★★★★★★★★★★★★★★★★★★
-$("#premoney").bind("input propertychange",function(){
-	var premoney=$(this).val().trim();
-	if(premoney>=50000&&$(".agency_div").length==0){//新增
-		$(".modal-body").append(getAgentcTr())
-	}
-	if(premoney<50000&&$(".agency_div").length>0){//移除
-		$(".agency_div").remove()
-	}
-	console.log(agencyData)
-});
+
 //预算项目金额  实时事件
 $("#edit_premoney").bind("input propertychange",function(){
 	var premoney=$(this).val().trim();
@@ -1714,7 +1704,7 @@ var isNum=function(inputNum){
 	}
 	
 	/*预算项目金额事件*/
-	$(document).on("change","#premoney",function(){
+/*	$(document).on("change","#premoney",function(){
 		var current=$(this);
 		var currentMoney=parseFloat(current.val());//输入的钱
 		var moneywat=current.parent().prev().find("select").find("option:selected").text()//资金来源名称
@@ -1725,6 +1715,41 @@ var isNum=function(inputNum){
 			current.val("")//超过了清空
 			return false
 		}
-	})
+	})*/
 	
+	$(document).on("input propertychange","#premoney",function(){
+		var current=$(this);
+		debugger
+		var premoney=current.val().trim();
+		//找到预算数组
+		var inputs=$("tr").find("input[id=premoney]")
+		//获取预算金额数组
+		var temp=new Array();
+		for(var i=0;i<inputs.length;i++){
+			temp.push(inputs[i].value)
+		}
+		//最大的预算
+		var flag=Math.max.apply(null, temp);
+		//预算项目金额  实时事件★★★★★★★★★★★★★★★★★★★★★★★
+		if(flag>=50000&&$(".agency_div").length==0){
+			debugger
+			$(".modal-body").append(getAgentcTr())
+		}else if(flag<50000&&$(".agency_div").length>0){
+			$(".agency_div").remove()
+		}
+		
+		console.log(agencyData)
+		
+		//超值提示
+		var currentMoney=parseFloat(premoney);//输入的钱
+		var moneywat=current.parent().prev().find("select").find("option:selected").text()//资金来源名称
+		var fundmoney=parseFloat(current.parent().prev().find("select").find("option:selected").attr("fundmoney"))//资金额度
+		debugger
+		if(currentMoney>fundmoney){
+			current.val("")//超过了清空
+			$(".agency_div").remove()
+			alert("预算项目金额超过额度！")
+			return false
+		}
+	});
 })

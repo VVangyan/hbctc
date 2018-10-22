@@ -7,15 +7,8 @@ import java.util.DoubleSummaryStatistics;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,19 +16,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.annotation.JsonFormat.Value;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import io.renren.common.annotation.SysLog;
-import io.renren.common.utils.Constant;
-import io.renren.common.utils.PageUtils;
-import io.renren.common.utils.Query;
 import io.renren.common.utils.R;
 import io.renren.modules.hbctc.entity.Agency;
 import io.renren.modules.hbctc.entity.BuyItemInfo;
@@ -244,7 +232,9 @@ public class ZXJHController extends AbstractController {
 
 		if(roleId==4) {//业务经办人,查询stepStatus 为11【即,业务负责人审核通过了的】
 			ProjectRequestFormExample example=new ProjectRequestFormExample();
-			example.createCriteria().andStepstatusEqualTo(11);
+			example.or().andStepstatusEqualTo(11);
+			example.or().andStepstatusEqualTo(7);
+			
 			resultList = projectRequestFormService.selectByExample(example);
 		}else {//其它用户则普通的
 			List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));
@@ -278,7 +268,9 @@ public class ZXJHController extends AbstractController {
 		Long roleId = getRoleIdByUserId(userId);
 		if(roleId==4) {//业务经办人,查询stepStatus 为11【即,业务负责人审核通过了的】
 			ProjectRequestFormExample example=new ProjectRequestFormExample();
-			example.createCriteria().andStepstatusEqualTo(11);
+			example.or().andStepstatusEqualTo(11);
+			example.or().andStepstatusEqualTo(7);
+			
 			resultList = projectRequestFormService.selectByExample(example);
 		}else {//其它用户则普通的
 			List<RequestBox> requestBox = getRequestBox(Integer.parseInt(userId+""));

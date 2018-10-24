@@ -100,6 +100,19 @@ function getSelectedRow() {
     return selectedIDs[0];
 }
 
+function getSelectRowData(rowId){
+	var grid = $("#jqGrid");
+	if (rowId) {
+		var ret = grid.jqGrid('getRowData', rowId);
+		return ret;
+	} else {
+		alert("Please select row");
+	}
+}
+
+
+
+
 //选择多条记录
 function getSelectedRows() {
     var grid = $("#jqGrid");

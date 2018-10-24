@@ -17,7 +17,7 @@ $(function () {
 					return '<span class="label label-primary">工程</span>';
 				}
 			}},
-			{ label: '金额', name: 'money', width: 25}
+			{ label: '金额(元)', name: 'money', width: 25}
         ],
 		viewrecords: true,
         height: 385,
@@ -26,7 +26,7 @@ $(function () {
         rownumbers: false, 
         rownumWidth: 25, 
         autowidth:true,
-        multiselect: false,
+        multiselect: true,
         pager: "#jqGridPager",
         jsonReader : {
             root: "page.list",
@@ -53,6 +53,8 @@ var vm = new Vue({
 			detpname: null
 		},
 		showList: true,
+		showFlag: false,
+		showForm: false,
 		title:null,
 		roleList:{},
 		user:{
@@ -65,7 +67,9 @@ var vm = new Vue({
 			vm.reload();
 		},
 		upload: function(){
-			vm.showList = false;
+			vm.showList=false;
+			vm.showFlag = true;
+			vm.showForm=false;
 			vm.title = "上传Excel";
 			vm.roleList = {};
 			vm.user = {status:1,roleIdList:[]};
@@ -92,6 +96,40 @@ var vm = new Vue({
 				});
 			}
 		},
+		update: function () {
+			var rowId = getSelectedRow();
+			debugger
+			if(rowId == null){
+				return ;
+			}
+			var rowData=getSelectRowData(rowId)
+			debugger
+			vm.user.oldmoney=rowData.money
+			vm.showList=false;
+			vm.showFlag = false;
+			vm.showForm=true;
+            vm.title = "修改";
+            vm.id=rowId
+		},
+		saveOrUpdate:function(){
+			debugger
+			//var fData=$("#updateFormData")
+			//var data=fData.serialize()
+			var data={"money":vm.user.newmoney,"id":parseInt(vm.id)};
+			$.ajax({
+				type: "POST",
+			    url: baseURL + "sys/funds/update",
+                contentType: "application/json",
+			    data:JSON.stringify(data),
+			    success: function(r){
+					alert(r.msg, function(){
+						vm.reload();
+					});
+				}
+			});
+			
+			
+		},
 		// 检查文件格式
 		checkFileFormat:function (files){
 			var flag=true;
@@ -108,7 +146,9 @@ var vm = new Vue({
 			return flag;
 		},
 		reload: function () {
-			vm.showList = true;
+			vm.showList=true;
+			vm.showFlag = false;
+			vm.showForm=false;
 			var page = $("#jqGrid").jqGrid('getGridParam','page');
 			var detpname=vm.q.detpname
 			var postData={}
